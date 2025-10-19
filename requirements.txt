@@ -1,0 +1,6 @@
+fastapi
+uvicorn
+gunicorn
+firebase-admin
+google-cloud-firestore
+python-multipart
