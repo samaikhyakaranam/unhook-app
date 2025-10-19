@@ -1,0 +1,21 @@
+users/{uid} {
+  displayName: string,
+  coins: number,
+  streak: number,
+  buddy: { type: "bunny"|"tree", mood: "happy"|"ok"|"sad" },
+  createdAt: timestamp
+}
+
+users/{uid}/days/{YYYYMMDD} {
+  checkedIn: bool,           // did they open the app & check in
+  vaped: bool|null,          // yes/no
+  cravings: number,          // 0..3
+  mood: number,              // 1..5
+  journal: string|null,
+  doneExercises: [ "breathing", "walk", ... ],
+  pointsEarned: number
+}
+
+users/{uid}/shopItems/{itemId} {
+  owned: bool, equipped: bool
+}
