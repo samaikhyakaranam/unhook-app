@@ -4,6 +4,17 @@ from fastapi import FastAPI, Header, HTTPException
 from pydantic import BaseModel
 import os, json, firebase_admin
 from firebase_admin import credentials, firestore
+from fastapi import FastAPI
+
+app = FastAPI(title="Unhook API")
+
+@app.get("/")
+def root():
+    return {
+        "status": "ok",
+        "message": "Unhook API is running",
+        "try": ["/docs", "/api/checkin", "/api/purchase"]
+    }
 
 if not firebase_admin._apps:
     # Try to load from Render environment variable first
