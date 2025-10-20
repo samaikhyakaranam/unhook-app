@@ -1,14 +1,15 @@
-import os
+import os, json
 from datetime import datetime, timezone, timedelta
+
 from fastapi import FastAPI, Header, HTTPException
 from pydantic import BaseModel
-import os, json, firebase_admin
-from firebase_admin import credentials, firestore
-from fastapi import FastAPI
 
-app = FastAPI(title="Unhook API")
+import firebase_admin
+from firebase_admin import credentials, firestore, auth
 
-@app.get("/")
+app = FastAPI(title="Unhook API", version="0.1.0")
+
+@app.get("/", tags=["meta"])
 def root():
     return {
         "status": "ok",
@@ -16,29 +17,28 @@ def root():
         "try": ["/docs", "/api/checkin", "/api/purchase"]
     }
 
+@app.get("/healthz", include_in_schema=False)
+def healthz():
+    return {"ok": True}
+
 if not firebase_admin._apps:
-    # Try to load from Render environment variable first
-    if os.environ.get("FIREBASE_SERVICE_ACCOUNT"):
-        cred_dict = json.loads(os.environ["FIREBASE_SERVICE_ACCOUNT"])
-        cred = credentials.Certificate(cred_dict)
-        firebase_admin.initialize_app(cred)
+    svc = os.environ.get("FIREBASE_SERVICE_ACCOUNT")
+    if svc:
+        cred = credentials.Certificate(json.loads(svc))
     else:
-        # fallback for local dev only
         cred = credentials.Certificate("firebase-key.json")
-        firebase_admin.initialize_app(cred)
+    firebase_admin.initialize_app(cred)
 
 db = firestore.client()
 
-app = FastAPI(title="Unhook API")
-
-def verify(id_token: str):
+def verify(id_token: str) -> str:
     try:
         decoded = auth.verify_id_token(id_token)
         return decoded["uid"]
     except Exception:
         raise HTTPException(status_code=401, detail="Invalid ID token")
 
-def today_key():
+def today_key() -> str:
     return datetime.now(timezone.utc).astimezone().strftime("%Y%m%d")
 
 class CheckInBody(BaseModel):
@@ -48,6 +48,10 @@ class CheckInBody(BaseModel):
     journal: str | None = None
     doneExercises: list[str] = []
 
+class PurchaseBody(BaseModel):
+    itemId: str
+    price: int
+
 @app.post("/api/checkin")
 def check_in(body: CheckInBody, authorization: str = Header(...)):
     """
@@ -55,11 +59,13 @@ def check_in(body: CheckInBody, authorization: str = Header(...)):
     """
     token = authorization.split("Bearer ")[-1]
     uid = verify(token)
+
     user_ref = db.collection("users").document(uid)
     day_ref  = user_ref.collection("days").document(today_key())
 
     user_ref.set({
-        "coins": 0, "streak": 0,
+        "coins": 0,
+        "streak": 0,
         "buddy": {"type": "bunny", "mood": "ok"},
         "createdAt": firestore.SERVER_TIMESTAMP
     }, merge=True)
@@ -68,7 +74,6 @@ def check_in(body: CheckInBody, authorization: str = Header(...)):
     base_actions = 0
 
     earned += 5; base_actions += 1
-
     if body.journal:
         earned += 5; base_actions += 1
     if body.doneExercises:
@@ -94,7 +99,7 @@ def check_in(body: CheckInBody, authorization: str = Header(...)):
     user_doc = user_ref.get()
     curr = user_doc.to_dict() or {}
     streak = int(curr.get("streak", 0))
-    if y_doc.exists and y_doc.to_dict().get("checkedIn"):
+    if y_doc.exists and (y_doc.to_dict() or {}).get("checkedIn"):
         streak += 1
     else:
         streak = 1
@@ -112,20 +117,19 @@ def check_in(body: CheckInBody, authorization: str = Header(...)):
 
     return {"ok": True, "earned": earned, "coins": coins, "streak": streak, "buddyMood": mood}
 
-class PurchaseBody(BaseModel):
-    itemId: str
-    price: int
-
 @app.post("/api/purchase")
 def purchase_item(body: PurchaseBody, authorization: str = Header(...)):
     token = authorization.split("Bearer ")[-1]
     uid = verify(token)
+
     user_ref = db.collection("users").document(uid)
     doc = user_ref.get().to_dict() or {}
     coins = int(doc.get("coins", 0))
     if coins < body.price:
         raise HTTPException(status_code=400, detail="Not enough coins")
-    db.transaction()
+
     user_ref.update({"coins": coins - body.price})
-    user_ref.collection("shopItems").document(body.itemId).set({"owned": True, "equipped": True}, merge=True)
+    user_ref.collection("shopItems").document(body.itemId).set(
+        {"owned": True, "equipped": True}, merge=True
+    )
     return {"ok": True, "coins": coins - body.price}
