@@ -2,12 +2,20 @@ import os
 from datetime import datetime, timezone, timedelta
 from fastapi import FastAPI, Header, HTTPException
 from pydantic import BaseModel
-import firebase_admin
-from firebase_admin import credentials, auth, firestore
+import os, json, firebase_admin
+from firebase_admin import credentials, firestore
 
 if not firebase_admin._apps:
-    cred = credentials.Certificate("firebase-key.json")
-    firebase_admin.initialize_app(cred)
+    # Try to load from Render environment variable first
+    if os.environ.get("FIREBASE_SERVICE_ACCOUNT"):
+        cred_dict = json.loads(os.environ["FIREBASE_SERVICE_ACCOUNT"])
+        cred = credentials.Certificate(cred_dict)
+        firebase_admin.initialize_app(cred)
+    else:
+        # fallback for local dev only
+        cred = credentials.Certificate("firebase-key.json")
+        firebase_admin.initialize_app(cred)
+
 db = firestore.client()
 
 app = FastAPI(title="Unhook API")
