@@ -1,0 +1,147 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Unhook</title>
+
+    <style>
+      body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 2rem; background:#fafafa; }
+      h1 { font-weight: 600; }
+      button { padding: 0.6rem 1rem; border: 1px solid #ccc; border-radius: 8px; background:#fff; cursor:pointer; }
+      .row { display:flex; gap:0.75rem; flex-wrap: wrap; margin: 0.5rem 0; }
+      pre { background:#111; color:#0f0; padding: 0.75rem; border-radius: 8px; overflow:auto; }
+      .card { border:1px solid #eee; border-radius:12px; padding:1rem; max-width:680px; background:white; margin-top:1rem; }
+      label { display:block; margin-top:0.5rem; font-size:0.9rem; }
+      input, textarea, select { width:100%; padding:0.5rem; border:1px solid #ddd; border-radius:8px; font-family:inherit; }
+    </style>
+  </head>
+  <body>
+    <h1>Unhook</h1>
+    <p>This web app signs in with Firebase Auth and connects to your FastAPI backend on Render.</p>
+
+    <div class="card">
+      <h2>Auth</h2>
+      <div class="row">
+        <button id="btnGoogle">Sign in with Google</button>
+        <button id="btnSignOut" disabled>Sign out</button>
+      </div>
+      <div id="user"></div>
+    </div>
+
+    <div class="card">
+      <h2>Daily Check-in</h2>
+      <p>Fill in your data and send it to your API!</p>
+
+      <label>Vaped?
+        <select id="vaped">
+          <option value="">(skip)</option>
+          <option value="false">No</option>
+          <option value="true">Yes</option>
+        </select>
+      </label>
+
+      <label>Cravings (0–10)
+        <input id="cravings" type="number" min="0" max="10" value="3" />
+      </label>
+
+      <label>Mood (1–5)
+        <input id="mood" type="number" min="1" max="5" value="3" />
+      </label>
+
+      <label>Journal
+        <textarea id="journal" rows="3" placeholder="How are you feeling?"></textarea>
+      </label>
+
+      <label>Exercises (comma-separated)
+        <input id="exercises" placeholder="breathing, walk" />
+      </label>
+
+      <div class="row">
+        <button id="btnCheckin" disabled>Send check-in</button>
+      </div>
+
+      <h3>Response</h3>
+      <pre id="out">{}</pre>
+    </div>
+
+    <script type="module">
+      const API_BASE = "https://unhook-app.onrender.com";
+      const firebaseConfig = {
+        apiKey: "AIzaSyAhsjCfr7B-9vxxcA9bnLr46VcxbRMftvA",
+        authDomain: "unhook-38abb.firebaseapp.com",
+        projectId: "unhook-38abb",
+        storageBucket: "unhook-38abb.firebasestorage.app",
+        messagingSenderId: "182531035159",
+        appId: "1:182531035159:web:47163c38ee27c2ba3b8c52",
+        measurementId: "G-7GGK123MDT"
+      };
+
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+      import {
+        getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut
+      } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
+      const provider = new GoogleAuthProvider();
+
+      const $ = (sel) => document.querySelector(sel);
+      const btnGoogle = $("#btnGoogle");
+      const btnSignOut = $("#btnSignOut");
+      const btnCheckin = $("#btnCheckin");
+      const userBox = $("#user");
+      const out = $("#out");
+
+      btnGoogle.onclick = async () => {
+        await signInWithPopup(auth, provider);
+      };
+
+      btnSignOut.onclick = async () => {
+        await signOut(auth);
+      };
+
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          userBox.textContent = `Signed in as: ${user.displayName || user.email}`;
+          btnSignOut.disabled = false;
+          btnCheckin.disabled = false;
+        } else {
+          userBox.textContent = "Not signed in.";
+          btnSignOut.disabled = true;
+          btnCheckin.disabled = true;
+        }
+      });
+
+      btnCheckin.onclick = async () => {
+        const user = auth.currentUser;
+        if (!user) { alert("Sign in first"); return; }
+
+        const idToken = await user.getIdToken();
+
+        const body = {
+          vaped: $("#vaped").value === "" ? null : $("#vaped").value === "true",
+          cravings: Number($("#cravings").value || 0),
+          mood: Number($("#mood").value || 3),
+          journal: $("#journal").value || null,
+          doneExercises: ($("#exercises").value || "")
+            .split(",")
+            .map(s => s.trim())
+            .filter(Boolean)
+        };
+
+        const res = await fetch(`${API_BASE}/api/checkin`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${idToken}`
+          },
+          body: JSON.stringify(body)
+        });
+
+        const data = await res.json();
+        out.textContent = JSON.stringify(data, null, 2);
+      };
+    </script>
+  </body>
+</html>

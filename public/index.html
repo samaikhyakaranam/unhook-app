@@ -1,89 +1,486 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Welcome to Firebase Hosting</title>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Unhook</title>
 
-    <!-- update the version number as needed -->
-    <script defer src="/__/firebase/12.4.0/firebase-app-compat.js"></script>
-    <!-- include only the Firebase features as you need -->
-    <script defer src="/__/firebase/12.4.0/firebase-auth-compat.js"></script>
-    <script defer src="/__/firebase/12.4.0/firebase-database-compat.js"></script>
-    <script defer src="/__/firebase/12.4.0/firebase-firestore-compat.js"></script>
-    <script defer src="/__/firebase/12.4.0/firebase-functions-compat.js"></script>
-    <script defer src="/__/firebase/12.4.0/firebase-messaging-compat.js"></script>
-    <script defer src="/__/firebase/12.4.0/firebase-storage-compat.js"></script>
-    <script defer src="/__/firebase/12.4.0/firebase-analytics-compat.js"></script>
-    <script defer src="/__/firebase/12.4.0/firebase-remote-config-compat.js"></script>
-    <script defer src="/__/firebase/12.4.0/firebase-performance-compat.js"></script>
-    <!-- 
-      initialize the SDK after all desired features are loaded, set useEmulator to false
-      to avoid connecting the SDK to running emulators.
-    -->
-    <script defer src="/__/firebase/init.js?useEmulator=true"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700&display=swap" rel="stylesheet"/>
 
-    <style media="screen">
-      body { background: #ECEFF1; color: rgba(0,0,0,0.87); font-family: Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 0; }
-      #message { background: white; max-width: 360px; margin: 100px auto 16px; padding: 32px 24px; border-radius: 3px; }
-      #message h2 { color: #ffa100; font-weight: bold; font-size: 16px; margin: 0 0 8px; }
-      #message h1 { font-size: 22px; font-weight: 300; color: rgba(0,0,0,0.6); margin: 0 0 16px;}
-      #message p { line-height: 140%; margin: 16px 0 24px; font-size: 14px; }
-      #message a { display: block; text-align: center; background: #039be5; text-transform: uppercase; text-decoration: none; color: white; padding: 16px; border-radius: 4px; }
-      #message, #message a { box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24); }
-      #load { color: rgba(0,0,0,0.4); text-align: center; font-size: 13px; }
-      @media (max-width: 600px) {
-        body, #message { margin-top: 0; background: white; box-shadow: none; }
-        body { border-top: 16px solid #ffa100; }
-      }
-    </style>
-  </head>
-  <body>
-    <div id="message">
-      <h2>Welcome</h2>
-      <h1>Firebase Hosting Setup Complete</h1>
-      <p>You're seeing this because you've successfully setup Firebase Hosting. Now it's time to go build something extraordinary!</p>
-      <a target="_blank" href="https://firebase.google.com/docs/hosting/">Open Hosting Documentation</a>
+  <style>
+    * { box-sizing: border-box; font-family: "Hanken Grotesk", system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
+    :root{
+      --brand:#002293; --brand-dark:#001b75;
+      --bg1:#f5faff; --bg2:#e3f3ff;
+      --card:#ffffff; --ink:#0b1b33; --muted:#6b7a90; --ring:rgba(0,34,147,.18);
+    }
+    body[data-theme="ocean"]   { --bg1:#e8f7ff; --bg2:#cfefff; --brand:#0066cc; --brand-dark:#004b99; }
+    body[data-theme="sunset"]  { --bg1:#fff2e8; --bg2:#ffe1cf; --brand:#ff7a59; --brand-dark:#d55c3e; }
+    body[data-theme="midnight"]{ --bg1:#0e1220; --bg2:#0a0f1a; --card:#11162a; --ink:#dfe7ff; --muted:#9fb1ff; --brand:#5b7cff; --brand-dark:#3e5fe6; }
+
+    body{ margin:0; color:var(--ink); background:linear-gradient(180deg,var(--bg1),var(--bg2)); }
+    header{ background:var(--brand); color:#fff; padding:24px; font-weight:700; font-size:28px; text-align:center; }
+
+    .auth-bar{ max-width:1100px; margin:10px auto 0; padding:0 16px; display:flex; gap:10px; justify-content:flex-end; align-items:center; }
+    .auth-btn{ background:var(--brand); color:#fff; border:0; padding:8px 14px; border-radius:999px; font-weight:600; cursor:pointer; box-shadow:0 10px 24px var(--ring); }
+    .auth-btn:hover{ background:var(--brand-dark); }
+    .auth-btn.ghost{ background:transparent; color:var(--brand); border:2px solid var(--brand); }
+    .auth-btn.ghost:hover{ background:var(--brand); color:#fff; }
+    .auth-btn.danger{ background:#b91c1c; }
+    .auth-btn.danger:hover{ background:#991b1b; }
+    #user-photo{ width:28px; height:28px; border-radius:50%; object-fit:cover; display:none; }
+    #user-name{ font-weight:600; }
+
+    .tabs{ display:flex; gap:16px; justify-content:center; flex-wrap:wrap; margin:16px auto 10px;}
+    .tab{ background:var(--brand); color:#fff; padding:12px 22px; border-radius:999px; cursor:pointer; font-weight:600;
+          box-shadow:0 10px 24px var(--ring); transition:.12s transform,.12s background,.12s box-shadow; }
+    .tab:hover{ background:var(--brand-dark); transform:translateY(-1px); }
+    .wrap{ max-width:1100px; margin:0 auto; padding:16px; }
+    .section{ display:none; }
+    .section.active{ display:block; animation:fade .2s ease; }
+    @keyframes fade{ from{opacity:.6;transform:translateY(2px)} to{opacity:1;transform:translateY(0)} }
+
+    .card{ background:var(--card); border-radius:16px; box-shadow:0 10px 24px var(--ring); padding:16px; margin:14px 0; }
+    h2.section-title{ text-align:center; margin:8px 0 14px; }
+
+    label{font-weight:600; display:block; margin:4px 2px 8px;}
+    select, textarea, input[type="text"]{
+      width:100%; background:#fff; border:1px solid #e7eef8; border-radius:12px; padding:14px; outline:none;
+      box-shadow:0 6px 14px rgba(0,0,0,.04); color:var(--ink);
+    }
+    textarea{ resize:vertical; min-height:110px; }
+    .row{ margin:14px 0; }
+
+    .cta{ background:var(--brand); color:#fff; border:0; padding:14px 28px; border-radius:999px; font-weight:700; cursor:pointer;
+          box-shadow:0 10px 24px var(--ring); }
+    .cta:hover{ background:var(--brand-dark); }
+
+    .shop-grid{ display:grid; gap:16px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); }
+    .item-title{ font-weight:700; }
+    .price{ color:var(--muted); font-weight:600; }
+    .muted{ color:var(--muted); }
+
+    .chat-box{ height:380px; overflow:auto; border-radius:16px; background:var(--card);
+               box-shadow:inset 0 0 0 1px #e9eef6, 0 10px 24px var(--ring); padding:12px; }
+    .msg{ margin:8px 0; }
+    .msg small{ color:var(--muted); font-weight:600; margin-right:6px; }
+
+    .flex{ display:flex; gap:10px; align-items:center; }
+    .right{ margin-left:auto; }
+    .pill{ background:#eef3ff; color:#2746ff; padding:6px 10px; border-radius:999px; font-weight:700; }
+  </style>
+</head>
+<body>
+  <header>Unhook: Breaking the Vape</header>
+
+  <!-- ===== Auth bar (NEW) ===== -->
+  <div class="auth-bar">
+    <div id="signed-out">
+      <button id="btn-google" class="auth-btn">Sign in with Google</button>
+      <button id="btn-anon" class="auth-btn ghost">Continue as guest</button>
     </div>
-    <p id="load">Firebase SDK Loading&hellip;</p>
+    <div id="signed-in" style="display:none;">
+      <img id="user-photo" alt="">
+      <span id="user-name"></span>
+      <button id="btn-signout" class="auth-btn danger">Sign out</button>
+    </div>
+  </div>
 
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        const loadEl = document.querySelector('#load');
-        // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
-        // // The Firebase SDK is initialized and available here!
-        //
-        // firebase.auth().onAuthStateChanged(user => { });
-        // firebase.database().ref('/path/to/ref').on('value', snapshot => { });
-        // firebase.firestore().doc('/foo/bar').get().then(() => { });
-        // firebase.functions().httpsCallable('yourFunction')().then(() => { });
-        // firebase.messaging().requestPermission().then(() => { });
-        // firebase.storage().ref('/path/to/ref').getDownloadURL().then(() => { });
-        // firebase.analytics(); // call to activate
-        // firebase.analytics().logEvent('tutorial_completed');
-        // firebase.performance(); // call to activate
-        //
-        // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+  <div class="tabs wrap">
+    <div class="tab" data-go="checkin">Check-In</div>
+    <div class="tab" data-go="journal">Journal</div>
+    <div class="tab" data-go="shop">Shop</div>
+    <div class="tab" data-go="profile">Profile</div>
+    <div class="tab" data-go="community">Community</div>
+    <div class="pill right">Coins: <span id="coinCount">0</span></div>
+  </div>
 
-        try {
-          let app = firebase.app();
-          let features = [
-            'auth', 
-            'database', 
-            'firestore',
-            'functions',
-            'messaging', 
-            'storage', 
-            'analytics', 
-            'remoteConfig',
-            'performance',
-          ].filter(feature => typeof app[feature] === 'function');
-          loadEl.textContent = `Firebase SDK loaded with ${features.join(', ')}`;
-        } catch (e) {
-          console.error(e);
-          loadEl.textContent = 'Error loading the Firebase SDK, check the console.';
+  <main class="wrap">
+
+    <section id="checkin" class="section active">
+      <h2 class="section-title">Daily Check-In</h2>
+
+      <div class="card">
+        <label>How are you feeling today?</label>
+        <select id="moodSel">
+          <option value="5">Excellent</option>
+          <option value="4" selected>Good</option>
+          <option value="3">Okay</option>
+          <option value="2">Not great</option>
+          <option value="1">Rough</option>
+        </select>
+      </div>
+
+      <div class="card">
+        <label>Did you experience cravings today?</label>
+        <select id="craveSel">
+          <option value="none" selected>No cravings</option>
+          <option value="mild">Mild</option>
+          <option value="strong">Strong</option>
+        </select>
+      </div>
+
+      <div class="card">
+        <label>What triggered your cravings (if any)?</label>
+        <input id="triggerTxt" type="text" placeholder="e.g., stress, boredom, social pressure" />
+      </div>
+
+      <div class="card">
+        <label>Did you vape today?</label>
+        <select id="vapedSel">
+          <option value="no" selected>No</option>
+          <option value="yes">Yes</option>
+        </select>
+      </div>
+
+      <div class="card">
+        <label>Optional notes</label>
+        <textarea id="notesTxt" placeholder="Anything else you want to add?"></textarea>
+      </div>
+
+      <div class="flex" style="justify-content:center; margin:20px 0 8px;">
+        <button class="cta" id="saveCheckinBtn">Save Check-In</button>
+      </div>
+      <p class="muted" id="checkinMsg" style="text-align:center;"></p>
+    </section>
+
+    <section id="journal" class="section">
+      <h2 class="section-title">Journal</h2>
+
+      <div class="card" id="promptCard">
+        <div class="flex">
+          <strong>Prompt</strong>
+          <button class="cta right" id="newPromptBtn" style="padding:8px 14px;">New prompt</button>
+        </div>
+        <p id="promptText" style="margin:10px 0 0;"></p>
+      </div>
+
+      <div class="card">
+        <label>Your entry</label>
+        <textarea id="journalEntry" placeholder="Write what's on your mind…"></textarea>
+        <div class="flex" style="justify-content:space-between; margin-top:10px;">
+          <button class="cta" id="saveJournalBtn">Save Entry (+5 coins)</button>
+          <span class="muted" id="saveJournalMsg"></span>
+        </div>
+      </div>
+
+      <div class="card" id="journalHistoryCard" style="display:none;">
+        <strong>Previous prompts</strong>
+        <ul id="journalHistory" class="muted" style="margin:8px 0 0; padding-left:18px;"></ul>
+      </div>
+    </section>
+
+    <section id="shop" class="section">
+      <h2 class="section-title">Shop for Rewards!</h2>
+      <p class="muted" style="text-align:center;">Your balance: <strong><span id="shopCoins">0</span> coins</strong></p>
+
+      <div class="shop-grid">
+        <div class="card">
+          <div class="item-title">Theme: Ocean</div>
+          <div class="muted">Cool blues for a calm vibe.</div>
+          <div class="price">Cost: 20 coins</div>
+          <button class="cta buyBtn" data-type="theme" data-key="ocean" data-cost="20">Buy & Apply</button>
+        </div>
+        <div class="card">
+          <div class="item-title">Theme: Sunset</div>
+          <div class="muted">Warm oranges/pinks for cozy energy.</div>
+          <div class="price">Cost: 20 coins</div>
+          <button class="cta buyBtn" data-type="theme" data-key="sunset" data-cost="20">Buy & Apply</button>
+        </div>
+        <div class="card">
+          <div class="item-title">Theme: Midnight</div>
+          <div class="muted">Dark mode, neon accents.</div>
+          <div class="price">Cost: 20 coins</div>
+          <button class="cta buyBtn" data-type="theme" data-key="midnight" data-cost="20">Buy & Apply</button>
+        </div>
+        <div class="card">
+          <div class="item-title">Sticker Pack – “You got this!”</div>
+          <div class="muted">Unlock motivational stickers to attach to entries.</div>
+          <div class="price">Cost: 10 coins</div>
+          <button class="cta buyBtn" data-type="sticker" data-key="pack1" data-cost="10">Buy</button>
+        </div>
+        <div class="card">
+          <div class="item-title">Badge – “First Week Smoke-Free”</div>
+          <div class="muted">Show on your profile.</div>
+          <div class="price">Cost: 15 coins</div>
+          <button class="cta buyBtn" data-type="badge" data-key="week1" data-cost="15">Buy</button>
+        </div>
+      </div>
+      <p id="shopMsg" class="muted" style="margin-top:10px;"></p>
+    </section>
+
+    <section id="profile" class="section">
+      <h2 class="section-title">Your Progress</h2>
+      <div class="card">
+        <p>Current streak: <strong><span id="streakDays">0</span> days</strong></p>
+        <p>Milestones: <span class="muted">• Crave-free for 3 days • Vape-free for 1 week</span></p>
+        <p>Next goal: <span class="muted">Reach 10-day streak!</span></p>
+      </div>
+    </section>
+
+    <section id="community" class="section">
+      <h2 class="section-title">Community (Anonymous)</h2>
+
+      <div class="card">
+        <div class="flex">
+          <label class="right" style="margin:0;">Pick a nickname (saved only on this device)</label>
+          <input id="nickInput" type="text" placeholder="e.g., skywalker" style="max-width:260px;">
+          <button class="cta" id="saveNickBtn" style="padding:10px 16px;">Save Nick</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div id="chatBox" class="chat-box"><div class="muted">Chat unavailable (Firebase not initialized).</div></div>
+        <div class="flex" style="margin-top:10px;">
+          <input id="chatMsg" type="text" placeholder="Type a message…"/>
+          <button class="cta" id="sendBtn">Send</button>
+        </div>
+        <p class="muted" style="margin-top:6px;">Be kind. Don’t share personal info. Messages are public within this room.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.10.2/lottie.min.js"></script>
+
+  <script defer src="https://www.gstatic.com/firebasejs/10.14.0/firebase-app-compat.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/10.14.0/firebase-auth-compat.js"></script><!-- NEW -->
+  <script defer src="https://www.gstatic.com/firebasejs/10.14.0/firebase-database-compat.js"></script>
+
+  <script>
+  const show = id => {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    updateCoinDisplays();
+  };
+  document.querySelectorAll('.tab').forEach(t => {
+    t.addEventListener('click', () => show(t.dataset.go));
+  });
+
+  const store = {
+    get(k, d){ try{return JSON.parse(localStorage.getItem(k)) ?? d}catch{ return d } },
+    set(k, v){ localStorage.setItem(k, JSON.stringify(v)); }
+  };
+
+  function coins(){ return Number(store.get('coins', 0)) }
+  function addCoins(n){ store.set('coins', Math.max(0, coins()+n)); updateCoinDisplays(); }
+  function spendCoins(n){ if(coins()>=n){ store.set('coins', coins()-n); updateCoinDisplays(); return true } return false }
+  function updateCoinDisplays(){
+    document.getElementById('coinCount').textContent = coins();
+    (document.getElementById('shopCoins')||{}).textContent = coins();
+  }
+  (function applySavedTheme(){
+    const t = store.get('theme', null);
+    if(t) document.body.setAttribute('data-theme', t);
+  })();
+
+  function todayKey(){ const d=new Date(); return d.toISOString().slice(0,10) }
+  function updateStreakDisplay(){
+    document.getElementById('streakDays').textContent = store.get('streak', 0);
+  }
+  document.getElementById('saveCheckinBtn').addEventListener('click', () => {
+    const data = {
+      mood: Number(document.getElementById('moodSel').value),
+      cravings: document.getElementById('craveSel').value,
+      trigger: document.getElementById('triggerTxt').value.trim(),
+      vaped: document.getElementById('vapedSel').value,
+      notes: document.getElementById('notesTxt').value.trim(),
+      ts: Date.now()
+    };
+    const key = todayKey();
+    const days = store.get('days', {});
+    const hadPrev = !!days[key];
+
+    days[key] = data;
+    store.set('days', days);
+
+    const y = new Date(); y.setDate(y.getDate()-1);
+    const yKey = y.toISOString().slice(0,10);
+    let streak = store.get('streak', 0);
+    streak = (store.get('days', {})[yKey]) ? (Math.max(1, streak)+1) : 1;
+    store.set('streak', streak);
+    updateStreakDisplay();
+
+    let earned = 5;
+    if(data.vaped === 'no') earned += 10;
+    if(data.cravings === 'none') earned += 5;
+    if(!hadPrev) earned += 2;
+    addCoins(earned);
+
+    document.getElementById('checkinMsg').textContent = `Saved! You earned +${earned} coins.`;
+    setTimeout(()=>document.getElementById('checkinMsg').textContent='', 2500);
+  });
+  updateStreakDisplay();
+  updateCoinDisplays();
+
+  const PROMPTS = [
+    "Why do you truly want to quit vaping? List your reasons.",
+    "Imagine yourself one year from now as a non-vaper. Describe that life.",
+    "How much $$ do you spend on vaping each week? What else could it fund?",
+    "Write a letter to your future self thanking them for staying vape-free.",
+    "What are your top three values? How does quitting align with them?",
+    "What health improvements do you hope to notice after quitting?",
+    "On a scale of 1–10, how confident are you you can quit? Why?",
+    "When a craving hits, what is your 5-minute plan?",
+    "List five activities that’ll be easier without vaping.",
+    "Write a short pep talk to read when motivation dips.",
+    "What times of day do you vape most, and why?",
+    "Which places trigger the urge to vape?",
+    "Who are you usually with when you vape? Will they support you?",
+    "Describe the last time you vaped and how you felt before/after.",
+    "Write a kind message to yourself if you slip up. How do you reset?",
+    "What reward will you give yourself at 1 week vape-free? 1 month?",
+    "List five things you’re genuinely grateful for today.",
+    "What amazing thing could you accomplish with this new energy?",
+    "Write advice to someone just starting to quit."
+  ];
+  const promptText = document.getElementById('promptText');
+  function pickPrompt(){
+    const prev = store.get('prompt_history', []);
+    let choice = PROMPTS[Math.floor(Math.random()*PROMPTS.length)];
+    if(prev.length && prev[prev.length-1] === choice){ choice = PROMPTS[(PROMPTS.indexOf(choice)+3)%PROMPTS.length]; }
+    promptText.textContent = choice;
+  }
+  document.getElementById('newPromptBtn').addEventListener('click', pickPrompt);
+  pickPrompt();
+
+  document.getElementById('saveJournalBtn').addEventListener('click', () => {
+    const entry = document.getElementById('journalEntry').value.trim();
+    if(!entry){ document.getElementById('saveJournalMsg').textContent = "Write something first"; return; }
+    const hist = store.get('prompt_history', []);
+    hist.push(promptText.textContent);
+    store.set('prompt_history', hist);
+    const entries = store.get('journal_entries', []);
+    entries.push({ prompt: promptText.textContent, entry, ts: Date.now() });
+    store.set('journal_entries', entries);
+
+    document.getElementById('journalEntry').value = '';
+    document.getElementById('saveJournalMsg').textContent = "Saved! +5 coins";
+    addCoins(5);
+
+    const ul = document.getElementById('journalHistory');
+    ul.innerHTML = '';
+    hist.slice(-10).reverse().forEach(p => {
+      const li = document.createElement('li'); li.textContent = p; ul.appendChild(li);
+    });
+    document.getElementById('journalHistoryCard').style.display = 'block';
+    setTimeout(()=>document.getElementById('saveJournalMsg').textContent='', 1800);
+  });
+
+  document.querySelectorAll('.buyBtn').forEach(b => {
+    b.addEventListener('click', () => {
+      const type = b.dataset.type, key = b.dataset.key, cost = Number(b.dataset.cost);
+      if(!spendCoins(cost)){ document.getElementById('shopMsg').textContent = "Not enough coins."; return; }
+
+      if(type==='theme'){
+        store.set('theme', key);
+        document.body.setAttribute('data-theme', key);
+        document.getElementById('shopMsg').textContent = `Theme “${key}” applied!`;
+      }else{
+        const owned = store.get('owned_'+type, []);
+        if(!owned.includes(key)){ owned.push(key); store.set('owned_'+type, owned); }
+        document.getElementById('shopMsg').textContent = `Purchased ${type}!`;
+      }
+    });
+  });
+
+  let fbReady = false, db = null, chatRef = null;
+  const chatBox = document.getElementById('chatBox');
+
+  function setNick(n){ store.set('nick', n||''); }
+  function getNick(){ return store.get('nick','') }
+  document.getElementById('nickInput').value = getNick();
+  document.getElementById('saveNickBtn').addEventListener('click', () => {
+    setNick(document.getElementById('nickInput').value.trim());
+  });
+
+  window.addEventListener('load', () => {
+    if(!window.firebase){ return; }
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAhsjCfr7B-9vxxcA9bnLr46VcxbRMftvA",
+      authDomain: "unhook-38abb.firebaseapp.com",
+      projectId: "unhook-38abb",
+      storageBucket: "unhook-38abb.firebasestorage.app",
+      messagingSenderId: "182531035159",
+      appId: "1:182531035159:web:47163c38ee27c2ba3b8c52",
+      measurementId: "G-7GGK123MDT",
+      databaseURL: "https://unhook-38abb-default-rtdb.firebaseio.com"
+    };
+
+    try{
+      const app = firebase.initializeApp(firebaseConfig);
+
+      const auth = firebase.auth();
+      const provider = new firebase.auth.GoogleAuthProvider();
+
+      const $out  = document.getElementById('signed-out');
+      const $in   = document.getElementById('signed-in');
+      const $name = document.getElementById('user-name');
+      const $photo= document.getElementById('user-photo');
+
+      document.getElementById('btn-google').addEventListener('click', async () => {
+        try { await auth.signInWithPopup(provider); }
+        catch (e) { alert("Google sign-in failed: " + e.message); }
+      });
+      document.getElementById('btn-anon').addEventListener('click', async () => {
+        try { await auth.signInAnonymously(); }
+        catch (e) { alert("Guest sign-in failed: " + e.message); }
+      });
+      document.getElementById('btn-signout').addEventListener('click', () => auth.signOut());
+
+      auth.onAuthStateChanged(user => {
+        if(user){
+          $out.style.display = 'none';
+          $in.style.display  = 'flex';
+          $name.textContent  = user.displayName || 'Guest';
+          if(user.photoURL){ $photo.src = user.photoURL; $photo.style.display='block'; }
+          else { $photo.style.display='none'; }
+          localStorage.setItem('uid', user.uid);
+        }else{
+          $out.style.display = 'flex';
+          $in.style.display  = 'none';
+          $name.textContent  = '';
+          $photo.style.display='none';
+          localStorage.removeItem('uid');
         }
       });
-    </script>
-  </body>
+
+      db = firebase.database();
+      chatRef = db.ref('chat/global');
+      fbReady = true;
+      chatBox.innerHTML = "";
+
+      chatRef.limitToLast(50).on('child_added', snap => {
+        const m = snap.val();
+        const div = document.createElement('div');
+        div.className = 'msg';
+        const when = new Date(m.ts || Date.now()).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+        div.innerHTML = `<small>[${when}] ${m.nick || 'anon'}:</small> ${escapeHtml(m.text || '')}`;
+        chatBox.appendChild(div);
+        chatBox.scrollTop = chatBox.scrollHeight;
+      });
+    }catch(e){
+      console.warn('Firebase init skipped:', e);
+    }
+  });
+
+  document.getElementById('sendBtn').addEventListener('click', sendMsg);
+  document.getElementById('chatMsg').addEventListener('keydown', e => {
+    if(e.key==='Enter'){ e.preventDefault(); sendMsg(); }
+  });
+
+  function sendMsg(){
+    const text = document.getElementById('chatMsg').value.trim();
+    if(!text) return;
+    if(!fbReady || !chatRef){ alert('Chat not ready. Check Firebase config.'); return; }
+    const nick = getNick() || 'anon';
+    chatRef.push({ nick, text, ts: Date.now() })
+      .then(()=>{ document.getElementById('chatMsg').value=''; })
+      .catch(err=> alert('Send failed: '+err.message));
+  }
+
+  function escapeHtml(s){ return s.replace(/[&<>"']/g, m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m])) }
+  </script>
+</body>
 </html>

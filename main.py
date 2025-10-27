@@ -7,6 +7,19 @@ from pydantic import BaseModel
 import firebase_admin
 from firebase_admin import credentials, firestore, auth
 
+from fastapi.middleware.cors import CORSMiddleware
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "https://unhook-38abb.web.app",
+        "http://localhost:5000",
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 app = FastAPI(title="Unhook API", version="0.1.0")
 
 @app.get("/", tags=["meta"])
