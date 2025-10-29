@@ -588,7 +588,13 @@
     });
 
     function owns(type,key){const arr=store.get('owned_'+type,[]);return arr.includes(key)}
-    function addOwned(type,key){const arr=store.get('owned_'+type,[]);if(!arr.includes(key)){arr.push(key);store.set('owned_'+type',arr)}}
+    function addOwned(type, key) {
+      const arr = store.get('owned_' + type, []);
+      if (!arr.includes(key)) {
+        arr.push(key);
+        store.set('owned_' + type, arr);
+      }
+    }
   </script>
   <script>
     (function applySavedTheme(){const t=store.get('theme',null);const custom=store.get('theme_custom',null);if(custom){document.body.removeAttribute('data-theme');applyCustomThemeVars(custom)}else if(t){document.body.setAttribute('data-theme',t)}})();
