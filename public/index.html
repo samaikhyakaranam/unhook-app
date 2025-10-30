@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>Unhook</title>
   <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700&family=DM+Sans:wght@400;600;700&family=Poppins:wght@400;600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet"/>
-
   <style>
     *{box-sizing:border-box;font-family:var(--app-font,"Hanken Grotesk"),system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
     :root{--brand:#002293;--brand-dark:#001b75;--bg1:#f5faff;--bg2:#e3f3ff;--card:#fff;--ink:#0b1b33;--muted:#6b7a90;--ring:rgba(0,34,147,.18)}
@@ -20,7 +19,8 @@
     .tab{background:var(--brand);color:#fff;padding:12px 22px;border-radius:999px;cursor:pointer;font-weight:600;box-shadow:0 10px 24px var(--ring);transition:.12s transform,.12s background,.12s box-shadow}
     .tab:hover{background:var(--brand-dark);transform:translateY(-1px)}
     .right{margin-left:auto}
-    .pill{background:#eef3ff;color:#2746ff;padding:6px 10px;border-radius:999px;font-weight:700;box-shadow:0 2px 8px var(--ring);display:inline-flex;gap:6px;align-items:center}
+    .pill{background:#eef3ff;color:#2746ff;padding:6px 10px;border-radius:999px;font-weight:700;box-shadow:0 2px 8px var(--ring);display:inline-flex;gap:10px;align-items:center}
+    .auth-user{font-weight:600;color:#1f3fff}
     .section{display:none}
     .section.active{display:block;animation:fade .2s ease}
     @keyframes fade{from{opacity:.6;transform:translateY(2px)}to{opacity:1;transform:translateY(0)}}
@@ -30,7 +30,7 @@
     .card.equal{display:flex;flex-direction:column;min-height:140px}
     h2.section-title{text-align:center;margin:8px 0 14px}
     label{font-weight:600;display:block;margin:4px 2px 8px}
-    select,textarea,input[type="text"],input[type="color"]{width:100%;background:#fff;border:1px solid #e7eef8;border-radius:12px;padding:14px;outline:none;box-shadow:0 6px 14px rgba(0,0,0,.04);color:var(--ink)}
+    select,textarea,input[type="text"],input[type="color"],input[type="email"],input[type="password"]{width:100%;background:#fff;border:1px solid #e7eef8;border-radius:12px;padding:14px;outline:none;box-shadow:0 6px 14px rgba(0,0,0,.04);color:var(--ink)}
     textarea{resize:vertical;min-height:120px}
     .row{margin:14px 0}
     .cta{background:var(--brand);color:#fff;border:0;padding:12px 20px;border-radius:999px;font-weight:700;cursor:pointer;box-shadow:0 10px 24px var(--ring)}
@@ -58,15 +58,25 @@
     .cele-sub{color:#4a5568;margin:0 0 12px}
     .sparkles{position:absolute;inset:0;pointer-events:none}
     .sparkles span{position:absolute;font-size:24px;opacity:0}
+    .badge-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px}
+    .pfp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(58px,1fr));gap:10px}
+    .pfp-choice{font-size:36px;line-height:1;background:#fff;border-radius:14px;padding:10px;cursor:pointer;border:2px solid transparent}
+    .pfp-choice.active{border-color:var(--brand);box-shadow:0 6px 20px var(--ring)}
+    .font-preview{display:flex;gap:8px;flex-wrap:wrap}
+    .font-chip{padding:8px 12px;border-radius:999px;border:1px solid #dfe6f5;cursor:pointer}
+    .font-chip.active{background:var(--brand);color:#fff;border-color:transparent}
+    .auth-bar{display:flex;gap:8px;align-items:center;margin-left:auto}
+    .auth-chip{padding:6px 10px;border-radius:999px;border:1px solid #dfe6f5;background:#fff;cursor:pointer;font-weight:600}
+    .stickies{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+    .sticky{background:#fff8b8;border:1px solid #f1e28a;border-radius:10px;padding:14px;box-shadow:0 6px 16px rgba(0,0,0,.08);font-family:"Playfair Display",serif}
+    .sticky.firey{background:#ffd2d2;border-color:#ffb2b2}
+    .sticky.mix{background:#dff3ff;border-color:#bfe5ff}
   </style>
-
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/gsap.min.js"></script>
 </head>
-
 <body>
   <header>Unhook: Breaking the Vape</header>
-
   <div class="tabs wrap">
     <div class="tab" data-go="checkin">Check-In</div>
     <div class="tab" data-go="journal">Journal</div>
@@ -75,12 +85,17 @@
     <div class="tab" data-go="profile">Profile</div>
     <div class="tab" data-go="community">Community</div>
     <div class="pill right" id="coinPill">Coins: <span id="coinCount">0</span></div>
+    <div class="auth-bar">
+      <span id="whoami" class="auth-user">Guest</span>
+      <button class="auth-chip" id="btnGoogle">Google</button>
+      <button class="auth-chip" id="btnEmail">Email</button>
+      <button class="auth-chip" id="btnGuest">Guest</button>
+      <button class="auth-chip" id="btnSignOut" style="display:none;">Sign out</button>
+    </div>
   </div>
-
   <main class="wrap">
     <section id="checkin" class="section active">
       <h2 class="section-title">Daily Check-In</h2>
-
       <div class="grid-2">
         <div class="card equal">
           <label>How are you feeling today?</label>
@@ -101,13 +116,11 @@
           </select>
         </div>
       </div>
-
       <div class="grid-2">
         <div class="card equal">
           <label>What triggered your cravings (if any)?</label>
           <input id="triggerTxt" type="text" placeholder="e.g., stress, boredom, social pressure"/>
         </div>
-
         <div class="card equal">
           <label>Did you vape today?</label>
           <select id="vapedSel">
@@ -116,7 +129,6 @@
           </select>
         </div>
       </div>
-
       <div class="card">
         <label>Optional notes</label>
         <textarea id="notesTxt" placeholder="Anything else you want to add?"></textarea>
@@ -129,10 +141,8 @@
           </div>
         </div>
       </div>
-
       <p class="muted" id="checkinMsg" style="text-align:center;"></p>
     </section>
-
     <section id="journal" class="section">
       <h2 class="section-title">Journal</h2>
       <div class="card">
@@ -145,7 +155,6 @@
         </div>
         <p id="promptText" style="margin:10px 0 0;"></p>
       </div>
-
       <div class="card">
         <div class="space-between">
           <label style="margin:0">Your entry</label>
@@ -165,13 +174,11 @@
           </div>
         </div>
       </div>
-
       <div class="card" id="journalHistoryCard" style="display:none;">
         <strong>Previous prompts</strong>
         <ul id="journalHistory" class="muted" style="margin:8px 0 0; padding-left:18px;"></ul>
       </div>
     </section>
-
     <section id="motivation" class="section">
       <h2 class="section-title">Motivation</h2>
       <div class="card">
@@ -180,7 +187,7 @@
           <div class="inline">
             <select id="motivationStyle">
               <option value="gentle">Gentle</option>
-              <option value="realtalk">Real Talk</option>
+              <option value="firey">Firey</option>
               <option value="mix" selected>Mix</option>
             </select>
             <button id="saveStyleBtn" class="cta small">Save</button>
@@ -189,7 +196,6 @@
       </div>
       <div class="stickies" id="stickyGrid"></div>
     </section>
-
     <section id="shop" class="section">
       <h2 class="section-title">Shop</h2>
       <p class="muted" style="text-align:center;">Your balance: <strong><span id="shopCoins">0</span> coins</strong></p>
@@ -206,7 +212,6 @@
           <div class="price">Cost: 35 coins</div>
           <button class="cta buyBtn" data-type="theme" data-key="ocean" data-cost="35">Buy & Apply</button>
         </div>
-
         <div class="card">
           <div class="item-title">Theme: Sunset</div>
           <div class="swatches">
@@ -219,7 +224,6 @@
           <div class="price">Cost: 35 coins</div>
           <button class="cta buyBtn" data-type="theme" data-key="sunset" data-cost="35">Buy & Apply</button>
         </div>
-
         <div class="card">
           <div class="item-title">Theme: Midnight</div>
           <div class="swatches">
@@ -232,7 +236,6 @@
           <div class="price">Cost: 35 coins</div>
           <button class="cta buyBtn" data-type="theme" data-key="midnight" data-cost="35">Buy & Apply</button>
         </div>
-
         <div class="card">
           <div class="item-title">Create Your Own Theme</div>
           <div class="muted">Pick your colors. Requires 10 coins OR 2-day streak.</div>
@@ -259,35 +262,30 @@
           <button class="cta" id="applyCustomThemeBtn">Apply Custom Theme</button>
           <div id="ctMsg" class="muted" style="margin-top:8px;"></div>
         </div>
-
         <div class="card">
           <div class="item-title">Badge – First Week Smoke-Free</div>
           <div class="muted link" data-jump="profile">Show on your profile</div>
           <div class="price">Cost: 50 coins</div>
           <button class="cta buyBtn" data-type="badge" data-key="week1" data-cost="50">Buy</button>
         </div>
-
         <div class="card">
           <div class="item-title">Badge – 1 Month Smoke-Free</div>
           <div class="muted link" data-jump="profile">Show on your profile</div>
           <div class="price">Cost: 100 coins</div>
           <button class="cta buyBtn" data-type="badge" data-key="month1" data-cost="100">Buy</button>
         </div>
-
         <div class="card">
           <div class="item-title">Badge – 6 Months Smoke-Free</div>
           <div class="muted link" data-jump="profile">Show on your profile</div>
           <div class="price">Cost: 300 coins</div>
           <button class="cta buyBtn" data-type="badge" data-key="month6" data-cost="300">Buy</button>
         </div>
-
         <div class="card">
           <div class="item-title">Badge – 1 Year Smoke-Free</div>
           <div class="muted link" data-jump="profile">Show on your profile</div>
           <div class="price">Cost: 500 coins</div>
           <button class="cta buyBtn" data-type="badge" data-key="year1" data-cost="500">Buy</button>
         </div>
-
         <div class="card">
           <div class="item-title">Sticker Pack – “You got this!”</div>
           <div class="sticker-peek">🎃 🕸️ 👻 🐈‍⬛</div>
@@ -295,7 +293,6 @@
           <div class="price">Cost: 10 coins</div>
           <button class="cta buyBtn" data-type="sticker" data-key="pack1" data-cost="10">Buy</button>
         </div>
-
         <div class="card">
           <div class="item-title">Seasonal Pack – Cozy Winter</div>
           <div class="sticker-peek">❄️ ☃️ 🧣 ☕</div>
@@ -304,10 +301,8 @@
           <button class="cta buyBtn" data-type="seasonal" data-key="winter24" data-cost="5">Buy</button>
         </div>
       </div>
-
       <p id="shopMsg" class="muted" style="margin-top:10px;"></p>
     </section>
-
     <section id="profile" class="section">
       <h2 class="section-title">Your Profile</h2>
       <div class="card">
@@ -327,7 +322,6 @@
           </div>
         </div>
       </div>
-
       <div class="grid-2">
         <div class="card">
           <strong>Profile picture</strong>
@@ -352,7 +346,6 @@
           </div>
         </div>
       </div>
-
       <div class="card">
         <div id="chatBox" class="chat-box"><div class="muted">Chat unavailable (Firebase not initialized).</div></div>
         <div class="flex" style="margin-top:10px;">
@@ -374,481 +367,387 @@
   </div>
 
   <script defer src="https://www.gstatic.com/firebasejs/10.14.0/firebase-app-compat.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/10.14.0/firebase-auth-compat.js"></script>
   <script defer src="https://www.gstatic.com/firebasejs/10.14.0/firebase-database-compat.js"></script>
-
   <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const show = (id) => {
-      document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-      const next = document.getElementById(id);
-      next.classList.add('active');
-      gsap.fromTo(next, {opacity:0, y:6}, {opacity:1, y:0, duration:.3, ease:"power1.out"});
-      updateCoinDisplays();
-      if (id === 'profile'){ renderBadges(); renderPfp(); updateStreakText(); }
-      if (id === 'motivation'){ renderStickies(); }
-    };
-    document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => show(t.dataset.go)));
-    document.querySelectorAll('.link[data-jump]').forEach(el => el.addEventListener('click', () => show(el.dataset.jump)));
+window.addEventListener('DOMContentLoaded',function(){
+  const firebaseConfig = {
+  apiKey: "AIzaSyAhsjCfr7B-9vxxcA9bnLr46VcxbRMftvA",
+  authDomain: "unhook-38abb.firebaseapp.com",
+  databaseURL: "https://unhook-38abb-default-rtdb.firebaseio.com",
+  projectId: "unhook-38abb",
+  storageBucket: "unhook-38abb.firebasestorage.app",
+  messagingSenderId: "182531035159",
+  appId: "1:182531035159:web:47163c38ee27c2ba3b8c52",
+  measurementId: "G-7GGK123MDT"
+};
 
-    const store = { get(k,d){ try{return JSON.parse(localStorage.getItem(k)) ?? d} catch{return d} },
-                    set(k,v){ localStorage.setItem(k, JSON.stringify(v)) } };
+  if(!window.firebase){console.error("Firebase SDK failed to load");return;}
+  firebase.initializeApp(firebaseConfig);
+  const auth=firebase.auth();
+  const db=firebase.database();
 
-    function coins(){ return Number(store.get('coins',0)) }
-    function updateCoinDisplays(){
-      const c = coins();
-      const el = document.getElementById('coinCount');
-      const shop = document.getElementById('shopCoins');
-      if (el) el.textContent = c;
-      if (shop) shop.textContent = c;
-    }
-    function animateCoins(from, to){
-      const el = document.getElementById("coinCount");
-      gsap.fromTo({val: from}, {val: to, duration:.8, onUpdate(){
-        el.textContent = Math.floor(this.targets()[0].val);
-      }});
-      gsap.fromTo("#coinPill", {scale:1}, {scale:1.12, duration:.18, yoyo:true, repeat:1});
-    }
-    function setCoins(n){ store.set('coins', Math.max(0,n)); updateCoinDisplays(); }
-    function addCoins(n){
-      const before = coins();
-      const after  = Math.max(0, before + n);
-      store.set('coins', after);
-      animateCoins(before, after);
-      updateCoinDisplays();
-    }
-    function spendCoins(n){ if (coins()>=n){ setCoins(coins()-n); return true } return false; }
+  let uid=null;
+  let mode=localStorage.getItem("motStyle")||"mix";
+  let coins=0;
+  let streak=0;
+  let nickname=localStorage.getItem("nick")||"";
+  const today=new Date().toISOString().split("T")[0];
 
-    function todayKey(){ return new Date().toISOString().slice(0,10) }
-    function updateStreakText(){
-      const s = Number(store.get('streak',0));
-      document.getElementById('streakDays').textContent = s;
-      document.getElementById('streakLabel').textContent = (s===1?'day':'days');
-    }
+  function guestId(){let g=localStorage.getItem("guest");if(!g){g="guest_"+Math.random().toString(36).slice(2);localStorage.setItem("guest",g)}return g}
+  function setUID(u){uid=u?u.uid:guestId();document.getElementById("nickInput").value=nickname}
 
-    const celeOverlay = document.getElementById('celeOverlay');
-    const celeTitle   = document.getElementById('celeTitle');
-    const celeSub     = document.getElementById('celeSub');
-    const sparkles    = document.getElementById('sparkles');
-    document.getElementById('celeClose').addEventListener('click', () => celeOverlay.classList.remove('show'));
-    celeOverlay.addEventListener('click', (e)=>{ if(e.target===celeOverlay) celeOverlay.classList.remove('show'); });
+  auth.onAuthStateChanged(u=>{setUID(u);updateAuthUI(u);loadUserData();loadChat();});
+  function signInGoogle(){auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());}
+  function signInEmail(email,pwd){auth.signInWithEmailAndPassword(email,pwd).catch(()=>auth.createUserWithEmailAndPassword(email,pwd));}
+  function guest(){setUID(null);updateAuthUI(null);loadUserData();loadChat();}
+  function updateAuthUI(u){document.getElementById("whoami").textContent=u?(u.displayName||u.email||"Signed in"):"Guest";document.getElementById("btnSignOut").style.display=u?"inline-flex":"none"}
 
-    function sprinkleSparkles() {
-      sparkles.innerHTML = '';
-      const icons = ['✨','⭐','🔆','💛','🟡','🏅','💫'];
-      for (let i=0;i<18;i++){
-        const sp = document.createElement('span');
-        sp.textContent = icons[i % icons.length];
-        sp.style.left = (Math.random()*100)+'%';
-        sp.style.top  = (Math.random()*100)+'%';
-        sparkles.appendChild(sp);
-        gsap.fromTo(sp, {y:20, opacity:0, scale:0.6}, {y:-10, opacity:1, scale:1, duration:.6, delay:Math.random()*0.3, ease:"back.out(1.7)"});
-      }
-    }
-    function showCelebration({title, sub}){
-      celeTitle.textContent = title;
-      celeSub.textContent   = sub;
-      celeOverlay.classList.add('show');
-      sprinkleSparkles();
-      confetti({ particleCount: 120, spread: 80, origin: { y: 0.7 } });
-      gsap.fromTo('.cele-card', {y:30, opacity:0, scale:.96}, {y:0, opacity:1, scale:1, duration:.28, ease:'power2.out'});
-    }
+  document.getElementById("btnGoogle").onclick=signInGoogle;
+  document.getElementById("btnEmail").onclick=()=>{const e=prompt("Email");if(!e)return;const p=prompt("Password");if(!p)return;signInEmail(e,p)};
+  document.getElementById("btnGuest").onclick=guest;
+  document.getElementById("btnSignOut").onclick=()=>auth.signOut();
 
-    document.getElementById('clearDraftBtn').addEventListener('click', ()=>{
-      document.getElementById('triggerTxt').value='';
-      document.getElementById('notesTxt').value='';
-      document.getElementById('moodSel').value='4';
-      document.getElementById('craveSel').value='none';
-      document.getElementById('vapedSel').value='no';
+  function show(id){document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));const next=document.getElementById(id);if(next){next.classList.add('active');gsap.fromTo(next,{opacity:0,y:6},{opacity:1,y:0,duration:.28})}}
+  document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>show(t.dataset.go)));
+
+  function animateCoins(newTotal){
+    const el=document.getElementById("coinCount");
+    const before=parseInt((el.textContent+"").replace(/\D/g,""))||0;
+    gsap.fromTo({v:before},{v:newTotal,duration:.8,snap:{v:1},onUpdate(){el.textContent=this.targets()[0].v;},onComplete(){gsap.fromTo("#coinPill",{scale:1},{scale:1.12,duration:.18,yoyo:true,repeat:1})}});
+    document.getElementById("shopCoins").textContent=newTotal;
+  }
+
+  function loadUserData(){
+    db.ref("users/"+uid).once("value",snap=>{
+      const d=snap.val()||{};
+      coins=d.coins||0;
+      streak=d.streak||0;
+      document.getElementById("coinCount").textContent=coins;
+      document.getElementById("shopCoins").textContent=coins;
+      document.getElementById("streakDays").textContent=streak;
+      document.getElementById("streakLabel").textContent=streak==1?"day":"days";
+      if(d.badges)renderBadges(d.badges); else renderBadges({});
+      renderPfp(d.pfp||"🐰");
+      renderMot();
     });
+  }
 
-    function alreadyCheckedInToday(){
-      const days = store.get('days', {});
-      return Boolean(days[todayKey()]);
+  function awardCoins(x){coins+=x;db.ref("users/"+uid).update({coins});animateCoins(coins);}
+  function addStreak(){streak++;db.ref("users/"+uid).update({streak,lastCheck:today});document.getElementById("streakDays").textContent=streak;document.getElementById("streakLabel").textContent=streak==1?"day":"days";}
+  function saveNickname(){nickname=document.getElementById("nickInput").value.trim();localStorage.setItem("nick",nickname)}
+  document.getElementById("saveNickBtn").onclick=saveNickname;
+  const FULL_PROMPTS=[
+"Imagine your body's cells cheering you on. What are they saying about your choice to quit?",
+"Describe what true freedom from nicotine addiction feels like. Where are you and what are you doing?",
+"What's one sport, hobby, or creative pursuit that will get significantly better once your lungs are clear?",
+"Write a short letter to your past self who first considered vaping. What warning and encouragement do you give?",
+"List three specific ways quitting will improve your relationships with friends or family?",
+"If you save the money you would have spent on vapes for a year, what exciting thing could you buy or do?",
+"What is the main source of strength (internal or external) you will tap into when a craving is intense?",
+"How does quitting show the world that you are disciplined and in control of your own life?",
+"Describe the feeling of taking a full, deep, easy breath. Make it your motivation.",
+"What new, positive identity are you stepping into by becoming a non-vaper?",
+"Write down your core values (e.g., integrity, health, excellence). How does quitting align with them?",
+"What's one thing you are truly excited about doing once you no longer worry about vaping?",
+"Fill in the blank: I deserve to be nicotine-free because...",
+"Choose a personal quit anthem and write about why its message motivates you.",
+"If you could have a five-minute chat with your future self (vape-free), what advice would they give you?",
+"Name your top three triggers (People, Places, Situations). Plan one avoidance or substitution for each.",
+"What are the 3 P’s that trigger you most: People, Places, or Patterns?",
+"You get a strong craving at a usual time. Write out the 5-step distraction routine you will execute immediately.",
+"What specific feeling (boredom, social anxiety, stress) usually precedes the urge to vape? How can you address the feeling directly?",
+"Design a Craving Kit. What five physical objects will you keep with you to replace the hand-to-mouth habit?",
+"You’re offered a vape at a social event. Write down the exact line you will use to say, 'No, thanks' confidently.",
+"What's one thing you can physically remove from your room or environment to make quitting easier?",
+"How will you change your routine (e.g., taking a different route, switching lunch tables) to disrupt your habit loops?",
+"List three safe people you can text or call when a craving is unbearable. Write down what you'll say to them.",
+"Describe the feeling of a craving—is it a tightness, a restlessness, a hollow spot? Giving it a label makes it less scary.",
+"When you feel the urge, what can you hold in your hand to keep it busy and mimic the vape's action?",
+"If you usually vape after dinner, what is your new, non-negotiable after-dinner activity for the next week?",
+"What are three ways you can make the people, places, and things that trigger you less accessible?",
+"Plan a 'Fire Drill': If you unexpectedly run into a major trigger, what's your immediate 'Escape' strategy?",
+"How does your understanding of your triggers make you feel more powerful and prepared?",
+"What is your go-to breathing exercise when stress builds up? Write down the steps and practice it now.",
+"Write down three positive affirmations about your strength and commitment. Read them out loud.",
+"When you feel irritable or moody (nicotine withdrawal), what is a healthy, calming activity you can do for 15 minutes?",
+"Describe a time in your life when you overcame a difficult challenge. What skills did you use then that you can use now?",
+"If your craving felt like a stormy cloud, what's your mental 'sunshine' (a happy memory or thought) to cut through it?",
+"What's one thing you can do for self-care today that has absolutely nothing to do with quitting?",
+"When boredom hits, what is a productive task you can switch to that requires your full focus?",
+"What's the difference between the temporary relief of vaping and the lasting calm of a healthy coping skill?",
+"How can you talk to yourself with kindness and encouragement instead of self-criticism during a tough moment?",
+"What is one positive habit (e.g., drinking water, stretching, listening to music) you want to add to your routine to replace vaping?",
+"Write about an emotion you tend to avoid by vaping. How can you face that emotion directly for five minutes today?",
+"What does 'riding the wave' of a craving mean to you? How does knowing it will pass in minutes change how you respond?",
+"List five things that bring you genuine joy (not temporary distraction). Plan to do one today.",
+"How does movement (walking, dancing, jumping jacks) help you release the physical tension of a craving?",
+"What makes you laugh? Write about a funny memory or joke to shift your mood quickly?",
+"What is the longest time you've gone without vaping so far? How does that prove you have the ability to quit?",
+"List three small victories from the past 24 hours.",
+"Describe one positive physical change you’ve noticed (e.g., easier to breathe, better sense of smell, less coughing).",
+"If your quit journey was climbing a mountain, what milestone have you reached, and what’s your next flag to plant?",
+"How does successfully getting through a day without vaping make you feel proud of yourself?",
+"Calculate the money you've saved so far. How will you reward yourself when you hit a major savings goal?",
+"What's one new thing you've learned about your willpower or strength since you started this journey?",
+"Write a celebratory headline for a news story about your success at the end of this week.",
+"What have you accomplished today that a week ago you might have felt was impossible?",
+"Name a craving you successfully resisted. What was the key strategy you used that worked?",
+"How has your focus or sleep improved since you cut back or quit? Give a specific example?",
+"Write down your next big reward (e.g., a concert ticket, new video game) and what vape-free date you will earn it by?",
+"If your motivation was a battery, what charged it up today?",
+"Who is the first person you want to share your next vape-free milestone with, and why?",
+"What is the best piece of positive feedback you've received about your quitting journey?",
+"Who is your #1 support person? Write a brief thank-you to them for their help?",
+"How can you clearly communicate your needs to friends who still vape around you (e.g., 'Please don't do that when I'm here')?",
+"What will you say to a friend who is also trying to quit but is struggling? Write a motivational message.",
+"Imagine you are counseling another teen. What are the three most important pieces of advice you would give them?",
+"How does your choice to quit influence the people around you in a positive way?",
+"What's one thing you can do to find new, healthy social activities that don't involve vaping?",
+"List three ways you can connect with people without relying on a shared habit like vaping?",
+"How does being honest with a trusted adult about your quitting process make the challenge feel lighter?",
+"Think about your favorite teacher or mentor. How would their belief in you fuel your decision to stay quit?",
+"What are your healthy boundary words? (e.g., 'I'm committed to my health now' or 'Not today')",
+"If you had a slip-up, write about it without judgment. What was the trigger, and what is the lesson learned?",
+"What is one thing about quitting that has been easier than you expected? Why do you think that is?",
+"How can you use the saved money to invest in a new skill or hobby?",
+"If a moment of doubt hits, what is the most logical counter-argument to the desire to vape?",
+"Write about a negative thought you keep having (e.g., 'It's too hard'). Now, rewrite it as an empowering truth.",
+"What is the smallest, simplest thing you can do right now to make your quit journey a little easier?",
+"What is one good thing that came out of a moment of discomfort during your quitting process?",
+"If you could press a 'reset button' on a tough moment today, what would you change about your reaction?",
+"What's one unexpected thing that makes you want to vape that you need to be mindful of?",
+"Write a commitment to yourself about not letting one mistake erase all your progress.",
+"Today, I choose...",
+"My current superpower is my ability to...",
+"I am strong enough to handle this craving because...",
+"This craving is a sign that my body is healing.",
+"The best thing about today was that I...",
+"I will show myself compassion by...",
+"What is a personal mantra you can say when you feel doubt?",
+"I am worthy of a healthy life.",
+"I feel the most like myself when I am...",
+"What is one thing you can let go of today (a worry, a frustration)?",
+"I am more than my habit.",
+"My health is my priority.",
+"What is one thing you are curious about learning or doing this week?",
+"I forgive myself for any past mistakes and focus on today.",
+"My commitment is stronger than any craving.",
+"What are you looking forward to most this weekend, now that you're focused on being vape-free?",
+"I am in control of my choices.",
+"What simple action can you take in the next 5 minutes to feel better right now?",
+"My lungs are strong and getting stronger every day.",
+"I am a non-vaper. Write a final statement of power and belief."
+  ];
+
+  let PROMPTS=FULL_PROMPTS.slice();
+  let promptIndex=0;
+  const promptTextEl=document.getElementById("promptText");
+  function showPrompt(){promptTextEl.textContent=PROMPTS[promptIndex]}
+  document.getElementById("prevPrompt").onclick=()=>{promptIndex=(promptIndex-1+PROMPTS.length)%PROMPTS.length;showPrompt()};
+  document.getElementById("nextPrompt").onclick=()=>{promptIndex=(promptIndex+1)%PROMPTS.length;showPrompt()};
+  showPrompt();
+
+  document.getElementById("clearJournalDraft").onclick=()=>{document.getElementById("journalEntry").value=""};
+  document.getElementById("saveJournalBtn").onclick=()=>{
+    const entry=document.getElementById("journalEntry").value.trim();
+    if(!entry){document.getElementById("saveJournalMsg").textContent="Write something first";return;}
+    const free=document.getElementById("freeWriteToggle").checked;
+    const usePrompt=free?null:PROMPTS[promptIndex];
+    const key=Date.now();
+    db.ref("journal/"+uid+"/"+key).set({entry,prompt:usePrompt,ts:Date.now()});
+    awardCoins(7);
+    document.getElementById("journalEntry").value="";
+    document.getElementById("saveJournalMsg").textContent="Saved! +7 coins";
+    setTimeout(()=>document.getElementById("saveJournalMsg").textContent="",1600);
+    if(usePrompt){
+      const ul=document.getElementById("journalHistory");
+      const li=document.createElement("li");li.textContent=usePrompt;ul.prepend(li);
+      document.getElementById("journalHistoryCard").style.display="block";
     }
+  };
 
-    document.getElementById('saveCheckinBtn').addEventListener('click', ()=>{
-      if (alreadyCheckedInToday()){
-        document.getElementById('checkinMsg').textContent = "You already checked in today. Come back tomorrow!";
-        return;
-      }
-      const data = {
-        mood: Number(document.getElementById('moodSel').value),
-        cravings: document.getElementById('craveSel').value,
-        trigger: document.getElementById('triggerTxt').value.trim(),
-        vaped: document.getElementById('vapedSel').value,
-        notes: document.getElementById('notesTxt').value.trim(),
-        ts: Date.now()
-      };
-      const days = store.get('days', {}); days[todayKey()] = data; store.set('days',days);
+  const mot={
+    gentle:["You’ve already proven you can do hard things.","Slip-ups don’t erase progress. They teach you.","Breathe. This urge will pass.","Talk to yourself like you would to a best friend.","Tiny wins today become big wins later."],
+    firey:["Cravings don’t control you.","You’re choosing discipline over comfort.","Pain is temporary, power is permanent.","Show the world your backbone.","Wanting and doing are different. Do it."],
+    mix:["Reset is always one choice away.","Every check-in is proof you care.","One day at a time beats all-or-nothing.","Replace the habit: move, sip water, breathe.","You’re stronger than this moment."]
+  };
 
-      const y = new Date(); y.setDate(y.getDate()-1);
-      const hadYesterday = Boolean(days[y.toISOString().slice(0,10)]);
-      let streak = Number(store.get('streak',0));
-      streak = hadYesterday ? Math.max(1,streak)+1 : 1;
-      store.set('streak', streak); updateStreakText();
-      gsap.fromTo('#streakDays', {scale:1}, {scale:1.3, duration:.22, yoyo:true, repeat:1, ease:'power1.inOut'});
-
-      let earned = 5; if(data.vaped==='no') earned+=10; if(data.cravings==='none') earned+=5;
-      addCoins(earned);
-
-      if(streak===1){ grantBadge('day1','First Day Smoke-Free','Starting is the hardest step — you just did it.') }
-      if(streak===7) grantBadge('week1','First Week Smoke-Free','Seven days strong. Keep going!');
-      if(streak===30) grantBadge('month1','1 Month Smoke-Free','This is a huge milestone. Proud of you!');
-      if(streak===180) grantBadge('month6','6 Months Smoke-Free','Half a year! Incredible consistency.');
-      if(streak===365) grantBadge('year1','1 Year Smoke-Free','An entire year. You did that.');
-
-      if(streak>=2){ showCelebration({title:"You're on a roll!", sub:`Streak: ${streak} ${(streak===1?'day':'days')}.`}); }
-      if(data.vaped==='no'){
-        showCelebration({title:"Great job!", sub:`Saved! You earned +${earned} coins.`});
-      }else{
-        showCelebration({title:"It’s okay — reset starts now", sub:"Slip-ups happen. Breathe. You’re still in this. Try a deep breath and plan your next win."});
-      }
-
-      document.getElementById('checkinMsg').textContent = `Saved! You earned +${earned} coins.`;
-      setTimeout(()=>document.getElementById('checkinMsg').textContent='',2500);
+  function renderMot(){
+    const grid=document.getElementById("stickyGrid");
+    grid.innerHTML="";
+    const picks=[...mot[mode]].slice(0,8);
+    picks.forEach(txt=>{
+      const d=document.createElement("div");
+      d.className="sticky "+(mode==="firey"?"firey":mode==="mix"?"mix":"");
+      d.textContent=txt;
+      grid.appendChild(d);
+      gsap.fromTo(d,{opacity:0,y:12},{opacity:1,y:0,duration:.25});
     });
-
-    const DEFAULT_PROMPTS = [
-      "What made you decide to quit vaping?",
-      "Describe a time when you successfully resisted a craving.",
-      "What are your top three reasons for wanting to be vape-free?",
-      "How do you feel physically and emotionally since quitting vaping?",
-      "What strategies have helped you cope with stress without vaping?",
-      "Write about a person who supports your decision to quit vaping.",
-      "What activities or hobbies have you picked up since quitting?",
-      "Describe your ideal vape-free day.",
-      "What challenges have you faced while quitting, and how did you overcome them?",
-      "How has quitting vaping improved your relationships with others?",
-      "Imagine your body's cells cheering you on. What are they saying about your choice to quit?",
-      "Describe what true freedom from nicotine addiction feels like. Where are you and what are you doing?",
-      "What's one sport, hobby, or creative pursuit that will get significantly better once your lungs are clear?",
-      "Write a short letter to your past self who first considered vaping. What warning and encouragement do you give?",
-      "List three specific ways quitting will improve your relationships with friends or family.",
-      "If you save the money you would have spent on vapes for a year, what exciting thing could you buy or do?",
-      "What is the main source of strength (internal or external) you will tap into when a craving is intense?",
-      "How does quitting show the world that you are disciplined and in control of your own life?",
-      "Describe the feeling of taking a full, deep, easy breath. Make it your motivation.",
-      "What new, positive identity are you stepping into by becoming a non-vaper?",
-      "Write down your core values (e.g., integrity, health, excellence). How does quitting align with them?",
-      "What's one thing you are truly excited about doing once you no longer worry about vaping?",
-      "Fill in the blank: I deserve to be nicotine-free because...",
-      "Choose a personal quit anthem and write about why its message motivates you.",
-      "If you could have a five-minute chat with your future self (vape-free), what advice would they give you?",
-      "Name your top three triggers (People, Places, Situations). Plan one avoidance/substitution for each.",
-      "What are the 3 P’s that trigger you most: People, Places, or Patterns?",
-      "Write the 5-step distraction routine you'll use immediately when cravings hit.",
-      "What feeling (boredom, anxiety, stress) usually comes before you vape? How can you handle it directly?",
-      "Design a 'Craving Kit'. What five objects will replace the hand-to-mouth habit?",
-      "Write down the exact line you will use to say 'No, thanks' if someone offers you a vape.",
-      "What's one thing you can remove from your environment to make quitting easier?",
-      "How will you change your routine to disrupt your habit loops?",
-      "List three safe people you can text or call when cravings get strong — and what you’ll say.",
-      "Describe what a craving feels like in your body. Naming it makes it smaller.",
-      "What can you hold in your hand instead of a vape?",
-      "What will your new after-dinner routine be this week instead of vaping?",
-      "List three ways to make your triggers less accessible.",
-      "Plan a 'Fire Drill': what’s your escape plan if you face a sudden trigger?",
-      "How does understanding your triggers make you feel stronger?",
-      "What is your go-to breathing exercise? Write down the steps.",
-      "Write three positive affirmations about your strength.",
-      "What’s a healthy 15-minute activity for nicotine withdrawal mood swings?",
-      "Describe a time you overcame a big challenge — what skills from then help you now?",
-      "If cravings are storm clouds, what’s your sunshine thought or memory?",
-      "What self-care thing will you do today unrelated to quitting?",
-      "When boredom hits, what's a task you can switch to that needs full focus?",
-      "What’s the difference between the temporary relief of vaping and the lasting calm of healthier coping?",
-      "How can you talk to yourself with kindness instead of self-criticism?",
-      "Name one healthy habit you want to add to replace vaping.",
-      "Write about an emotion you avoid by vaping. Face it for five minutes today.",
-      "What does 'riding the wave' of a craving mean to you?",
-      "List five things that bring you genuine joy.",
-      "How does movement help release craving energy?",
-      "What makes you laugh? Write about a funny memory.",
-      "What's the longest time you’ve gone without vaping so far?",
-      "List three victories from the past 24 hours.",
-      "Describe one positive physical change since cutting back or quitting.",
-      "If your journey is climbing a mountain, what milestone are you at?",
-      "How does a vape-free day make you feel proud?",
-      "How will you reward yourself when you hit a savings goal?",
-      "What have you learned about your willpower?",
-      "Write a headline for your success story at the end of this week.",
-      "What did you accomplish today that old-you couldn't?",
-      "Name a craving you beat. What worked?",
-      "How has your focus or sleep improved? Give an example?",
-      "What’s your next big reward and what date will you earn it by?",
-      "If motivation was a battery, what charged it today?",
-      "Who will you tell first when you hit your next milestone?",
-      "What was the best positive feedback you've gotten?",
-      "Who is your #1 support person? Write a thank-you to them.",
-      "How will you clearly ask friends not to vape around you?",
-      "Write a supportive message to another teen trying to quit.",
-      "What three pieces of advice would you give someone trying to quit?",
-      "How does quitting make you a positive influence?",
-      "What’s one new healthy social activity you can try?",
-      "List three ways to connect with people without vaping.",
-      "How does honesty with a trusted adult lighten your burden?",
-      "How would your favorite mentor encourage you today?",
-      "What is a healthy boundary sentence you can use?",
-      "If you slipped up, what lesson did you learn?",
-      "What has been easier than you expected about quitting?",
-      "How can you invest vape-saved money into a new hobby?",
-      "What logical argument helps when doubt hits?",
-      "Rewrite a negative thought into a positive one.",
-      "What's one tiny action right now to support your quit?",
-      "What good thing came from a tough moment recently?",
-      "If you could redo a tough moment today, what would you choose differently?",
-      "What unexpected thing triggers you? Be mindful of it.",
-      "Write a promise not to let one mistake erase your progress.",
-      "Finish the sentence: Today, I choose...",
-      "My current superpower is my ability to...",
-      "I am strong enough to handle this craving because...",
-      "This craving means my body is healing.",
-      "The best thing about today was...",
-      "I will show myself compassion by...",
-      "What mantra will you use when you doubt yourself?",
-      "I am worthy of a healthy life because...",
-      "I feel the most like myself when...",
-      "What's one thing you can let go of today?",
-      "I am more than my habit because...",
-      "My health is my priority because...",
-      "What are you curious to learn or do this week that isn't vape-related?",
-      "I forgive myself for past mistakes — I focus on today.",
-      "My commitment is stronger than any craving.",
-      "What are you most looking forward to this weekend?",
-      "I am in control of my choices because...",
-      "What can you do in the next 5 minutes to feel better right now?",
-      "My lungs are strong and getting stronger every day because...",
-      "I am a non-vaper. Write a final statement of belief."
-    ];
-
-    const PROMPTS = (window.PROMPTS && Array.isArray(window.PROMPTS) && window.PROMPTS.length>0) ? window.PROMPTS : DEFAULT_PROMPTS;
-
-    let promptIndex=0;
-    const promptText=document.getElementById('promptText');
-    function showPrompt(){ promptText.textContent=PROMPTS[promptIndex]; }
-    document.getElementById('prevPrompt').addEventListener('click',()=>{ promptIndex=(promptIndex-1+PROMPTS.length)%PROMPTS.length; showPrompt(); });
-    document.getElementById('nextPrompt').addEventListener('click',()=>{ promptIndex=(promptIndex+1)%PROMPTS.length; showPrompt(); });
-    showPrompt();
-
-    document.getElementById('clearJournalDraft').addEventListener('click',()=>{ document.getElementById('journalEntry').value=''; });
-    document.getElementById('saveJournalBtn').addEventListener('click',()=>{
-      const entry=document.getElementById('journalEntry').value.trim();
-      if(!entry){ document.getElementById('saveJournalMsg').textContent="Write something first"; return; }
-      const free=document.getElementById('freeWriteToggle').checked;
-      const hist=store.get('prompt_history',[]);
-      if(!free){ const p=PROMPTS[promptIndex]; hist.push(p); store.set('prompt_history',hist); }
-      const entries=store.get('journal_entries',[]);
-      entries.push({prompt:free?null:PROMPTS[promptIndex],entry,ts:Date.now()});
-      store.set('journal_entries',entries);
-      document.getElementById('journalEntry').value='';
-      document.getElementById('saveJournalMsg').textContent="Saved! +7 coins";
-      addCoins(7);
-      const ul=document.getElementById('journalHistory'); ul.innerHTML='';
-      hist.slice(-10).reverse().forEach(p=>{ const li=document.createElement('li'); li.textContent=p; ul.appendChild(li); });
-      document.getElementById('journalHistoryCard').style.display = hist.length?'block':'none';
-      setTimeout(()=>document.getElementById('saveJournalMsg').textContent='',1800);
+  }
+  document.getElementById("motivationStyle").value=mode;
+  document.getElementById("saveStyleBtn").onclick=()=>{mode=document.getElementById("motivationStyle").value;localStorage.setItem("motStyle",mode);renderMot()};
+  renderMot();
+  function grantBadge(key,label,note){
+    const ref=db.ref("users/"+uid+"/badges");
+    ref.once("value",s=>{
+      const cur=s.val()||{};
+      if(!cur[key]){cur[key]={label:label,ts:Date.now()};ref.set(cur);openCelebration("You unlocked: "+label,note||"");}
+      renderBadges(cur);
     });
-
-    function owns(type,key){ const arr=store.get('owned_'+type,[]); return arr.includes(key); }
-    function addOwned(type,key){
-      const arr=store.get('owned_'+type,[]);
-      if(!arr.includes(key)){ arr.push(key); store.set('owned_'+type,arr); }
-    }
-
-    (function applySavedTheme(){
-      const t = store.get('theme',null);
-      const custom = store.get('theme_custom',null);
-      if(custom){ document.body.removeAttribute('data-theme'); applyCustomThemeVars(custom); }
-      else if(t){ document.body.setAttribute('data-theme',t); }
-    })();
-
-    document.querySelectorAll('.buyBtn').forEach(b=>{
-      b.addEventListener('click',()=>{
-        const type=b.dataset.type, key=b.dataset.key, cost=Number(b.dataset.cost);
-        if(owns(type,key)){
-          document.getElementById('shopMsg').textContent=`You already own this ${type}.`;
-          if(type==='theme'){ store.set('theme',key); document.body.setAttribute('data-theme',key); }
-          return;
-        }
-        if(!spendCoins(cost)){ document.getElementById('shopMsg').textContent="Not enough coins."; return; }
-        if(type==='theme'){
-          store.set('theme_custom',null);
-          store.set('theme',key);
-          document.body.setAttribute('data-theme',key);
-          document.body.style.setProperty('--app-font', store.get('font_choice','"Hanken Grotesk"'));
-        }else if(type==='badge'){ addOwned('badge',key); }
-        else{ addOwned(type,key); }
-        document.getElementById('shopMsg').textContent=`Purchased ${type}!`;
-      });
+  }
+  function renderBadges(owned){
+    const grid=document.getElementById("badgeGrid");grid.innerHTML="";
+    const keys=Object.keys(owned||{});
+    if(!keys.length){grid.innerHTML='<div class="muted">No badges yet. Your first one appears when you check in today.</div>';return;}
+    keys.forEach(k=>{const c=document.createElement("div");c.className="badge";c.innerHTML='<div style="font-size:22px;margin-bottom:6px;">🏅</div><div><strong>'+(owned[k].label||k)+'</strong></div>';grid.appendChild(c);});
+  }
+  const PFP=["🐶","🐰","🐱","🦊","🐻","🐼","🐨","🐵","🦄","🐯","🐹","🐸","🐥","🦋"];
+  function renderPfp(sel){
+    const holder=document.getElementById("pfpGrid");holder.innerHTML="";
+    const chosen=sel||"🐰";
+    PFP.forEach(ch=>{
+      const d=document.createElement("div");
+      d.className="pfp-choice"+(chosen===ch?" active":"");
+      d.textContent=ch;
+      d.onclick=()=>{db.ref("users/"+uid).update({pfp:ch});renderPfp(ch);};
+      holder.appendChild(d);
     });
+  }
+  function badgeName(k){if(k==="day1")return"First Day Smoke-Free";if(k==="week1")return"First Week Smoke-Free";if(k==="month1")return"1 Month Smoke-Free";if(k==="month6")return"6 Months Smoke-Free";if(k==="year1")return"1 Year Smoke-Free";return k}
 
-    function applyCustomThemeVars(obj){
+  function buyItem(type,key,cost){
+    if(coins<cost){document.getElementById("shopMsg").textContent="Not enough coins.";return;}
+    coins-=cost;db.ref("users/"+uid).update({coins});animateCoins(coins);
+    if(type==="theme"){localStorage.setItem("theme",key);document.body.setAttribute("data-theme",key);}
+    if(type==="badge"){grantBadge(key,badgeName(key));}
+    document.getElementById("shopMsg").textContent="Purchased "+type+"!";
+  }
+  document.querySelectorAll('.buyBtn').forEach(b=>{b.addEventListener('click',()=>buyItem(b.dataset.type,b.dataset.key,Number(b.dataset.cost)))})
+
+  function applyCustomTheme(){
+    const canByStreak=streak>=2;
+    const hasCoins=coins>=10;
+    if(!canByStreak&&!hasCoins){document.getElementById("ctMsg").textContent="Need 10 coins or a 2-day streak to apply a custom theme.";return;}
+    if(!canByStreak){coins-=10;db.ref("users/"+uid).update({coins});animateCoins(coins);}
+    const bg1=document.getElementById("ctBg1").value;
+    const bg2=document.getElementById("ctBg2").value;
+    const brand=document.getElementById("ctBrand").value;
+    const brandDark=document.getElementById("ctBrandDark").value;
+    document.body.style.setProperty('--bg1',bg1);
+    document.body.style.setProperty('--bg2',bg2);
+    document.body.style.setProperty('--brand',brand);
+    document.body.style.setProperty('--brand-dark',brandDark);
+    localStorage.setItem("theme_custom",JSON.stringify({bg1,bg2,brand,brandDark}));
+    document.body.removeAttribute("data-theme");
+    document.getElementById("ctMsg").textContent="Custom theme applied!";
+  }
+  document.getElementById("applyCustomThemeBtn").onclick=applyCustomTheme;
+
+  function openCelebration(t,s){
+    document.getElementById("celeTitle").textContent=t;
+    document.getElementById("celeSub").textContent=s;
+    document.getElementById("celeOverlay").classList.add("show");
+    confetti({particleCount:140,spread:80,origin:{y:.7}});
+    gsap.fromTo(".cele-card",{scale:.95,opacity:0,y:12},{scale:1,opacity:1,y:0,duration:.25});
+  }
+  document.getElementById("celeClose").onclick=()=>{document.getElementById("celeOverlay").classList.remove("show")}
+  document.getElementById("celeOverlay").addEventListener("click",e=>{if(e.target.id==="celeOverlay"){document.getElementById("celeOverlay").classList.remove("show")}})
+
+  function saveCheckin(){
+    db.ref("users/"+uid).once("value",snap=>{
+      const d=snap.val()||{};
+      if(d.lastCheck===today){document.getElementById("checkinMsg").textContent="You already checked in today. Come back tomorrow!";return;}
+      const cravings=document.getElementById("craveSel").value;
+      const vaped=document.getElementById("vapedSel").value;
+      const y=d.lastCheck||null;
+      const yest=new Date();yest.setDate(yest.getDate()-1);
+      const yKey=yest.toISOString().slice(0,10);
+      let s=d.streak||0;
+      if(y===yKey)s=Math.max(1,s)+1; else s=1;
+      streak=s;
+      let earned=5;if(vaped==='no')earned+=10;if(cravings==='none')earned+=5;
+      coins=(d.coins||0)+earned;
+      db.ref("users/"+uid).update({streak:s,coins,lastCheck:today});
+      animateCoins(coins);
+      document.getElementById("streakDays").textContent=s;
+      document.getElementById("streakLabel").textContent=s===1?"day":"days";
+      if(s===1)grantBadge("day1","First Day Smoke-Free","Starting is the hardest step — you just did it.");
+      if(s===7)grantBadge("week1","First Week Smoke-Free","Seven days strong. Keep going!");
+      if(s===30)grantBadge("month1","1 Month Smoke-Free","This is a huge milestone. Proud of you!");
+      if(s===180)grantBadge("month6","6 Months Smoke-Free","Half a year! Incredible consistency.");
+      if(s===365)grantBadge("year1","1 Year Smoke-Free","An entire year. You did that.");
+      if(s>=2)openCelebration("You're on a roll!","Streak: "+s+" "+(s===1?"day":"days")+".");
+      if(vaped==='no')openCelebration("Great job!","Saved! You earned +"+earned+" coins.");
+      else openCelebration("It’s okay — reset starts now","Slip-ups happen. You’re still in this.");
+      document.getElementById("checkinMsg").textContent="Saved! You earned +"+earned+" coins.";
+      setTimeout(()=>document.getElementById("checkinMsg").textContent="",2200);
+    });
+  }
+  document.getElementById("saveCheckinBtn").onclick=saveCheckin;
+
+  function loadChat(){
+    const box=document.getElementById("chatBox");box.innerHTML="";
+    const ref=db.ref("chat/global");
+    ref.limitToLast(100).on("child_added",snap=>{
+      const m=snap.val()||{};
+      const div=document.createElement("div");
+      div.className="msg";
+      const when=new Date(m.ts||Date.now()).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+      div.innerHTML="<small>["+when+"] "+escapeHtml(m.nick||"anon")+":</small> "+escapeHtml(m.text||"");
+      box.appendChild(div);box.scrollTop=box.scrollHeight;
+    });
+  }
+  function sendMsg(){
+    const text=document.getElementById("chatMsg").value.trim();if(!text)return;
+    const ref=db.ref("chat/global");
+    const nick=(nickname||document.getElementById("nickInput").value.trim()||"anon").slice(0,24);
+    ref.push({nick,text,ts:Date.now()}).then(()=>{
+      document.getElementById("chatMsg").value="";
+      const key="msg_count_"+today;
+      const sent=Number(localStorage.getItem(key)||0);
+      if(sent<3&&text.length>=12){awardCoins(2);localStorage.setItem(key,sent+1);}
+    }).catch(err=>alert("Send failed: "+err.message));
+  }
+  document.getElementById("sendBtn").onclick=sendMsg;
+  document.getElementById("chatMsg").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();sendMsg();}});
+
+  function escapeHtml(s){return s.replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+
+  Array.from(document.querySelectorAll("button")).forEach(btn=>{btn.addEventListener("click",()=>{gsap.fromTo(btn,{scale:1},{scale:.92,duration:.12,yoyo:true,repeat:1})})});
+
+  document.querySelectorAll('.link[data-jump]').forEach(el=>el.addEventListener('click',()=>show(el.dataset.jump)));
+
+  function applyFontChoice(fontName){document.documentElement.style.setProperty('--app-font',fontName);localStorage.setItem('font_choice',fontName)}
+  function renderFontPicker(){
+    const chips=document.querySelectorAll('.font-chip');
+    const chosen=localStorage.getItem('font_choice')||'"Hanken Grotesk"';
+    applyFontChoice(chosen);
+    chips.forEach(c=>{
+      c.classList.toggle('active',c.dataset.font===chosen);
+      c.addEventListener('click',()=>{chips.forEach(x=>x.classList.remove('active'));c.classList.add('active');applyFontChoice(c.dataset.font)});
+    });
+  }
+  renderFontPicker();
+  (function applySavedTheme(){
+    const t=localStorage.getItem('theme');
+    const custom=localStorage.getItem('theme_custom');
+    if(custom){
+      const obj=JSON.parse(custom);
       document.body.style.setProperty('--bg1',obj.bg1);
       document.body.style.setProperty('--bg2',obj.bg2);
       document.body.style.setProperty('--brand',obj.brand);
       document.body.style.setProperty('--brand-dark',obj.brandDark);
-      store.set('theme',null);
-    }
-    document.getElementById('applyCustomThemeBtn').addEventListener('click',()=>{
-      const canByStreak = Number(store.get('streak',0))>=2;
-      const hasCoins = coins()>=10;
-      if(!canByStreak && !hasCoins){ document.getElementById('ctMsg').textContent="Need 10 coins or a 2-day streak to apply a custom theme."; return; }
-      if(!canByStreak){ setCoins(coins()-10); }
-      const custom = {
-        bg1:document.getElementById('ctBg1').value,
-        bg2:document.getElementById('ctBg2').value,
-        brand:document.getElementById('ctBrand').value,
-        brandDark:document.getElementById('ctBrandDark').value
-      };
-      store.set('theme_custom',custom);
       document.body.removeAttribute('data-theme');
-      applyCustomThemeVars(custom);
-      document.getElementById('ctMsg').textContent="Custom theme applied!";
-    });
-
-    const BADGE_META = {
-      day1:{name:"First Day Smoke-Free",note:"Starting is the hardest step — you just did it."},
-      week1:{name:"First Week Smoke-Free",note:"Seven days strong. Keep going!"},
-      month1:{name:"1 Month Smoke-Free",note:"Huge milestone. Proud of you!"},
-      month6:{name:"6 Months Smoke-Free",note:"Half a year of wins."},
-      year1:{name:"1 Year Smoke-Free",note:"An entire year — amazing."}
-    };
-    function grantBadge(key,displayName,note){
-      addOwned('badge',key);
-      showCelebration({title:`🎉 You unlocked: ${displayName}`, sub:note||BADGE_META[key]?.note||"Nice work!"});
+    }else if(t){
+      document.body.setAttribute('data-theme',t);
     }
-    function renderBadges(){
-      const grid=document.getElementById('badgeGrid');
-      const owned=store.get('owned_badge',[]);
-      grid.innerHTML='';
-      if(!owned.length){ grid.innerHTML='<div class="muted">No badges yet. Your first one appears when you check in today.</div>'; return; }
-      owned.forEach(k=>{
-        const meta=BADGE_META[k]||{name:k,note:""};
-        const el=document.createElement('div');
-        el.className='badge';
-        el.innerHTML=`<div style="font-size:22px;margin-bottom:6px;">🏅</div><div><strong>${meta.name}</strong></div><div class="muted" style="font-size:13px">${meta.note||''}</div>`;
-        grid.appendChild(el);
-      });
-    }
+  })();
 
-    const PFP_CHOICES=["🐶","🐰","🐱","🦊","🐻","🐼","🐨","🐵","🦄","🐯","🐹","🐸","🐥","🦋"];
-    function renderPfp(){
-      const holder=document.getElementById('pfpGrid');
-      const sel=store.get('pfp','🐰');
-      holder.innerHTML='';
-      PFP_CHOICES.forEach(ch=>{
-        const div=document.createElement('div');
-        div.className='pfp-choice'+(sel===ch?' active':'');
-        div.textContent=ch; div.title='Click to select';
-        div.addEventListener('click',()=>{ store.set('pfp',ch); renderPfp(); });
-        holder.appendChild(div);
-      });
-    }
-
-    function applyFontChoice(fontName){ document.documentElement.style.setProperty('--app-font',fontName); store.set('font_choice',fontName); }
-    function renderFontPicker(){
-      const chips=document.querySelectorAll('.font-chip');
-      const chosen=store.get('font_choice','"Hanken Grotesk"');
-      applyFontChoice(chosen);
-      chips.forEach(c=>{
-        c.classList.toggle('active', c.dataset.font===chosen);
-        c.addEventListener('click',()=>{
-          chips.forEach(x=>x.classList.remove('active'));
-          c.classList.add('active'); applyFontChoice(c.dataset.font);
-        });
-      });
-    }
-
-    const STICKIES={
-      gentle:["You’ve already proven you can do hard things.","Slip-ups don’t erase progress. They teach you.","Breathe. This urge will pass.","Talk to yourself like you would to a best friend.","Tiny wins today become big wins later."],
-      realtalk:["Wanting and doing are different. Do it.","Cravings last minutes. Pride lasts longer.","You’re in charge, not the vape.","If it costs your health, it’s too expensive.","Future you is begging you to keep going."],
-      mix:["Reset is always one choice away.","Every check-in is proof you care.","One day at a time beats all-or-nothing.","Replace the habit: move, sip water, breathe.","You’re stronger than this moment."]
-    };
-    function renderStickies(){
-      const grid=document.getElementById('stickyGrid');
-      const style=store.get('motivation_style','mix');
-      const picks=[...STICKIES[style],...STICKIES.mix].slice(0,8);
-      grid.innerHTML='';
-      picks.forEach(txt=>{
-        const d=document.createElement('div');
-        d.className='sticky '+(style==='realtalk'?'rt':style==='mix'?'mix':'');
-        d.textContent=txt;
-        grid.appendChild(d);
-      });
-    }
-    document.getElementById('saveStyleBtn').addEventListener('click',()=>{
-      const style=document.getElementById('motivationStyle').value;
-      store.set('motivation_style',style);
-      renderStickies();
-    });
-    (function initMotivation(){
-      const style=store.get('motivation_style','mix');
-      document.getElementById('motivationStyle').value=style;
-    })();
-    let fbReady=false, db=null, chatRef=null;
-    const chatBox=document.getElementById('chatBox');
-    function setNick(n){ store.set('nick',n||'') }
-    function getNick(){ return store.get('nick','') }
-    document.getElementById('nickInput').value=getNick();
-    document.getElementById('saveNickBtn').addEventListener('click',()=>{ setNick(document.getElementById('nickInput').value.trim()); });
-
-    window.addEventListener('load', ()=>{
-      if(!window.firebase){ return; }
-      const firebaseConfig={
-        apiKey:"AIzaSyAhsjCfr7B-9vxxcA9bnLr46VcxbRMftvA",
-        authDomain:"unhook-38abb.firebaseapp.com",
-        databaseURL:"https://unhook-38abb-default-rtdb.firebaseio.com",
-        projectId:"unhook-38abb",
-        storageBucket:"unhook-38abb.firebasestorage.app",
-        messagingSenderId:"182531035159",
-        appId:"1:182531035159:web:47163c38ee27c2ba3b8c52",
-        measurementId:"G-7GGK123MDT"
-      };
-      try{
-        const app=firebase.initializeApp(firebaseConfig);
-        db=firebase.database(); chatRef=db.ref('chat/global'); fbReady=true; chatBox.innerHTML="";
-        chatRef.limitToLast(100).on('child_added',snap=>{
-          const m=snap.val();
-          const div=document.createElement('div');
-          div.className='msg';
-          const when=new Date(m.ts||Date.now()).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
-          div.innerHTML=`<small>[${when}] ${escapeHtml(m.nick||'anon')}:</small> ${escapeHtml(m.text||'')}`;
-          chatBox.appendChild(div);
-          chatBox.scrollTop=chatBox.scrollHeight;
-        });
-      }catch(e){ console.warn('Firebase init skipped:',e); }
-    });
-
-    document.getElementById('sendBtn').addEventListener('click', sendMsg);
-    document.getElementById('chatMsg').addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); sendMsg(); }});
-    function sendMsg(){
-      const text=document.getElementById('chatMsg').value.trim(); if(!text) return;
-      if(!fbReady||!chatRef){ alert('Chat not ready. Check Firebase config.'); return; }
-      const nick=getNick()||'anon';
-      chatRef.push({nick,text,ts:Date.now()}).then(()=>{
-        document.getElementById('chatMsg').value='';
-        const dayKey=todayKey();
-        const sent=store.get('msg_count_'+dayKey,0);
-        if(sent<3 && text.length>=12){ addCoins(2); store.set('msg_count_'+dayKey, sent+1); }
-      }).catch(err=>alert('Send failed: '+err.message));
-    }
-    function escapeHtml(s){ return s.replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
-
-    (function initUI(){
-      updateCoinDisplays();
-      updateStreakText();
-      renderFontPicker();
-      renderBadges();
-      renderPfp();
-      renderStickies();
-      const savedFont=store.get('font_choice','"Hanken Grotesk"');
-      document.documentElement.style.setProperty('--app-font',savedFont);
-    })();
-
-    document.querySelectorAll('button').forEach(btn=>{
-      btn.addEventListener('click',()=>{ gsap.fromTo(btn,{scale:1},{scale:.92,duration:.12,yoyo:true,repeat:1}); });
-    });
-  });
-  </script>
+  document.getElementById("coinCount").textContent=coins;
+  document.getElementById("shopCoins").textContent=coins;
+  document.querySelectorAll('.section')[0].classList.add('active');
+});
+</script>
 </body>
 </html>
