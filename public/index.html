@@ -12,64 +12,53 @@
     body[data-theme="ocean"]{--bg1:#e8f7ff;--bg2:#cfefff;--brand:#0066cc;--brand-dark:#004b99}
     body[data-theme="sunset"]{--bg1:#fff2e8;--bg2:#ffe1cf;--brand:#ff7a59;--brand-dark:#d55c3e}
     body[data-theme="midnight"]{--bg1:#0e1220;--bg2:#0a0f1a;--card:#11162a;--ink:#dfe7ff;--muted:#9fb1ff;--brand:#5b7cff;--brand-dark:#3e5fe6}
-
     html,body{height:100%}
     body{margin:0;color:var(--ink);background:linear-gradient(180deg,var(--bg1),var(--bg2))}
     header{background:var(--brand);color:#fff;padding:24px;font-weight:700;font-size:28px;text-align:center;letter-spacing:.2px}
-
     .wrap{max-width:1100px;margin:0 auto;padding:16px}
     .tabs{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:14px auto 8px;align-items:center}
     .tab{background:var(--brand);color:#fff;padding:12px 22px;border-radius:999px;cursor:pointer;font-weight:600;box-shadow:0 10px 24px var(--ring);transition:.12s transform,.12s background,.12s box-shadow}
     .tab:hover{background:var(--brand-dark);transform:translateY(-1px)}
     .right{margin-left:auto}
-    .pill{background:#eef3ff;color:#2746ff;padding:6px 10px;border-radius:999px;font-weight:700;box-shadow:0 2px 8px var(--ring)}
-
+    .pill{background:#eef3ff;color:#2746ff;padding:6px 10px;border-radius:999px;font-weight:700;box-shadow:0 2px 8px var(--ring);display:inline-flex;gap:6px;align-items:center}
     .section{display:none}
     .section.active{display:block;animation:fade .2s ease}
     @keyframes fade{from{opacity:.6;transform:translateY(2px)}to{opacity:1;transform:translateY(0)}}
-
     .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
     @media (max-width:860px){.grid-2{grid-template-columns:1fr}}
-
     .card{background:var(--card);border-radius:16px;box-shadow:0 10px 24px var(--ring);padding:16px;margin:14px 0}
     .card.equal{display:flex;flex-direction:column;min-height:140px}
     h2.section-title{text-align:center;margin:8px 0 14px}
-
     label{font-weight:600;display:block;margin:4px 2px 8px}
     select,textarea,input[type="text"],input[type="color"]{width:100%;background:#fff;border:1px solid #e7eef8;border-radius:12px;padding:14px;outline:none;box-shadow:0 6px 14px rgba(0,0,0,.04);color:var(--ink)}
     textarea{resize:vertical;min-height:120px}
     .row{margin:14px 0}
-
     .cta{background:var(--brand);color:#fff;border:0;padding:12px 20px;border-radius:999px;font-weight:700;cursor:pointer;box-shadow:0 10px 24px var(--ring)}
     .cta:hover{background:var(--brand-dark)}
     .cta.ghost{background:transparent;color:var(--brand);border:2px solid var(--brand)}
     .cta.small{padding:8px 14px;font-weight:600}
-
     .muted{color:var(--muted)}
     .inline{display:inline-flex;gap:10px;align-items:center}
     .flex{display:flex;gap:10px;align-items:center}
     .space-between{display:flex;justify-content:space-between;align-items:center;gap:10px}
-
     .shop-grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
     .item-title{font-weight:700}
     .price{color:var(--muted);font-weight:600}
     .link{color:var(--brand);text-decoration:underline;cursor:pointer;font-weight:600}
-
     .swatches{display:flex;gap:6px;margin:6px 0}
     .sw{width:16px;height:16px;border-radius:4px;border:1px solid #dfe6f5;box-shadow:0 1px 2px rgba(0,0,0,.06)}
-
     .sticker-peek{font-size:20px;letter-spacing:4px;margin:6px 0}
-
     .chat-box{height:380px;overflow:auto;border-radius:16px;background:var(--card);box-shadow:inset 0 0 0 1px #e9eef6,0 10px 24px var(--ring);padding:12px}
     .msg{margin:8px 0}
     .msg small{color:var(--muted);font-weight:600;margin-right:6px}
 
     .overlay{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.35);z-index:50}
     .overlay.show{display:flex}
-    .cele-card{background:#fff;border-radius:18px;padding:22px;max-width:520px;width:92%;text-align:center;box-shadow:0 30px 80px rgba(0,0,0,.25)}
+    .cele-card{background:#fff;border-radius:18px;padding:22px;max-width:520px;width:92%;text-align:center;box-shadow:0 30px 80px rgba(0,0,0,.25);position:relative;overflow:hidden}
     .cele-title{font-size:22px;font-weight:800;margin:6px 0 8px}
     .cele-sub{color:#4a5568;margin:0 0 12px}
-    .lottie-box{width:220px;height:220px;margin:10px auto}
+    .sparkles{position:absolute;inset:0;pointer-events:none}
+    .sparkles span{position:absolute;font-size:24px;opacity:0}
 
     .stickies{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
     .sticky{background:#fff8b8;border:1px solid #f1e28a;border-radius:10px;padding:14px;box-shadow:0 6px 16px rgba(0,0,0,.08);font-family:"Playfair Display",serif}
@@ -81,14 +70,18 @@
     .pfp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(58px,1fr));gap:10px}
     .pfp-choice{font-size:36px;line-height:1;background:#fff;border-radius:14px;padding:10px;cursor:pointer;border:2px solid transparent}
     .pfp-choice.active{border-color:var(--brand);box-shadow:0 6px 20px var(--ring)}
-
     .font-preview{display:flex;gap:8px;flex-wrap:wrap}
     .font-chip{padding:8px 12px;border-radius:999px;border:1px solid #dfe6f5;cursor:pointer}
     .font-chip.active{background:var(--brand);color:#fff;border-color:transparent}
   </style>
+
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/gsap.min.js"></script>
 </head>
+
 <body>
   <header>Unhook: Breaking the Vape</header>
+
   <div class="tabs wrap">
     <div class="tab" data-go="checkin">Check-In</div>
     <div class="tab" data-go="journal">Journal</div>
@@ -96,8 +89,9 @@
     <div class="tab" data-go="shop">Shop</div>
     <div class="tab" data-go="profile">Profile</div>
     <div class="tab" data-go="community">Community</div>
-    <div class="pill right">Coins: <span id="coinCount">0</span></div>
+    <div class="pill right" id="coinPill">Coins: <span id="coinCount">0</span></div>
   </div>
+
   <main class="wrap">
     <section id="checkin" class="section active">
       <h2 class="section-title">Daily Check-In</h2>
@@ -113,7 +107,6 @@
             <option value="1">Rough</option>
           </select>
         </div>
-
         <div class="card equal">
           <label>Did you experience cravings today?</label>
           <select id="craveSel">
@@ -157,7 +150,6 @@
 
     <section id="journal" class="section">
       <h2 class="section-title">Journal</h2>
-
       <div class="card">
         <div class="space-between">
           <strong>Prompt</strong>
@@ -194,9 +186,9 @@
         <ul id="journalHistory" class="muted" style="margin:8px 0 0; padding-left:18px;"></ul>
       </div>
     </section>
+
     <section id="motivation" class="section">
       <h2 class="section-title">Motivation</h2>
-
       <div class="card">
         <div class="space-between">
           <strong>Choose your style</strong>
@@ -210,14 +202,12 @@
           </div>
         </div>
       </div>
-
       <div class="stickies" id="stickyGrid"></div>
     </section>
 
     <section id="shop" class="section">
       <h2 class="section-title">Shop</h2>
       <p class="muted" style="text-align:center;">Your balance: <strong><span id="shopCoins">0</span> coins</strong></p>
-
       <div class="shop-grid">
         <div class="card">
           <div class="item-title">Theme: Ocean</div>
@@ -291,18 +281,21 @@
           <div class="price">Cost: 50 coins</div>
           <button class="cta buyBtn" data-type="badge" data-key="week1" data-cost="50">Buy</button>
         </div>
+
         <div class="card">
           <div class="item-title">Badge – 1 Month Smoke-Free</div>
           <div class="muted link" data-jump="profile">Show on your profile</div>
           <div class="price">Cost: 100 coins</div>
           <button class="cta buyBtn" data-type="badge" data-key="month1" data-cost="100">Buy</button>
         </div>
+
         <div class="card">
           <div class="item-title">Badge – 6 Months Smoke-Free</div>
           <div class="muted link" data-jump="profile">Show on your profile</div>
           <div class="price">Cost: 300 coins</div>
           <button class="cta buyBtn" data-type="badge" data-key="month6" data-cost="300">Buy</button>
         </div>
+
         <div class="card">
           <div class="item-title">Badge – 1 Year Smoke-Free</div>
           <div class="muted link" data-jump="profile">Show on your profile</div>
@@ -332,7 +325,6 @@
 
     <section id="profile" class="section">
       <h2 class="section-title">Your Profile</h2>
-
       <div class="card">
         <div class="space-between">
           <div class="inline">
@@ -357,7 +349,6 @@
           <p class="muted">Pick an icon you like:</p>
           <div id="pfpGrid" class="pfp-grid"></div>
         </div>
-
         <div class="card">
           <strong>Badges</strong>
           <div id="badgeGrid" class="badge-grid" style="margin-top:8px;"></div>
@@ -367,7 +358,6 @@
 
     <section id="community" class="section">
       <h2 class="section-title">Community (Anonymous)</h2>
-
       <div class="card">
         <div class="space-between">
           <label style="margin:0;">Pick a nickname (saved only on this device)</label>
@@ -391,73 +381,152 @@
 
   <div id="celeOverlay" class="overlay" role="dialog" aria-modal="true">
     <div class="cele-card">
-      <div id="celeLottie" class="lottie-box"></div>
+      <div class="sparkles" id="sparkles"></div>
       <div class="cele-title" id="celeTitle">Great job!</div>
       <div class="cele-sub" id="celeSub">You stayed vape-free today — we’re proud of you.</div>
       <button id="celeClose" class="cta" style="margin-top:8px;">Close</button>
     </div>
   </div>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.10.2/lottie.min.js"></script>
+
   <script defer src="https://www.gstatic.com/firebasejs/10.14.0/firebase-app-compat.js"></script>
   <script defer src="https://www.gstatic.com/firebasejs/10.14.0/firebase-database-compat.js"></script>
 
   <script>
-    const show=id=>{document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');updateCoinDisplays();if(id==='profile'){renderBadges();renderPfp();updateStreakText()}if(id==='motivation'){renderStickies()}};
-    document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>show(t.dataset.go)));
-    document.querySelectorAll('.link[data-jump]').forEach(el=>el.addEventListener('click',()=>show(el.dataset.jump)));
+  document.addEventListener('DOMContentLoaded', () => {
+    const show = (id) => {
+      document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      updateCoinDisplays();
+      if (id === 'profile'){ renderBadges(); renderPfp(); updateStreakText(); }
+      if (id === 'motivation'){ renderStickies(); }
+    };
+    document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => show(t.dataset.go)));
+    document.querySelectorAll('.link[data-jump]').forEach(el => el.addEventListener('click', () => show(el.dataset.jump)));
 
-    const store={get(k,d){try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}},set(k,v){localStorage.setItem(k,JSON.stringify(v))}};
-    function coins(){return Number(store.get('coins',0))}
-    function setCoins(n){store.set('coins',Math.max(0,n));updateCoinDisplays()}
-    function addCoins(n){store.set('coins',Math.max(0,coins()+n));updateCoinDisplays()}
-    function spendCoins(n){if(coins()>=n){setCoins(coins()-n);return true}return false}
-    function updateCoinDisplays(){document.getElementById('coinCount').textContent=coins();(document.getElementById('shopCoins')||{}).textContent=coins()}
+    const store = {
+      get(k,d){ try{ return JSON.parse(localStorage.getItem(k)) ?? d } catch { return d } },
+      set(k,v){ localStorage.setItem(k, JSON.stringify(v)) }
+    };
 
-    function todayKey(){const d=new Date();return d.toISOString().slice(0,10)}
-    function updateStreakText(){const s=Number(store.get('streak',0));document.getElementById('streakDays').textContent=s;document.getElementById('streakLabel').textContent=(s===1?'day':'days')}
+    function coins(){ return Number(store.get('coins',0)) }
+    function setCoins(n){ store.set('coins', Math.max(0,n)); updateCoinDisplays(); }
+    function addCoins(n){
+      const before = coins();
+      const after = Math.max(0, before + n);
+      store.set('coins', after);
+      animateCoins(before, after);
+      updateCoinDisplays();
+    }
+    function spendCoins(n){
+      if (coins() >= n){ setCoins(coins()-n); return true }
+      return false;
+    }
+    function updateCoinDisplays(){
+      const c = coins();
+      const el = document.getElementById('coinCount');
+      const shop = document.getElementById('shopCoins');
+      if (el) el.textContent = c;
+      if (shop) shop.textContent = c;
+    }
+    function animateCoins(from, to){
+      const el = document.getElementById("coinCount");
+      gsap.fromTo({val: from}, {val: to, duration:.8, onUpdate(){
+        el.textContent = Math.floor(this.targets()[0].val);
+      }});
+      gsap.fromTo("#coinPill", {scale:1}, {scale:1.12, duration:.18, yoyo:true, repeat:1});
+    }
 
-    let celeAnim=null;
-    const celeOverlay=document.getElementById('celeOverlay');
-    const celeTitle=document.getElementById('celeTitle');
-    const celeSub=document.getElementById('celeSub');
-    const celeClose=document.getElementById('celeClose');
+    function todayKey(){ return new Date().toISOString().slice(0,10) }
+    function updateStreakText(){
+      const s = Number(store.get('streak',0));
+      document.getElementById('streakDays').textContent = s;
+      document.getElementById('streakLabel').textContent = (s===1?'day':'days');
+    }
 
-    function showCelebration({title,sub,lottieUrl}){celeTitle.textContent=title;celeSub.textContent=sub;celeOverlay.classList.add('show');if(celeAnim){celeAnim.destroy();celeAnim=null}celeAnim=lottie.loadAnimation({container:document.getElementById("celeLottie"),renderer:"svg",loop:false,autoplay:true,path:lottieUrl||"https://lottie.host/a28123ba-b615-40e9-9a71-1911208c96e5/5jNzpQPOlt.lottie"})}
-    celeClose.addEventListener('click',()=>celeOverlay.classList.remove('show'));
-    celeOverlay.addEventListener('click',e=>{if(e.target===celeOverlay)celeOverlay.classList.remove('show')});
+    const celeOverlay = document.getElementById('celeOverlay');
+    const celeTitle = document.getElementById('celeTitle');
+    const celeSub   = document.getElementById('celeSub');
+    const sparkles  = document.getElementById('sparkles');
+    document.getElementById('celeClose').addEventListener('click', () => celeOverlay.classList.remove('show'));
+    celeOverlay.addEventListener('click', (e)=>{ if(e.target===celeOverlay) celeOverlay.classList.remove('show'); });
 
-    const clearDraftBtn=document.getElementById('clearDraftBtn');
-    clearDraftBtn.addEventListener('click',()=>{document.getElementById('triggerTxt').value='';document.getElementById('notesTxt').value='';document.getElementById('moodSel').value='4';document.getElementById('craveSel').value='none';document.getElementById('vapedSel').value='no'});
+    function sprinkleSparkles() {
+      sparkles.innerHTML = '';
+      const icons = ['✨','⭐','🔆','💛','🟡','🏅','💫'];
+      for (let i=0;i<18;i++){
+        const sp = document.createElement('span');
+        sp.textContent = icons[i % icons.length];
+        sp.style.left = (Math.random()*100)+'%';
+        sp.style.top  = (Math.random()*100)+'%';
+        sparkles.appendChild(sp);
+        gsap.fromTo(sp, {y:20, opacity:0, scale:0.6}, {y:-10, opacity:1, scale:1, duration:.6, delay:Math.random()*0.3, ease:"back.out(1.7)"});
+      }
+    }
+    function showCelebration({title, sub}){
+      celeTitle.textContent = title;
+      celeSub.textContent = sub;
+      celeOverlay.classList.add('show');
+      sprinkleSparkles();
+      confetti({ particleCount: 120, spread: 80, origin: { y: 0.7 } });
+      gsap.fromTo('.cele-card', {y:30, opacity:0, scale:.96}, {y:0, opacity:1, scale:1, duration:.28, ease:'power2.out'});
+    }
 
-    function alreadyCheckedInToday(){const days=store.get('days',{});return Boolean(days[todayKey()])}
+    document.getElementById('clearDraftBtn').addEventListener('click', ()=>{
+      document.getElementById('triggerTxt').value='';
+      document.getElementById('notesTxt').value='';
+      document.getElementById('moodSel').value='4';
+      document.getElementById('craveSel').value='none';
+      document.getElementById('vapedSel').value='no';
+    });
 
-    document.getElementById('saveCheckinBtn').addEventListener('click',()=>{
-      if(alreadyCheckedInToday()){document.getElementById('checkinMsg').textContent="You already checked in today. Come back tomorrow!";return}
-      const data={mood:Number(document.getElementById('moodSel').value),cravings:document.getElementById('craveSel').value,trigger:document.getElementById('triggerTxt').value.trim(),vaped:document.getElementById('vapedSel').value,notes:document.getElementById('notesTxt').value.trim(),ts:Date.now()};
-      const days=store.get('days',{});days[todayKey()]=data;store.set('days',days);
+    function alreadyCheckedInToday(){
+      const days = store.get('days', {});
+      return Boolean(days[todayKey()]);
+    }
 
-      const y=new Date();y.setDate(y.getDate()-1);const yKey=y.toISOString().slice(0,10);
-      let streak=Number(store.get('streak',0));streak=(days[yKey])?(Math.max(1,streak)+1):1;store.set('streak',streak);updateStreakText();
+    document.getElementById('saveCheckinBtn').addEventListener('click', ()=>{
+      if (alreadyCheckedInToday()){
+        document.getElementById('checkinMsg').textContent = "You already checked in today. Come back tomorrow!";
+        return;
+      }
+      const data = {
+        mood: Number(document.getElementById('moodSel').value),
+        cravings: document.getElementById('craveSel').value,
+        trigger: document.getElementById('triggerTxt').value.trim(),
+        vaped: document.getElementById('vapedSel').value,
+        notes: document.getElementById('notesTxt').value.trim(),
+        ts: Date.now()
+      };
+      const days = store.get('days', {}); days[todayKey()] = data; store.set('days', days);
 
-      let earned=5;if(data.vaped==='no')earned+=10;if(data.cravings==='none')earned+=5;addCoins(earned);
+      const y = new Date(); y.setDate(y.getDate()-1);
+      const hadYesterday = Boolean(days[y.toISOString().slice(0,10)]);
 
-      if(streak===1){grantBadge('day1','First Day Smoke-Free','Starting is the hardest step — you just did it.')}
-      if(streak===7)grantBadge('week1','First Week Smoke-Free','Seven days strong. Keep going!');
-      if(streak===30)grantBadge('month1','1 Month Smoke-Free','This is a huge milestone. Proud of you!');
-      if(streak===180)grantBadge('month6','6 Months Smoke-Free','Half a year! Incredible consistency.');
-      if(streak===365)grantBadge('year1','1 Year Smoke-Free','An entire year. You did that.');
+      let streak = Number(store.get('streak',0));
+      streak = hadYesterday ? Math.max(1,streak)+1 : 1;
+      store.set('streak', streak); updateStreakText();
+      gsap.fromTo('#streakDays', {scale:1}, {scale:1.3, duration:.22, yoyo:true, repeat:1, ease:'power1.inOut'});
 
-      if(streak>=2){showCelebration({title:"You're on a roll!",sub:`Streak: ${streak} ${(streak===1?'day':'days')}.`,lottieUrl:"https://lottie.host/1a8d9b29-6c19-4b0d-bb58-7f6f5c8a9a4e/HEj0rht12V.lottie"})}
+      let earned = 5; if(data.vaped==='no') earned+=10; if(data.cravings==='none') earned+=5;
+      addCoins(earned);
 
+      if(streak===1){ grantBadge('day1','First Day Smoke-Free','Starting is the hardest step — you just did it.') }
+      if(streak===7) grantBadge('week1','First Week Smoke-Free','Seven days strong. Keep going!');
+      if(streak===30) grantBadge('month1','1 Month Smoke-Free','This is a huge milestone. Proud of you!');
+      if(streak===180) grantBadge('month6','6 Months Smoke-Free','Half a year! Incredible consistency.');
+      if(streak===365) grantBadge('year1','1 Year Smoke-Free','An entire year. You did that.');
+
+      if(streak>=2){ showCelebration({title:"You're on a roll!", sub:`Streak: ${streak} ${(streak===1?'day':'days')}.`}); }
       if(data.vaped==='no'){
-        showCelebration({title:"Great job!",sub:`Saved! You earned +${earned} coins.`,lottieUrl:"https://lottie.host/a84794a5-65b8-4aca-9ceb-28dd334ddd31/N8wuvUqJ4Y.lottie"})
+        showCelebration({title:"Great job!", sub:`Saved! You earned +${earned} coins.`});
       }else{
-        showCelebration({title:"It’s okay — reset starts now",sub:"Slip-ups happen. Breathe. You’re still in this. Try a deep breath and plan your next win.",lottieUrl:"https://lottie.host/51ea6eb9-0d6f-4f9f-8b34-5f0b31fe5b3a/6c7CwTciyO.lottie"})
+        showCelebration({title:"It’s okay — reset starts now", sub:"Slip-ups happen. Breathe. You’re still in this. Try a deep breath and plan your next win."});
       }
 
-      document.getElementById('checkinMsg').textContent=`Saved! You earned +${earned} coins.`;
+      document.getElementById('checkinMsg').textContent = `Saved! You earned +${earned} coins.`;
       setTimeout(()=>document.getElementById('checkinMsg').textContent='',2500);
     });
+
     const PROMPTS=[
       "Imagine your body's cells cheering you on. What are they saying about your choice to quit?",
       "Describe what true **freedom** from nicotine addiction feels like. Where are you and what are you doing?",
@@ -472,6 +541,13 @@
       "Write down your **core values** (e.g., integrity, health, excellence). How does quitting align with them?",
       "What's one thing you are truly **excited** about doing once you no longer worry about vaping?",
       "Fill in the blank: I deserve to be nicotine-free because...",
+      "Visualize your life **one year from now** as a non-vaper. What does it look like?",
+      "What are **three healthy habits** you can adopt to replace the routine of vaping?",
+      "Write about a time you **overcame a challenge**. How can that experience help you quit vaping?",
+      "Describe your **ideal day** as a non-vaper. What activities fill your time and how do you feel?",
+      "What are the **top five reasons** you want to quit vaping? Reflect on each one.",
+      "How will quitting vaping improve your **mental clarity and focus**? Give specific examples.",
+      "Write a letter to your **future self** who has successfully quit vaping. What advice and encouragement do you give?"
       "Choose a **personal quit anthem** (a song) and write about why its message motivates you.",
       "If you could have a five-minute chat with your **Future Self** (vape-free), what crucial advice would they give you right now?",
       "Name your **top three triggers** (People, Places, Situations). Design one specific avoidance or substitution plan for each.",
@@ -494,7 +570,7 @@
       "When you feel irritable or moody (**nicotine withdrawal**), what is a healthy, calming activity you can do for 15 minutes?",
       "Describe a time in your life when you **overcame a difficult challenge**. What skills did you use then that you can use now?",
       "If your craving felt like a stormy cloud, what's your mental 'sunshine' (a happy memory or thought) to cut through it?",
-      "What's one thing you can do for **self-care** today that has absolutely nothing to do with quitting?",
+       "What's one thing you can do for **self-care** today that has absolutely nothing to do with quitting?",
       "When boredom hits, what is a productive task you can switch to that requires your full focus?",
       "What's the difference between the **temporary relief** of vaping and the **lasting calm** of a healthy coping skill?",
       "How can you talk to yourself with **kindness and encouragement** instead of self-criticism during a tough moment?",
@@ -504,6 +580,7 @@
       "List five things that bring you **genuine joy** (not temporary distraction). Plan to do one today.",
       "How does movement (walking, dancing, jumping jacks) help you release the physical tension of a craving?",
       "What makes you **laugh**? Write about a funny memory or joke to shift your mood quickly.",
+      "What is the **longest time** you've gone without vaping so far? How does that achievement make you feel?",
       "What is the **longest time** you've gone without vaping so far? How does that prove you have the ability to quit?",
       "List **three small victories** from the past 24 hours (could be resisting a craving, choosing water, or getting good sleep).",
       "Describe one positive physical change you’ve noticed (e.g., easier to breathe, better sense of smell, less coughing).",
@@ -516,7 +593,7 @@
       "Name a craving you successfully resisted. What was the **key strategy** you used that worked?",
       "How has your **focus or sleep** improved since you cut back or quit? Give a specific example?",
       "Write down your next **big reward** (e.g., a concert ticket, new video game) and what vape-free date you will earn it by?",
-      "If your motivation was a battery, what charged it up today?",
+"If your motivation was a battery, what charged it up today?",
       "Who is the **first person** you want to share your next vape-free milestone with, and why?",
       "What is the best piece of **positive feedback** you've received about your quitting journey?",
       "Who is your **#1 support person**? Write a brief thank-you to them for their help?",
@@ -559,117 +636,245 @@
       "What simple action can you take in the **next 5 minutes** to feel better about yourself?",
       "My lungs are **strong** and getting stronger every day.",
       "**I am a non-vaper.** Write a final statement of power and belief."
-    ];
 
-    let promptIndex=0;
-    const promptText=document.getElementById('promptText');
-    function showPrompt(){promptText.textContent=PROMPTS[promptIndex]}
-    document.getElementById('prevPrompt').addEventListener('click',()=>{promptIndex=(promptIndex-1+PROMPTS.length)%PROMPTS.length;showPrompt()});
-    document.getElementById('nextPrompt').addEventListener('click',()=>{promptIndex=(promptIndex+1)%PROMPTS.length;showPrompt()});
+    ];
+    let promptIndex = 0;
+    const promptText = document.getElementById('promptText');
+    function showPrompt(){ promptText.textContent = PROMPTS[promptIndex]; }
+    document.getElementById('prevPrompt').addEventListener('click',()=>{ promptIndex=(promptIndex-1+PROMPTS.length)%PROMPTS.length; showPrompt(); });
+    document.getElementById('nextPrompt').addEventListener('click',()=>{ promptIndex=(promptIndex+1)%PROMPTS.length; showPrompt(); });
     showPrompt();
 
-    document.getElementById('clearJournalDraft').addEventListener('click',()=>{document.getElementById('journalEntry').value=''});
+    document.getElementById('clearJournalDraft').addEventListener('click',()=>{ document.getElementById('journalEntry').value=''; });
     document.getElementById('saveJournalBtn').addEventListener('click',()=>{
-      const entry=document.getElementById('journalEntry').value.trim();
-      if(!entry){document.getElementById('saveJournalMsg').textContent="Write something first";return}
-      const free=document.getElementById('freeWriteToggle').checked;
-      const hist=store.get('prompt_history',[]);
-      if(!free){const p=PROMPTS[promptIndex];hist.push(p);store.set('prompt_history',hist)}
-      const entries=store.get('journal_entries',[]);
+      const entry = document.getElementById('journalEntry').value.trim();
+      if(!entry){ document.getElementById('saveJournalMsg').textContent="Write something first"; return; }
+      const free = document.getElementById('freeWriteToggle').checked;
+      const hist = store.get('prompt_history',[]);
+      if(!free){ const p = PROMPTS[promptIndex]; hist.push(p); store.set('prompt_history',hist); }
+      const entries = store.get('journal_entries',[]);
       entries.push({prompt:free?null:PROMPTS[promptIndex],entry,ts:Date.now()});
       store.set('journal_entries',entries);
       document.getElementById('journalEntry').value='';
       document.getElementById('saveJournalMsg').textContent="Saved! +7 coins";
       addCoins(7);
-      const ul=document.getElementById('journalHistory');ul.innerHTML='';
-      hist.slice(-10).reverse().forEach(p=>{const li=document.createElement('li');li.textContent=p;ul.appendChild(li)});
-      document.getElementById('journalHistoryCard').style.display=hist.length?'block':'none';
+
+      const ul=document.getElementById('journalHistory'); ul.innerHTML='';
+      hist.slice(-10).reverse().forEach(p=>{ const li=document.createElement('li'); li.textContent=p; ul.appendChild(li); });
+      document.getElementById('journalHistoryCard').style.display = hist.length?'block':'none';
       setTimeout(()=>document.getElementById('saveJournalMsg').textContent='',1800);
     });
+    (function loadJournalHistory(){
+      const hist = store.get('prompt_history',[]);
+      const ul=document.getElementById('journalHistory'); ul.innerHTML='';
+      hist.slice(-10).reverse().forEach(p=>{ const li=document.createElement('li'); li.textContent=p; ul.appendChild(li); });
+      document.getElementById('journalHistoryCard').style.display = hist.length?'block':'none';
+    })();
 
-    function owns(type,key){const arr=store.get('owned_'+type,[]);return arr.includes(key)}
-    function addOwned(type, key) {
-      const arr = store.get('owned_' + type, []);
-      if (!arr.includes(key)) {
-        arr.push(key);
-        store.set('owned_' + type, arr);
-      }
+    function owns(type,key){ const arr=store.get('owned_'+type,[]); return arr.includes(key); }
+    function addOwned(type,key){
+      const arr=store.get('owned_'+type,[]);
+      if(!arr.includes(key)){ arr.push(key); store.set('owned_'+type,arr); }
     }
-  </script>
-  <script>
-    (function applySavedTheme(){const t=store.get('theme',null);const custom=store.get('theme_custom',null);if(custom){document.body.removeAttribute('data-theme');applyCustomThemeVars(custom)}else if(t){document.body.setAttribute('data-theme',t)}})();
+
+    (function applySavedTheme(){
+      const t = store.get('theme',null);
+      const custom = store.get('theme_custom',null);
+      if(custom){ document.body.removeAttribute('data-theme'); applyCustomThemeVars(custom); }
+      else if(t){ document.body.setAttribute('data-theme',t); }
+    })();
 
     document.querySelectorAll('.buyBtn').forEach(b=>{
       b.addEventListener('click',()=>{
-        const type=b.dataset.type,key=b.dataset.key,cost=Number(b.dataset.cost);
-        if(owns(type,key)){document.getElementById('shopMsg').textContent=`You already own this ${type}.`;if(type==='theme'){store.set('theme',key);document.body.setAttribute('data-theme',key)}return}
-        if(!spendCoins(cost)){document.getElementById('shopMsg').textContent="Not enough coins.";return}
-        if(type==='theme'){store.set('theme_custom',null);store.set('theme',key);document.body.setAttribute('data-theme',key);document.body.style.setProperty('--app-font',store.get('font_choice','"Hanken Grotesk"'))}
-        else if(type==='badge'){addOwned('badge',key)}
-        else{addOwned(type,key)}
+        const type=b.dataset.type, key=b.dataset.key, cost=Number(b.dataset.cost);
+        if(owns(type,key)){
+          document.getElementById('shopMsg').textContent=`You already own this ${type}.`;
+          if(type==='theme'){ store.set('theme',key); document.body.setAttribute('data-theme',key); }
+          return;
+        }
+        if(!spendCoins(cost)){ document.getElementById('shopMsg').textContent="Not enough coins."; return; }
+        if(type==='theme'){
+          store.set('theme_custom',null);
+          store.set('theme',key);
+          document.body.setAttribute('data-theme',key);
+          document.body.style.setProperty('--app-font', store.get('font_choice','"Hanken Grotesk"'));
+        }else if(type==='badge'){ addOwned('badge',key); }
+        else{ addOwned(type,key); }
         document.getElementById('shopMsg').textContent=`Purchased ${type}!`;
-      })
+      });
     });
 
-    function applyCustomThemeVars(obj){document.body.style.setProperty('--bg1',obj.bg1);document.body.style.setProperty('--bg2',obj.bg2);document.body.style.setProperty('--brand',obj.brand);document.body.style.setProperty('--brand-dark',obj.brandDark);store.set('theme',null)}
+    function applyCustomThemeVars(obj){
+      document.body.style.setProperty('--bg1',obj.bg1);
+      document.body.style.setProperty('--bg2',obj.bg2);
+      document.body.style.setProperty('--brand',obj.brand);
+      document.body.style.setProperty('--brand-dark',obj.brandDark);
+      store.set('theme',null);
+    }
     document.getElementById('applyCustomThemeBtn').addEventListener('click',()=>{
-      const canByStreak=Number(store.get('streak',0))>=2;const hasCoins=coins()>=10;
-      if(!canByStreak&&!hasCoins){document.getElementById('ctMsg').textContent="Need 10 coins or a 2-day streak to apply a custom theme.";return}
-      if(!canByStreak){setCoins(coins()-10)}
-      const custom={bg1:document.getElementById('ctBg1').value,bg2:document.getElementById('ctBg2').value,brand:document.getElementById('ctBrand').value,brandDark:document.getElementById('ctBrandDark').value};
-      store.set('theme_custom',custom);document.body.removeAttribute('data-theme');applyCustomThemeVars(custom);document.getElementById('ctMsg').textContent="Custom theme applied!";
+      const canByStreak = Number(store.get('streak',0))>=2;
+      const hasCoins = coins()>=10;
+      if(!canByStreak && !hasCoins){ document.getElementById('ctMsg').textContent="Need 10 coins or a 2-day streak to apply a custom theme."; return; }
+      if(!canByStreak){ setCoins(coins()-10); }
+      const custom = {
+        bg1:document.getElementById('ctBg1').value,
+        bg2:document.getElementById('ctBg2').value,
+        brand:document.getElementById('ctBrand').value,
+        brandDark:document.getElementById('ctBrandDark').value
+      };
+      store.set('theme_custom',custom);
+      document.body.removeAttribute('data-theme');
+      applyCustomThemeVars(custom);
+      document.getElementById('ctMsg').textContent="Custom theme applied!";
     });
 
-    const BADGE_META={day1:{name:"First Day Smoke-Free",note:"Starting is the hardest step — you just did it."},week1:{name:"First Week Smoke-Free",note:"Seven days strong. Keep going!"},month1:{name:"1 Month Smoke-Free",note:"Huge milestone. Proud of you!"},month6:{name:"6 Months Smoke-Free",note:"Half a year of wins."},year1:{name:"1 Year Smoke-Free",note:"An entire year — amazing."}};
-    function grantBadge(key,displayName,note){addOwned('badge',key);showCelebration({title:`🎉 You unlocked: ${displayName}`,sub:note||BADGE_META[key]?.note||"Nice work!",lottieUrl:"https://lottie.host/a28123ba-b615-40e9-9a71-1911208c96e5/5jNzpQPOlt.lottie"})}
-    function renderBadges(){const grid=document.getElementById('badgeGrid');const owned=store.get('owned_badge',[]);grid.innerHTML='';if(!owned.length){grid.innerHTML='<div class="muted">No badges yet. Your first one appears when you check in today.</div>';return}owned.forEach(k=>{const meta=BADGE_META[k]||{name:k,note:""};const el=document.createElement('div');el.className='badge';el.innerHTML=`<div style="font-size:22px;margin-bottom:6px;">🏅</div><div><strong>${meta.name}</strong></div><div class="muted" style="font-size:13px">${meta.note||''}</div>`;grid.appendChild(el)})}
+    /* -------- Badges / PFP / Fonts -------- */
+    const BADGE_META = {
+      day1:{name:"First Day Smoke-Free",note:"Starting is the hardest step — you just did it."},
+      week1:{name:"First Week Smoke-Free",note:"Seven days strong. Keep going!"},
+      month1:{name:"1 Month Smoke-Free",note:"Huge milestone. Proud of you!"},
+      month6:{name:"6 Months Smoke-Free",note:"Half a year of wins."},
+      year1:{name:"1 Year Smoke-Free",note:"An entire year — amazing."}
+    };
+    function grantBadge(key,displayName,note){
+      addOwned('badge',key);
+      showCelebration({title:`🎉 You unlocked: ${displayName}`, sub:note||BADGE_META[key]?.note||"Nice work!"});
+    }
+    function renderBadges(){
+      const grid=document.getElementById('badgeGrid');
+      const owned=store.get('owned_badge',[]);
+      grid.innerHTML='';
+      if(!owned.length){ grid.innerHTML='<div class="muted">No badges yet. Your first one appears when you check in today.</div>'; return; }
+      owned.forEach(k=>{
+        const meta=BADGE_META[k]||{name:k,note:""};
+        const el=document.createElement('div');
+        el.className='badge';
+        el.innerHTML=`<div style="font-size:22px;margin-bottom:6px;">🏅</div><div><strong>${meta.name}</strong></div><div class="muted" style="font-size:13px">${meta.note||''}</div>`;
+        grid.appendChild(el);
+      });
+    }
 
     const PFP_CHOICES=["🐶","🐰","🐱","🦊","🐻","🐼","🐨","🐵","🦄","🐯","🐹","🐸","🐥","🦋"];
-    function renderPfp(){const holder=document.getElementById('pfpGrid');const sel=store.get('pfp','🐰');holder.innerHTML='';PFP_CHOICES.forEach(ch=>{const div=document.createElement('div');div.className='pfp-choice'+(sel===ch?' active':'');div.textContent=ch;div.title='Click to select';div.addEventListener('click',()=>{store.set('pfp',ch);renderPfp()});holder.appendChild(div)})}
-
-    function applyFontChoice(fontName){document.documentElement.style.setProperty('--app-font',fontName);store.set('font_choice',fontName)}
-    function renderFontPicker(){const chips=document.querySelectorAll('.font-chip');const chosen=store.get('font_choice','"Hanken Grotesk"');applyFontChoice(chosen);chips.forEach(c=>{c.classList.toggle('active',c.dataset.font===chosen);c.addEventListener('click',()=>{chips.forEach(x=>x.classList.remove('active'));c.classList.add('active');applyFontChoice(c.dataset.font)})})}
-
-    const STICKIES={gentle:["You’ve already proven you can do hard things.","Slip-ups don’t erase progress. They teach you.","Breathe. This urge will pass.","Talk to yourself like you would to a best friend.","Tiny wins today become big wins later."],realtalk:["Wanting and doing are different. Do it.","Cravings last minutes. Pride lasts longer.","You’re in charge, not the vape.","If it costs your health, it’s too expensive.","Future you is begging you to keep going."],mix:["Reset is always one choice away.","Every check-in is proof you care.","One day at a time beats all-or-nothing.","Replace the habit: move, sip water, breathe.","You’re stronger than this moment."]};
-    function renderStickies(){
-      const grid=document.getElementById('stickyGrid');const style=store.get('motivation_style','mix');const picks=[...STICKIES[style],...STICKIES.mix].slice(0,8);
-      grid.innerHTML='';picks.forEach(txt=>{const d=document.createElement('div');d.className='sticky '+(style==='realtalk'?'rt':style==='mix'?'mix':'');d.textContent=txt;grid.appendChild(d)});
-      const stickerRow=document.createElement('div');stickerRow.className='sticky mix';stickerRow.style.display='grid';stickerRow.style.gridTemplateColumns='repeat(auto-fit,minmax(220px,1fr))';stickerRow.style.gap='10px';
+    function renderPfp(){
+      const holder=document.getElementById('pfpGrid');
+      const sel=store.get('pfp','🐰');
+      holder.innerHTML='';
+      PFP_CHOICES.forEach(ch=>{
+        const div=document.createElement('div');
+        div.className='pfp-choice'+(sel===ch?' active':'');
+        div.textContent=ch; div.title='Click to select';
+        div.addEventListener('click',()=>{ store.set('pfp',ch); renderPfp(); });
+        holder.appendChild(div);
+      });
     }
-    document.getElementById('saveStyleBtn').addEventListener('click',()=>{const style=document.getElementById('motivationStyle').value;store.set('motivation_style',style);renderStickies()});
-    (function initMotivation(){const style=store.get('motivation_style','mix');document.getElementById('motivationStyle').value=style})();
 
-    let fbReady=false,db=null,chatRef=null;
+    function applyFontChoice(fontName){ document.documentElement.style.setProperty('--app-font',fontName); store.set('font_choice',fontName); }
+    function renderFontPicker(){
+      const chips=document.querySelectorAll('.font-chip');
+      const chosen=store.get('font_choice','"Hanken Grotesk"');
+      applyFontChoice(chosen);
+      chips.forEach(c=>{
+        c.classList.toggle('active', c.dataset.font===chosen);
+        c.addEventListener('click',()=>{
+          chips.forEach(x=>x.classList.remove('active'));
+          c.classList.add('active'); applyFontChoice(c.dataset.font);
+        });
+      });
+    }
+
+    /* -------- Motivation stickies -------- */
+    const STICKIES={
+      gentle:["You’ve already proven you can do hard things.","Slip-ups don’t erase progress. They teach you.","Breathe. This urge will pass.","Talk to yourself like you would to a best friend.","Tiny wins today become big wins later."],
+      realtalk:["Wanting and doing are different. Do it.","Cravings last minutes. Pride lasts longer.","You’re in charge, not the vape.","If it costs your health, it’s too expensive.","Future you is begging you to keep going."],
+      mix:["Reset is always one choice away.","Every check-in is proof you care.","One day at a time beats all-or-nothing.","Replace the habit: move, sip water, breathe.","You’re stronger than this moment."]
+    };
+    function renderStickies(){
+      const grid=document.getElementById('stickyGrid');
+      const style=store.get('motivation_style','mix');
+      const picks=[...STICKIES[style],...STICKIES.mix].slice(0,8);
+      grid.innerHTML='';
+      picks.forEach(txt=>{
+        const d=document.createElement('div');
+        d.className='sticky '+(style==='realtalk'?'rt':style==='mix'?'mix':'');
+        d.textContent=txt;
+        grid.appendChild(d);
+      });
+    }
+    document.getElementById('saveStyleBtn').addEventListener('click',()=>{
+      const style=document.getElementById('motivationStyle').value;
+      store.set('motivation_style',style);
+      renderStickies();
+    });
+    (function initMotivation(){
+      const style=store.get('motivation_style','mix');
+      document.getElementById('motivationStyle').value=style;
+    })();
+
+    let fbReady=false, db=null, chatRef=null;
     const chatBox=document.getElementById('chatBox');
-    function setNick(n){store.set('nick',n||'')}
-    function getNick(){return store.get('nick','')}
+    function setNick(n){ store.set('nick',n||'') }
+    function getNick(){ return store.get('nick','') }
     document.getElementById('nickInput').value=getNick();
-    document.getElementById('saveNickBtn').addEventListener('click',()=>{setNick(document.getElementById('nickInput').value.trim())});
+    document.getElementById('saveNickBtn').addEventListener('click',()=>{ setNick(document.getElementById('nickInput').value.trim()); });
 
-    window.addEventListener('load',()=>{
-      if(!window.firebase){return}
-      const firebaseConfig={apiKey:"AIzaSyAhsjCfr7B-9vxxcA9bnLr46VcxbRMftvA",authDomain:"unhook-38abb.firebaseapp.com",databaseURL:"https://unhook-38abb-default-rtdb.firebaseio.com",projectId:"unhook-38abb",storageBucket:"unhook-38abb.firebasestorage.app",messagingSenderId:"182531035159",appId:"1:182531035159:web:47163c38ee27c2ba3b8c52",measurementId:"G-7GGK123MDT"};
+    window.addEventListener('load', ()=>{
+      if(!window.firebase){ return; }
+      const firebaseConfig={
+        apiKey:"AIzaSyAhsjCfr7B-9vxxcA9bnLr46VcxbRMftvA",
+        authDomain:"unhook-38abb.firebaseapp.com",
+        databaseURL:"https://unhook-38abb-default-rtdb.firebaseio.com",
+        projectId:"unhook-38abb",
+        storageBucket:"unhook-38abb.firebasestorage.app",
+        messagingSenderId:"182531035159",
+        appId:"1:182531035159:web:47163c38ee27c2ba3b8c52",
+        measurementId:"G-7GGK123MDT"
+      };
       try{
         const app=firebase.initializeApp(firebaseConfig);
-        db=firebase.database();chatRef=db.ref('chat/global');fbReady=true;chatBox.innerHTML="";
-        chatRef.limitToLast(100).on('child_added',snap=>{const m=snap.val();const div=document.createElement('div');div.className='msg';const when=new Date(m.ts||Date.now()).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});div.innerHTML=`<small>[${when}] ${escapeHtml(m.nick||'anon')}:</small> ${escapeHtml(m.text||'')}`;chatBox.appendChild(div);chatBox.scrollTop=chatBox.scrollHeight})
-      }catch(e){console.warn('Firebase init skipped:',e)}
+        db=firebase.database(); chatRef=db.ref('chat/global'); fbReady=true; chatBox.innerHTML="";
+        chatRef.limitToLast(100).on('child_added',snap=>{
+          const m=snap.val();
+          const div=document.createElement('div');
+          div.className='msg';
+          const when=new Date(m.ts||Date.now()).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+          div.innerHTML=`<small>[${when}] ${escapeHtml(m.nick||'anon')}:</small> ${escapeHtml(m.text||'')}`;
+          chatBox.appendChild(div);
+          chatBox.scrollTop=chatBox.scrollHeight;
+        });
+      }catch(e){ console.warn('Firebase init skipped:',e); }
     });
 
-    document.getElementById('sendBtn').addEventListener('click',sendMsg);
-    document.getElementById('chatMsg').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();sendMsg()}});
-
+    document.getElementById('sendBtn').addEventListener('click', sendMsg);
+    document.getElementById('chatMsg').addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); sendMsg(); }});
     function sendMsg(){
-      const text=document.getElementById('chatMsg').value.trim();if(!text)return;
-      if(!fbReady||!chatRef){alert('Chat not ready. Check Firebase config.');return}
+      const text=document.getElementById('chatMsg').value.trim(); if(!text) return;
+      if(!fbReady||!chatRef){ alert('Chat not ready. Check Firebase config.'); return; }
       const nick=getNick()||'anon';
-      chatRef.push({nick,text,ts:Date.now()}).then(()=>{document.getElementById('chatMsg').value='';const dayKey=todayKey();const sent=store.get('msg_count_'+dayKey,0);if(sent<3&&text.length>=12){addCoins(2);store.set('msg_count_'+dayKey,sent+1)}}).catch(err=>alert('Send failed: '+err.message))
+      chatRef.push({nick,text,ts:Date.now()}).then(()=>{
+        document.getElementById('chatMsg').value='';
+        const dayKey=todayKey();
+        const sent=store.get('msg_count_'+dayKey,0);
+        if(sent<3 && text.length>=12){ addCoins(2); store.set('msg_count_'+dayKey, sent+1); }
+      }).catch(err=>alert('Send failed: '+err.message));
     }
+    function escapeHtml(s){ return s.replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
 
-    function escapeHtml(s){return s.replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+    function renderFontPickerInit(){ renderFontPicker(); }
+    (function initUI(){
+      updateCoinDisplays();
+      updateStreakText();
+      renderFontPickerInit();
+      renderBadges();
+      renderPfp();
+      renderStickies();
+      const savedFont=store.get('font_choice','"Hanken Grotesk"');
+      document.documentElement.style.setProperty('--app-font',savedFont);
+    })();
 
-    (function initUI(){updateCoinDisplays();updateStreakText();renderFontPicker();renderBadges();renderPfp();const savedFont=store.get('font_choice','"Hanken Grotesk"');document.documentElement.style.setProperty('--app-font',savedFont)})();
+    document.querySelectorAll('button').forEach(btn=>{
+      btn.addEventListener('click',()=>{ gsap.fromTo(btn,{scale:1},{scale:.92,duration:.12,yoyo:true,repeat:1}); });
+    });
+  });
   </script>
-  <script src="https://unpkg.com/@lottiefiles/lottie-player@1.6.0/dist/lottie-player.js"></script>
 </body>
 </html>
