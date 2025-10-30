@@ -51,7 +51,6 @@
     .chat-box{height:380px;overflow:auto;border-radius:16px;background:var(--card);box-shadow:inset 0 0 0 1px #e9eef6,0 10px 24px var(--ring);padding:12px}
     .msg{margin:8px 0}
     .msg small{color:var(--muted);font-weight:600;margin-right:6px}
-
     .overlay{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.35);z-index:50}
     .overlay.show{display:flex}
     .cele-card{background:#fff;border-radius:18px;padding:22px;max-width:520px;width:92%;text-align:center;box-shadow:0 30px 80px rgba(0,0,0,.25);position:relative;overflow:hidden}
@@ -59,20 +58,6 @@
     .cele-sub{color:#4a5568;margin:0 0 12px}
     .sparkles{position:absolute;inset:0;pointer-events:none}
     .sparkles span{position:absolute;font-size:24px;opacity:0}
-
-    .stickies{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
-    .sticky{background:#fff8b8;border:1px solid #f1e28a;border-radius:10px;padding:14px;box-shadow:0 6px 16px rgba(0,0,0,.08);font-family:"Playfair Display",serif}
-    .sticky.rt{background:#ffd2d2;border-color:#ffb2b2}
-    .sticky.mix{background:#dff3ff;border-color:#bfe5ff}
-
-    .badge-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px}
-    .badge{background:var(--card);border-radius:14px;border:1px dashed #dfe6f5;padding:10px;text-align:center}
-    .pfp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(58px,1fr));gap:10px}
-    .pfp-choice{font-size:36px;line-height:1;background:#fff;border-radius:14px;padding:10px;cursor:pointer;border:2px solid transparent}
-    .pfp-choice.active{border-color:var(--brand);box-shadow:0 6px 20px var(--ring)}
-    .font-preview{display:flex;gap:8px;flex-wrap:wrap}
-    .font-chip{padding:8px 12px;border-radius:999px;border:1px solid #dfe6f5;cursor:pointer}
-    .font-chip.active{background:var(--brand);color:#fff;border-color:transparent}
   </style>
 
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
@@ -395,7 +380,9 @@
   document.addEventListener('DOMContentLoaded', () => {
     const show = (id) => {
       document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-      document.getElementById(id).classList.add('active');
+      const next = document.getElementById(id);
+      next.classList.add('active');
+      gsap.fromTo(next, {opacity:0, y:6}, {opacity:1, y:0, duration:.3, ease:"power1.out"});
       updateCoinDisplays();
       if (id === 'profile'){ renderBadges(); renderPfp(); updateStreakText(); }
       if (id === 'motivation'){ renderStickies(); }
@@ -403,24 +390,10 @@
     document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => show(t.dataset.go)));
     document.querySelectorAll('.link[data-jump]').forEach(el => el.addEventListener('click', () => show(el.dataset.jump)));
 
-    const store = {
-      get(k,d){ try{ return JSON.parse(localStorage.getItem(k)) ?? d } catch { return d } },
-      set(k,v){ localStorage.setItem(k, JSON.stringify(v)) }
-    };
+    const store = { get(k,d){ try{return JSON.parse(localStorage.getItem(k)) ?? d} catch{return d} },
+                    set(k,v){ localStorage.setItem(k, JSON.stringify(v)) } };
 
     function coins(){ return Number(store.get('coins',0)) }
-    function setCoins(n){ store.set('coins', Math.max(0,n)); updateCoinDisplays(); }
-    function addCoins(n){
-      const before = coins();
-      const after = Math.max(0, before + n);
-      store.set('coins', after);
-      animateCoins(before, after);
-      updateCoinDisplays();
-    }
-    function spendCoins(n){
-      if (coins() >= n){ setCoins(coins()-n); return true }
-      return false;
-    }
     function updateCoinDisplays(){
       const c = coins();
       const el = document.getElementById('coinCount');
@@ -435,6 +408,15 @@
       }});
       gsap.fromTo("#coinPill", {scale:1}, {scale:1.12, duration:.18, yoyo:true, repeat:1});
     }
+    function setCoins(n){ store.set('coins', Math.max(0,n)); updateCoinDisplays(); }
+    function addCoins(n){
+      const before = coins();
+      const after  = Math.max(0, before + n);
+      store.set('coins', after);
+      animateCoins(before, after);
+      updateCoinDisplays();
+    }
+    function spendCoins(n){ if (coins()>=n){ setCoins(coins()-n); return true } return false; }
 
     function todayKey(){ return new Date().toISOString().slice(0,10) }
     function updateStreakText(){
@@ -444,9 +426,9 @@
     }
 
     const celeOverlay = document.getElementById('celeOverlay');
-    const celeTitle = document.getElementById('celeTitle');
-    const celeSub   = document.getElementById('celeSub');
-    const sparkles  = document.getElementById('sparkles');
+    const celeTitle   = document.getElementById('celeTitle');
+    const celeSub     = document.getElementById('celeSub');
+    const sparkles    = document.getElementById('sparkles');
     document.getElementById('celeClose').addEventListener('click', () => celeOverlay.classList.remove('show'));
     celeOverlay.addEventListener('click', (e)=>{ if(e.target===celeOverlay) celeOverlay.classList.remove('show'); });
 
@@ -464,7 +446,7 @@
     }
     function showCelebration({title, sub}){
       celeTitle.textContent = title;
-      celeSub.textContent = sub;
+      celeSub.textContent   = sub;
       celeOverlay.classList.add('show');
       sprinkleSparkles();
       confetti({ particleCount: 120, spread: 80, origin: { y: 0.7 } });
@@ -497,11 +479,10 @@
         notes: document.getElementById('notesTxt').value.trim(),
         ts: Date.now()
       };
-      const days = store.get('days', {}); days[todayKey()] = data; store.set('days', days);
+      const days = store.get('days', {}); days[todayKey()] = data; store.set('days',days);
 
       const y = new Date(); y.setDate(y.getDate()-1);
       const hadYesterday = Boolean(days[y.toISOString().slice(0,10)]);
-
       let streak = Number(store.get('streak',0));
       streak = hadYesterday ? Math.max(1,streak)+1 : 1;
       store.set('streak', streak); updateStreakText();
@@ -527,149 +508,146 @@
       setTimeout(()=>document.getElementById('checkinMsg').textContent='',2500);
     });
 
-    const PROMPTS=[
+    const DEFAULT_PROMPTS = [
+      "What made you decide to quit vaping?",
+      "Describe a time when you successfully resisted a craving.",
+      "What are your top three reasons for wanting to be vape-free?",
+      "How do you feel physically and emotionally since quitting vaping?",
+      "What strategies have helped you cope with stress without vaping?",
+      "Write about a person who supports your decision to quit vaping.",
+      "What activities or hobbies have you picked up since quitting?",
+      "Describe your ideal vape-free day.",
+      "What challenges have you faced while quitting, and how did you overcome them?",
+      "How has quitting vaping improved your relationships with others?",
       "Imagine your body's cells cheering you on. What are they saying about your choice to quit?",
-      "Describe what true **freedom** from nicotine addiction feels like. Where are you and what are you doing?",
-      "What's one **sport, hobby, or creative pursuit** that will get significantly better once your lungs are clear?",
-      "Write a short letter to your **past self** who first considered vaping. What warning and encouragement do you give?",
-      "List **three specific ways** quitting will improve your relationships with friends or family.",
+      "Describe what true freedom from nicotine addiction feels like. Where are you and what are you doing?",
+      "What's one sport, hobby, or creative pursuit that will get significantly better once your lungs are clear?",
+      "Write a short letter to your past self who first considered vaping. What warning and encouragement do you give?",
+      "List three specific ways quitting will improve your relationships with friends or family.",
       "If you save the money you would have spent on vapes for a year, what exciting thing could you buy or do?",
-      "What is the **main source of strength** (internal or external) you will tap into when a craving is intense?",
-      "How does quitting show the world that you are **disciplined and in control** of your own life?",
-      "Describe the feeling of taking a **full, deep, easy breath**. Make it your motivation.",
-      "What new, **positive identity** are you stepping into by becoming a non-vaper?",
-      "Write down your **core values** (e.g., integrity, health, excellence). How does quitting align with them?",
-      "What's one thing you are truly **excited** about doing once you no longer worry about vaping?",
+      "What is the main source of strength (internal or external) you will tap into when a craving is intense?",
+      "How does quitting show the world that you are disciplined and in control of your own life?",
+      "Describe the feeling of taking a full, deep, easy breath. Make it your motivation.",
+      "What new, positive identity are you stepping into by becoming a non-vaper?",
+      "Write down your core values (e.g., integrity, health, excellence). How does quitting align with them?",
+      "What's one thing you are truly excited about doing once you no longer worry about vaping?",
       "Fill in the blank: I deserve to be nicotine-free because...",
-      "Visualize your life **one year from now** as a non-vaper. What does it look like?",
-      "What are **three healthy habits** you can adopt to replace the routine of vaping?",
-      "Write about a time you **overcame a challenge**. How can that experience help you quit vaping?",
-      "Describe your **ideal day** as a non-vaper. What activities fill your time and how do you feel?",
-      "What are the **top five reasons** you want to quit vaping? Reflect on each one.",
-      "How will quitting vaping improve your **mental clarity and focus**? Give specific examples.",
-      "Write a letter to your **future self** who has successfully quit vaping. What advice and encouragement do you give?"
-      "Choose a **personal quit anthem** (a song) and write about why its message motivates you.",
-      "If you could have a five-minute chat with your **Future Self** (vape-free), what crucial advice would they give you right now?",
-      "Name your **top three triggers** (People, Places, Situations). Design one specific avoidance or substitution plan for each.",
-      "What are the **3 P’s** that trigger you most: **People, Places, or Patterns**? Focus your plan there.",
-      "You get a strong craving at a usual time. Write out the **5-step distraction routine** you will execute *immediately*.",
-      "What specific feeling (e.g., **boredom, social anxiety, stress**) usually precedes the urge to vape? How can you address the feeling directly?",
-      "Design a **Craving Kit**. What five physical objects will you keep with you to replace the hand-to-mouth habit?",
-      "You’re offered a vape at a social event. Write down the **exact line** you will use to say, 'No, thanks' confidently.",
-      "What's one thing you can **physically remove** from your room or environment to make quitting easier?",
-      "How will you **change your routine** (e.g., taking a different route, switching lunch tables) to disrupt your habit loops?",
-      "List three **safe people** (friends, family, mentors) you can text or call when a craving is unbearable. Write down what you'll say to them.",
-      "Describe the feeling of a craving—is it a tightness, a restlessness, a hollow spot? Giving it a label makes it less scary.",
-      "When you feel the urge, what can you hold in your **hand** to keep it busy and mimic the vape's action?",
-      "If you usually vape after dinner, what is your **new, non-negotiable after-dinner activity** for the next week?",
-      "What are three ways you can make the people, places, and things that trigger you **less accessible**?",
-      "Plan a **'Fire Drill'**: If you unexpectedly run into a major trigger, what's your immediate 'Escape' strategy?",
-      "How does your understanding of your triggers make you feel **more powerful** and prepared?",
-      "What is your go-to **breathing exercise** when stress builds up? Write down the steps and practice it now.",
-      "Write down three **positive affirmations** about your strength and commitment. Read them out loud.",
-      "When you feel irritable or moody (**nicotine withdrawal**), what is a healthy, calming activity you can do for 15 minutes?",
-      "Describe a time in your life when you **overcame a difficult challenge**. What skills did you use then that you can use now?",
-      "If your craving felt like a stormy cloud, what's your mental 'sunshine' (a happy memory or thought) to cut through it?",
-       "What's one thing you can do for **self-care** today that has absolutely nothing to do with quitting?",
-      "When boredom hits, what is a productive task you can switch to that requires your full focus?",
-      "What's the difference between the **temporary relief** of vaping and the **lasting calm** of a healthy coping skill?",
-      "How can you talk to yourself with **kindness and encouragement** instead of self-criticism during a tough moment?",
-      "What is one positive habit (**e.g., drinking water, stretching, listening to music**) you want to **add** to your routine to replace vaping?",
-      "Write about an emotion you tend to **avoid** by vaping. How can you face that emotion directly for five minutes today?",
-      "What does **'riding the wave'** of a craving mean to you? How does knowing it will pass in minutes change how you respond?",
-      "List five things that bring you **genuine joy** (not temporary distraction). Plan to do one today.",
-      "How does movement (walking, dancing, jumping jacks) help you release the physical tension of a craving?",
-      "What makes you **laugh**? Write about a funny memory or joke to shift your mood quickly.",
-      "What is the **longest time** you've gone without vaping so far? How does that achievement make you feel?",
-      "What is the **longest time** you've gone without vaping so far? How does that prove you have the ability to quit?",
-      "List **three small victories** from the past 24 hours (could be resisting a craving, choosing water, or getting good sleep).",
-      "Describe one positive physical change you’ve noticed (e.g., easier to breathe, better sense of smell, less coughing).",
-      "If your quit journey was a climbing a mountain, what **milestone** have you reached, and what’s your next flag to plant?",
-      "How does successfully getting through a day without vaping make you feel **proud** of yourself?",
-      "Calculate the money you've saved so far. How will you **reward yourself** when you hit a major savings goal?",
-      "What's one new thing you've learned about your **willpower or strength** since you started this journey?",
-      "Write a **celebratory headline** for a news story about your success at the end of this week.",
-      "What have you accomplished today that a week ago you might have felt was impossible?",
-      "Name a craving you successfully resisted. What was the **key strategy** you used that worked?",
-      "How has your **focus or sleep** improved since you cut back or quit? Give a specific example?",
-      "Write down your next **big reward** (e.g., a concert ticket, new video game) and what vape-free date you will earn it by?",
-"If your motivation was a battery, what charged it up today?",
-      "Who is the **first person** you want to share your next vape-free milestone with, and why?",
-      "What is the best piece of **positive feedback** you've received about your quitting journey?",
-      "Who is your **#1 support person**? Write a brief thank-you to them for their help?",
-      "How can you **clearly communicate your needs** to friends who still vape around you (e.g., 'Please don't do that when I'm here')?",
-      "What will you say to a friend who is also trying to quit but is struggling? Write a motivational message.",
-      "Imagine you are counseling another teen. What are the **three most important pieces of advice** you would give them?",
-      "How does your choice to quit **influence** the people around you in a positive way?",
-      "What's one thing you can do to find **new, healthy social activities** that don't involve vaping?",
-      "List three ways you can **connect with people** without relying on a shared habit like vaping?",
-      "How does being honest with a trusted adult about your quitting process make the challenge feel lighter?",
-      "Think about your favorite teacher or mentor. How would their belief in you fuel your decision to stay quit?",
-      "What are your healthy **boundary words**? (e.g., 'I'm committed to my health now' or 'Not today')",
-      "If you had a slip-up, write about it **without judgment**. What was the trigger, and what is the **lesson learned**?",
-      "What is one thing about quitting that has been **easier** than you expected? Why do you think that is?",
-      "How can you use the saved money to invest in a **new skill or hobby**?",
-      "If a moment of doubt hits, what is the **most logical counter-argument** to the desire to vape?",
-      "Write about a **negative thought** you keep having (e.g., 'It's too hard'). Now, rewrite it as an empowering truth.",
-      "What is the **smallest, simplest thing** you can do right now to make your quit journey a little easier?",
-      "What is one good thing that came out of a moment of **discomfort** during your quitting process?",
-      "If you could press a **'reset button'** on a tough moment today, what would you change about your reaction?",
-      "What's one unexpected thing that makes you want to vape that you need to be mindful of?",
-      "Write a commitment to yourself about **not letting one mistake erase all your progress**.",
-      "**Today, I choose...** (finish the sentence with a focus on freedom).",
-      "My current **superpower** is my ability to...",
-      "I am **strong enough** to handle this craving because...",
-      "This craving is a sign that **my body is healing**.",
-      "The **best thing about today** was that I...",
-      "I will show myself **compassion** by...",
-      "What is a personal mantra you can say when you feel doubt?",
-      "I am worthy of a **healthy life**.",
-      "Fill in the blank: I feel the most **like myself** when I am...",
-      "What is one thing you can **let go of** today (a worry, a frustration)?",
-      "I am **more than** my habit.",
-      "My health is my **priority**.",
-      "What is one thing you are **curious** about learning or doing this week?",
-      "I forgive myself for any past mistakes and **focus on today**.",
-      "My commitment is **stronger** than any craving.",
-      "What are you looking forward to most this weekend, now that you're focused on being vape-free?",
-      "I am **in control** of my choices.",
-      "What simple action can you take in the **next 5 minutes** to feel better about yourself?",
-      "My lungs are **strong** and getting stronger every day.",
-      "**I am a non-vaper.** Write a final statement of power and belief."
-
+      "Choose a personal quit anthem and write about why its message motivates you.",
+      "If you could have a five-minute chat with your future self (vape-free), what advice would they give you?",
+      "Name your top three triggers (People, Places, Situations). Plan one avoidance/substitution for each.",
+      "What are the 3 P’s that trigger you most: People, Places, or Patterns?",
+      "Write the 5-step distraction routine you'll use immediately when cravings hit.",
+      "What feeling (boredom, anxiety, stress) usually comes before you vape? How can you handle it directly?",
+      "Design a 'Craving Kit'. What five objects will replace the hand-to-mouth habit?",
+      "Write down the exact line you will use to say 'No, thanks' if someone offers you a vape.",
+      "What's one thing you can remove from your environment to make quitting easier?",
+      "How will you change your routine to disrupt your habit loops?",
+      "List three safe people you can text or call when cravings get strong — and what you’ll say.",
+      "Describe what a craving feels like in your body. Naming it makes it smaller.",
+      "What can you hold in your hand instead of a vape?",
+      "What will your new after-dinner routine be this week instead of vaping?",
+      "List three ways to make your triggers less accessible.",
+      "Plan a 'Fire Drill': what’s your escape plan if you face a sudden trigger?",
+      "How does understanding your triggers make you feel stronger?",
+      "What is your go-to breathing exercise? Write down the steps.",
+      "Write three positive affirmations about your strength.",
+      "What’s a healthy 15-minute activity for nicotine withdrawal mood swings?",
+      "Describe a time you overcame a big challenge — what skills from then help you now?",
+      "If cravings are storm clouds, what’s your sunshine thought or memory?",
+      "What self-care thing will you do today unrelated to quitting?",
+      "When boredom hits, what's a task you can switch to that needs full focus?",
+      "What’s the difference between the temporary relief of vaping and the lasting calm of healthier coping?",
+      "How can you talk to yourself with kindness instead of self-criticism?",
+      "Name one healthy habit you want to add to replace vaping.",
+      "Write about an emotion you avoid by vaping. Face it for five minutes today.",
+      "What does 'riding the wave' of a craving mean to you?",
+      "List five things that bring you genuine joy.",
+      "How does movement help release craving energy?",
+      "What makes you laugh? Write about a funny memory.",
+      "What's the longest time you’ve gone without vaping so far?",
+      "List three victories from the past 24 hours.",
+      "Describe one positive physical change since cutting back or quitting.",
+      "If your journey is climbing a mountain, what milestone are you at?",
+      "How does a vape-free day make you feel proud?",
+      "How will you reward yourself when you hit a savings goal?",
+      "What have you learned about your willpower?",
+      "Write a headline for your success story at the end of this week.",
+      "What did you accomplish today that old-you couldn't?",
+      "Name a craving you beat. What worked?",
+      "How has your focus or sleep improved? Give an example?",
+      "What’s your next big reward and what date will you earn it by?",
+      "If motivation was a battery, what charged it today?",
+      "Who will you tell first when you hit your next milestone?",
+      "What was the best positive feedback you've gotten?",
+      "Who is your #1 support person? Write a thank-you to them.",
+      "How will you clearly ask friends not to vape around you?",
+      "Write a supportive message to another teen trying to quit.",
+      "What three pieces of advice would you give someone trying to quit?",
+      "How does quitting make you a positive influence?",
+      "What’s one new healthy social activity you can try?",
+      "List three ways to connect with people without vaping.",
+      "How does honesty with a trusted adult lighten your burden?",
+      "How would your favorite mentor encourage you today?",
+      "What is a healthy boundary sentence you can use?",
+      "If you slipped up, what lesson did you learn?",
+      "What has been easier than you expected about quitting?",
+      "How can you invest vape-saved money into a new hobby?",
+      "What logical argument helps when doubt hits?",
+      "Rewrite a negative thought into a positive one.",
+      "What's one tiny action right now to support your quit?",
+      "What good thing came from a tough moment recently?",
+      "If you could redo a tough moment today, what would you choose differently?",
+      "What unexpected thing triggers you? Be mindful of it.",
+      "Write a promise not to let one mistake erase your progress.",
+      "Finish the sentence: Today, I choose...",
+      "My current superpower is my ability to...",
+      "I am strong enough to handle this craving because...",
+      "This craving means my body is healing.",
+      "The best thing about today was...",
+      "I will show myself compassion by...",
+      "What mantra will you use when you doubt yourself?",
+      "I am worthy of a healthy life because...",
+      "I feel the most like myself when...",
+      "What's one thing you can let go of today?",
+      "I am more than my habit because...",
+      "My health is my priority because...",
+      "What are you curious to learn or do this week that isn't vape-related?",
+      "I forgive myself for past mistakes — I focus on today.",
+      "My commitment is stronger than any craving.",
+      "What are you most looking forward to this weekend?",
+      "I am in control of my choices because...",
+      "What can you do in the next 5 minutes to feel better right now?",
+      "My lungs are strong and getting stronger every day because...",
+      "I am a non-vaper. Write a final statement of belief."
     ];
-    let promptIndex = 0;
-    const promptText = document.getElementById('promptText');
-    function showPrompt(){ promptText.textContent = PROMPTS[promptIndex]; }
+
+    const PROMPTS = (window.PROMPTS && Array.isArray(window.PROMPTS) && window.PROMPTS.length>0) ? window.PROMPTS : DEFAULT_PROMPTS;
+
+    let promptIndex=0;
+    const promptText=document.getElementById('promptText');
+    function showPrompt(){ promptText.textContent=PROMPTS[promptIndex]; }
     document.getElementById('prevPrompt').addEventListener('click',()=>{ promptIndex=(promptIndex-1+PROMPTS.length)%PROMPTS.length; showPrompt(); });
     document.getElementById('nextPrompt').addEventListener('click',()=>{ promptIndex=(promptIndex+1)%PROMPTS.length; showPrompt(); });
     showPrompt();
 
     document.getElementById('clearJournalDraft').addEventListener('click',()=>{ document.getElementById('journalEntry').value=''; });
     document.getElementById('saveJournalBtn').addEventListener('click',()=>{
-      const entry = document.getElementById('journalEntry').value.trim();
+      const entry=document.getElementById('journalEntry').value.trim();
       if(!entry){ document.getElementById('saveJournalMsg').textContent="Write something first"; return; }
-      const free = document.getElementById('freeWriteToggle').checked;
-      const hist = store.get('prompt_history',[]);
-      if(!free){ const p = PROMPTS[promptIndex]; hist.push(p); store.set('prompt_history',hist); }
-      const entries = store.get('journal_entries',[]);
+      const free=document.getElementById('freeWriteToggle').checked;
+      const hist=store.get('prompt_history',[]);
+      if(!free){ const p=PROMPTS[promptIndex]; hist.push(p); store.set('prompt_history',hist); }
+      const entries=store.get('journal_entries',[]);
       entries.push({prompt:free?null:PROMPTS[promptIndex],entry,ts:Date.now()});
       store.set('journal_entries',entries);
       document.getElementById('journalEntry').value='';
       document.getElementById('saveJournalMsg').textContent="Saved! +7 coins";
       addCoins(7);
-
       const ul=document.getElementById('journalHistory'); ul.innerHTML='';
       hist.slice(-10).reverse().forEach(p=>{ const li=document.createElement('li'); li.textContent=p; ul.appendChild(li); });
       document.getElementById('journalHistoryCard').style.display = hist.length?'block':'none';
       setTimeout(()=>document.getElementById('saveJournalMsg').textContent='',1800);
     });
-    (function loadJournalHistory(){
-      const hist = store.get('prompt_history',[]);
-      const ul=document.getElementById('journalHistory'); ul.innerHTML='';
-      hist.slice(-10).reverse().forEach(p=>{ const li=document.createElement('li'); li.textContent=p; ul.appendChild(li); });
-      document.getElementById('journalHistoryCard').style.display = hist.length?'block':'none';
-    })();
 
     function owns(type,key){ const arr=store.get('owned_'+type,[]); return arr.includes(key); }
     function addOwned(type,key){
@@ -728,7 +706,6 @@
       document.getElementById('ctMsg').textContent="Custom theme applied!";
     });
 
-    /* -------- Badges / PFP / Fonts -------- */
     const BADGE_META = {
       day1:{name:"First Day Smoke-Free",note:"Starting is the hardest step — you just did it."},
       week1:{name:"First Week Smoke-Free",note:"Seven days strong. Keep going!"},
@@ -782,7 +759,6 @@
       });
     }
 
-    /* -------- Motivation stickies -------- */
     const STICKIES={
       gentle:["You’ve already proven you can do hard things.","Slip-ups don’t erase progress. They teach you.","Breathe. This urge will pass.","Talk to yourself like you would to a best friend.","Tiny wins today become big wins later."],
       realtalk:["Wanting and doing are different. Do it.","Cravings last minutes. Pride lasts longer.","You’re in charge, not the vape.","If it costs your health, it’s too expensive.","Future you is begging you to keep going."],
@@ -809,7 +785,6 @@
       const style=store.get('motivation_style','mix');
       document.getElementById('motivationStyle').value=style;
     })();
-
     let fbReady=false, db=null, chatRef=null;
     const chatBox=document.getElementById('chatBox');
     function setNick(n){ store.set('nick',n||'') }
@@ -859,11 +834,10 @@
     }
     function escapeHtml(s){ return s.replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
 
-    function renderFontPickerInit(){ renderFontPicker(); }
     (function initUI(){
       updateCoinDisplays();
       updateStreakText();
-      renderFontPickerInit();
+      renderFontPicker();
       renderBadges();
       renderPfp();
       renderStickies();
