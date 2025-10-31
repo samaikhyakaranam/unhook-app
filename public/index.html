@@ -402,7 +402,13 @@
       </div>
     </div>
   </div>
-  <div id="motivationGrid" class="motivation-grid">
+    <div id="motivationGrid" class="motivation-grid"></div>
+<script>
+    const STK={gentle:["You are growing stronger every day.","Breathing is powerful.","Healing isn't linear.","Tiny steps count.","You deserve peace.","Be kind to yourself.","This urge will pass."],firey:["You're stronger than cravings.","Break the chain now.","You win every time you say no.","Discipline is freedom.","Fight for your future.","Choose the hard right.","Own the next minute."],mix:["Every step counts.","Believe in yourself.","You’ve got this.","Reset is one choice away.","Move, sip water, breathe.","Pride lasts longer than cravings.","Talk to yourself like a friend."]};
+    function renderMotivation(){const s=document.getElementById("motivationStyle").value;const g=document.getElementById("motivationGrid");g.innerHTML="";(STK[s]||STK.mix).forEach(t=>{const d=document.createElement("div");d.className="sticky "+s;d.textContent=t;g.appendChild(d)});const c=document.getElementById("motivationCount");if(c)c.textContent=`${(STK[s]||STK.mix).length} stickies found`}
+    document.getElementById("motivationStyle").addEventListener("change",()=>{localStorage.setItem("motivation_style",JSON.stringify(document.getElementById("motivationStyle").value));renderMotivation()});
+    (function(){const saved=(localStorage.getItem("motivation_style")||'"mix"').replace(/^"+|"+$/g,"");const sel=document.getElementById("motivationStyle");if(sel)sel.value=saved;renderMotivation()})();
+</script>
     <div id="stickyGrid"></div> 
   </div>
 </section>
@@ -455,6 +461,7 @@
     <img id="profilePic" class="profile-pic" src="https://i.imgur.com/8Km9tLL.png" alt="Profile Picture">
     <input type="file" id="uploadPicInput" accept="image/*" style="display:none;">
     <button class="cta small" id="uploadPicBtn">Change Photo</button>
+    <div id="pfpGrid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(56px,1fr));gap:10px;margin-top:12px"></div>
   </div>
   <div class="card">
     <div class="stat-row">
@@ -483,7 +490,6 @@
   </div>
   <button class="cta ghost" id="logoutBtn" style="width:100%;margin-top:16px;">Log Out</button>
 </section>
-
 <section id="community" class="section">
   <h2 class="section-title">Community Chat</h2>
   <div class="card">
@@ -498,6 +504,10 @@
     </div>
   </div>
 </section>
+<script>
+function appendChat(text,me=true){const box=document.getElementById("chatBox");if(!box)return;const row=document.createElement("div");row.className="chat-msg";const b=document.createElement("div");b.className="chat-bubble "+(me?"chat-me":"chat-other");b.textContent=text;row.appendChild(b);box.appendChild(row);box.scrollTop=box.scrollHeight}
+(function(){const btn=document.getElementById("sendChatBtn");const ta=document.getElementById("chatInput");if(!btn||!ta)return;btn.addEventListener("click",()=>{const t=(ta.value||"").trim();if(!t)return;appendChat(t,true);ta.value="";try{const k="chat_local";const arr=JSON.parse(localStorage.getItem(k)||"[]");arr.push({t,ts:Date.now()});localStorage.setItem(k,JSON.stringify(arr))}catch{}})})();
+</script>
 </main>
 <canvas id="confettiCanvas" style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:999;"></canvas>
 <div id="toast"></div>
@@ -803,9 +813,9 @@ function petCheer(){bloop(1040,0.08);emoteShow("🎉",1100)}
 function petCalm(){bloop(680,0.05);emoteShow("💛",900)}
 function idleTicker(){
   const r=Math.random();
-  if(r<.25)emoteShow("⭐",600);
-  else if(r<.5)emoteShow("💫",600);
-  else if(r<.75)emoteShow("🌟",600);
+  if(r<.25)emoteShow("🤷‍♀️",600);
+  else if(r<.5)emoteShow("🤔",600);
+  else if(r<.75)emoteShow("❔",600);
   else emoteShow("✨",600);
 }
 setInterval(idleTicker,4200);
@@ -829,6 +839,86 @@ onAuthStateChanged(auth, (user) => {
     loadingOverlay.style.display = "flex";
   }
 });
+</script>
+
+
+<script>
+/* ---------- Unhook 2.0 HOTFIX: buttons + coins persist ---------- */
+const LS={get(k,d){try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}},set(k,v){localStorage.setItem(k,JSON.stringify(v))}};
+const COIN_KEY="coins_v2";
+function coins(){return Number(LS.get(COIN_KEY,0))||0}
+function setCoins(n){LS.set(COIN_KEY,Math.max(0,Number(n)||0));updateCoinDisplays()}
+function addCoins(n){const before=coins();const after=Math.max(0,before+(Number(n)||0));LS.set(COIN_KEY,after);updateCoinDisplays();try{gsap.fromTo("#coinPill",{scale:1},{scale:1.12,duration:.18,yoyo:true,repeat:1})}catch{}}
+function updateCoinDisplays(){const c=coins();const a=document.getElementById("coinCount");const b=document.getElementById("shopCoins");if(a)a.textContent=c;if(b)b.textContent=c}
+
+/* streak helpers */
+function todayKey(){return new Date().toISOString().slice(0,10)}
+function updateStreakUI(){const s=Number(LS.get("streak",0));const el=document.getElementById("streakCount")||document.getElementById("streakDays");const lbl=document.getElementById("streakLabel");if(el)el.textContent=s;if(lbl)lbl.textContent=(s===1?"day":"days")}
+(function bindCheckin(){
+  const btn=document.getElementById("saveCheckinBtn"); if(!btn) return;
+  btn.addEventListener("click",()=>{
+    const day=todayKey();
+    const days=LS.get("days",{}); if(days[day]){const m=document.getElementById("checkinMsg"); if(m)m.textContent="You already checked in today."; return;}
+    const data={
+      mood:Number((document.getElementById("moodSel")||{}).value||0),
+      cravings:(document.getElementById("craveSel")||{}).value||"none",
+      trigger:(document.getElementById("triggerTxt")||{}).value?.trim()||"",
+      vaped:(document.getElementById("vapedSel")||{}).value||"no",
+      notes:(document.getElementById("notesTxt")||{}).value?.trim()||"",
+      ts:Date.now()
+    };
+    days[day]=data; LS.set("days",days);
+    const y=new Date(); y.setDate(y.getDate()-1);
+    const hadYesterday=Boolean(days[y.toISOString().slice(0,10)]);
+    let streak=Number(LS.get("streak",0))||0;
+    streak = hadYesterday ? Math.max(1,streak)+1 : 1;
+    LS.set("streak",streak); updateStreakUI();
+    let earned=5; if(data.vaped==="no") earned+=10; if(data.cravings==="none") earned+=5;
+    addCoins(earned);
+    const cmsg=document.getElementById("checkinMsg"); if(cmsg){cmsg.textContent=Saved! You earned +${earned} coins.; setTimeout(()=>cmsg.textContent="",2000);}
+  });
+})();
+(function bindJournal(){
+  const save=document.getElementById("saveJournalBtn"); if(!save) return;
+  save.addEventListener("click",()=>{
+    const entryEl=document.getElementById("journalEntry"); const entry=(entryEl?.value||"").trim();
+    if(!entry){const m=document.getElementById("saveJournalMsg"); if(m)m.textContent="Write something first"; return;}
+    const free=document.getElementById("freeWriteToggle")?.checked||false;
+    const prompts=window.PROMPTS||[];
+    const idx=window.promptIndex||0;
+    const entries=LS.get("journal_entries",[]);
+    entries.push({prompt:free?null:prompts[idx]||null,entry,ts:Date.now()});
+    LS.set("journal_entries",entries);
+    if(entryEl) entryEl.value="";
+    const m=document.getElementById("saveJournalMsg"); if(m){m.textContent="Saved! +7 coins"; setTimeout(()=>m.textContent="",1500);}
+    addCoins(7);
+    const jc=document.getElementById("journalCount"); if(jc) jc.textContent=entries.length;
+  });
+})();
+document.addEventListener("DOMContentLoaded",()=>{
+  updateCoinDisplays();
+  updateStreakUI();
+  const cc=document.getElementById("checkinCount"); if(cc){const days=LS.get("days",{}); cc.textContent=Object.keys(days).length;}
+  const jc=document.getElementById("journalCount"); if(jc){const entries=LS.get("journal_entries",[]); jc.textContent=entries.length;}
+});
+</script>
+<script>
+const LS={get(k,d){try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}},set(k,v){localStorage.setItem(k,JSON.stringify(v))}};
+const COIN_KEY="coins_v2";
+function coins(){return Number(LS.get(COIN_KEY,0))||0}
+function setCoins(n){LS.set(COIN_KEY,Math.max(0,Number(n)||0));updateCoinDisplays()}
+function addCoins(n){const before=coins();const after=Math.max(0,before+(Number(n)||0));LS.set(COIN_KEY,after);updateCoinDisplays();try{gsap.fromTo("#coinPill",{scale:1},{scale:1.12,duration:.18,yoyo:true,repeat:1})}catch{}}
+function updateCoinDisplays(){const c=coins();const a=document.getElementById("coinCount");const b=document.getElementById("shopCoins");if(a)a.textContent=c;if(b)b.textContent=c}
+function todayKey(){return new Date().toISOString().slice(0,10)}
+function updateStreakUI(){const s=Number(LS.get("streak",0));const el=document.getElementById("streakCount")||document.getElementById("streakDays");const lbl=document.getElementById("streakLabel");if(el)el.textContent=s;if(lbl)lbl.textContent=(s===1?"day":"days")}
+(function(){const btn=document.getElementById("saveCheckinBtn");if(!btn)return;btn.addEventListener("click",()=>{const day=todayKey();const days=LS.get("days",{});if(days[day]){const m=document.getElementById("checkinMsg");if(m)m.textContent="You already checked in today.";return}const data={mood:Number((document.getElementById("moodSel")||{}).value||0),cravings:(document.getElementById("craveSel")||{}).value||"none",trigger:(document.getElementById("triggerTxt")||{}).value?.trim()||"",vaped:(document.getElementById("vapedSel")||{}).value||"no",notes:(document.getElementById("notesTxt")||{}).value?.trim()||"",ts:Date.now()};days[day]=data;LS.set("days",days);const y=new Date();y.setDate(y.getDate()-1);const hadYesterday=Boolean(days[y.toISOString().slice(0,10)]);let streak=Number(LS.get("streak",0))||0;streak=hadYesterday?Math.max(1,streak)+1:1;LS.set("streak",streak);updateStreakUI();let earned=5;if(data.vaped==="no")earned+=10;if(data.cravings==="none")earned+=5;addCoins(earned);const cmsg=document.getElementById("checkinMsg");if(cmsg){cmsg.textContent=Saved! You earned +${earned} coins.;setTimeout(()=>cmsg.textContent="",2000)}})})();
+(function(){const save=document.getElementById("saveJournalBtn");if(!save)return;save.addEventListener("click",()=>{const entryEl=document.getElementById("journalEntry");const entry=(entryEl?.value||"").trim();if(!entry){const m=document.getElementById("saveJournalMsg");if(m)m.textContent="Write something first";return}const free=document.getElementById("freeWriteToggle")?.checked||false;const prompts=window.PROMPTS||[];const idx=window.promptIndex||0;const entries=LS.get("journal_entries",[]);entries.push({prompt:free?null:prompts[idx]||null,entry,ts:Date.now()});LS.set("journal_entries",entries);if(entryEl)entryEl.value="";const m=document.getElementById("saveJournalMsg");if(m){m.textContent="Saved! +7 coins";setTimeout(()=>m.textContent="",1500)}addCoins(7);const jc=document.getElementById("journalCount");if(jc)jc.textContent=entries.length})})();
+document.addEventListener("DOMContentLoaded",()=>{updateCoinDisplays();updateStreakUI();const cc=document.getElementById("checkinCount");if(cc){const days=LS.get("days",{});cc.textContent=Object.keys(days).length}const jc=document.getElementById("journalCount");if(jc){const entries=LS.get("journal_entries",[]);jc.textContent=entries.length}});
+</script>
+<script>
+const PFP_LIST=["🐶","🐰","🐱","🦊","🐻","🐼","🐨","🐵","🦄","🐯","🐹","🐸","🐥","🦋"];
+function renderPfpGrid(){const grid=document.getElementById("pfpGrid");if(!grid)return;grid.innerHTML="";const sel=localStorage.getItem("pfp_emoji")||"🐰";PFP_LIST.forEach(e=>{const b=document.createElement("button");b.type="button";b.textContent=e;b.style.cssText="font-size:28px;padding:10px;border-radius:12px;border:2px solid "+(e===sel?"var(--brand)":"transparent")+";background:var(--card);box-shadow:0 2px 8px var(--ring);cursor:pointer";b.addEventListener("click",()=>{localStorage.setItem("pfp_emoji",e);const img=document.getElementById("profilePic");if(img)img.src="data:image/svg+xml;utf8,"+encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><rect width='120' height='120' rx='60' fill='white'/><text x='50%' y='56%' dominant-baseline='middle' text-anchor='middle' font-size='72'>${e}</text></svg>`);renderPfpGrid()});grid.appendChild(b)});const img=document.getElementById("profilePic");if(img){const cur=localStorage.getItem("pfp_emoji")||"🐰";img.src="data:image/svg+xml;utf8,"+encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><rect width='120' height='120' rx='60' fill='white'/><text x='50%' y='56%' dominant-baseline='middle' text-anchor='middle' font-size='72'>${cur}</text></svg>`)}}
+document.addEventListener("DOMContentLoaded",renderPfpGrid);
 </script>
 </body>
 </html>
