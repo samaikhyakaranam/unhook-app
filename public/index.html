@@ -7,746 +7,827 @@
   <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700&family=DM+Sans:wght@400;600;700&family=Poppins:wght@400;600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet"/>
   <style>
     *{box-sizing:border-box;font-family:var(--app-font,"Hanken Grotesk"),system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
-    :root{--brand:#002293;--brand-dark:#001b75;--bg1:#f5faff;--bg2:#e3f3ff;--card:#fff;--ink:#0b1b33;--muted:#6b7a90;--ring:rgba(0,34,147,.18)}
-    body[data-theme="ocean"]{--bg1:#e8f7ff;--bg2:#cfefff;--brand:#0066cc;--brand-dark:#004b99}
-    body[data-theme="sunset"]{--bg1:#fff2e8;--bg2:#ffe1cf;--brand:#ff7a59;--brand-dark:#d55c3e}
-    body[data-theme="midnight"]{--bg1:#0e1220;--bg2:#0a0f1a;--card:#11162a;--ink:#dfe7ff;--muted:#9fb1ff;--brand:#5b7cff;--brand-dark:#3e5fe6}
-    html,body{height:100%}
-    body{margin:0;color:var(--ink);background:linear-gradient(180deg,var(--bg1),var(--bg2))}
-    header{background:var(--brand);color:#fff;padding:24px;font-weight:700;font-size:28px;text-align:center;letter-spacing:.2px}
+    :root{
+      --brand:#002293;--brand-dark:#001b75;--bg1:#f5faff;--bg2:#e3f3ff;--card:#fff;--ink:#0b1b33;--muted:#6b7a90;--ring:rgba(0,34,147,.18);
+      --accent:#002293;
+    }
+    body[data-theme="ocean"]{--bg1:#e8f7ff;--bg2:#cfefff;--brand:#0066cc;--brand-dark:#004b99;--accent:#0066cc;}
+    body[data-theme="sunset"]{--bg1:#fff2e8;--bg2:#ffe1cf;--brand:#ff7a59;--brand-dark:#d55c3e;--accent:#ff7a59;}
+    body[data-theme="midnight"]{--bg1:#0e1220;--bg2:#0a0f1a;--card:#11162a;--ink:#dfe7ff;--muted:#9fb1ff;--brand:#5b7cff;--brand-dark:#3e5fe6;--accent:#5b7cff;}
+    body[data-theme="sunny"]{--bg1:#fffddb;--bg2:#fff8c2;--brand:#ff9f43;--brand-dark:#d68233;--accent:#ff9f43;}
+    body[data-theme="calm"]{--bg1:#f0fbf8;--bg2:#e3f6f1;--brand:#00a388;--brand-dark:#007f6c;--accent:#00a388;}
+    body[data-theme="forest"]{--bg1:#f0fff0;--bg2:#e3ffe3;--brand:#4c8a4c;--brand-dark:#3a6e3a;--accent:#4c8a4c;}
+    html,body{height:100%;margin:0;padding:0;}
+    body{background:linear-gradient(180deg,var(--bg1),var(--bg2));color:var(--ink)}
+    header{background:var(--brand);color:#fff;padding:24px;font-size:28px;font-weight:700;text-align:center;}
     .wrap{max-width:1100px;margin:0 auto;padding:16px}
     .tabs{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:14px auto 8px;align-items:center}
-    .tab{background:var(--brand);color:#fff;padding:12px 22px;border-radius:999px;cursor:pointer;font-weight:600;box-shadow:0 10px 24px var(--ring);transition:.12s transform,.12s background,.12s box-shadow}
-    .tab:hover{background:var(--brand-dark);transform:translateY(-1px)}
-    .right{margin-left:auto}
-    .pill{background:#eef3ff;color:#2746ff;padding:6px 10px;border-radius:999px;font-weight:700;box-shadow:0 2px 8px var(--ring);display:inline-flex;gap:10px;align-items:center}
-    .auth-user{font-weight:600;color:#1f3fff}
+    .tab{background:var(--brand);color:#fff;padding:12px 22px;border-radius:999px;cursor:pointer;font-weight:600;transition:.12s}
+    .tab:hover{background:var(--brand-dark)}
+    .pill{margin-left:auto;background:#eef3ff;color:#2746ff;padding:8px 14px;border-radius:999px;font-weight:700;box-shadow:0 2px 8px var(--ring);}
     .section{display:none}
-    .section.active{display:block;animation:fade .2s ease}
-    @keyframes fade{from{opacity:.6;transform:translateY(2px)}to{opacity:1;transform:translateY(0)}}
+    .section.active{display:block;animation:fade .3s ease}
+    @keyframes fade{from{opacity:0;}to{opacity:1;}}
     .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-    @media (max-width:860px){.grid-2{grid-template-columns:1fr}}
-    .card{background:var(--card);border-radius:16px;box-shadow:0 10px 24px var(--ring);padding:16px;margin:14px 0}
-    .card.equal{display:flex;flex-direction:column;min-height:140px}
-    h2.section-title{text-align:center;margin:8px 0 14px}
-    label{font-weight:600;display:block;margin:4px 2px 8px}
-    select,textarea,input[type="text"],input[type="color"],input[type="email"],input[type="password"]{width:100%;background:#fff;border:1px solid #e7eef8;border-radius:12px;padding:14px;outline:none;box-shadow:0 6px 14px rgba(0,0,0,.04);color:var(--ink)}
-    textarea{resize:vertical;min-height:120px}
-    .row{margin:14px 0}
-    .cta{background:var(--brand);color:#fff;border:0;padding:12px 20px;border-radius:999px;font-weight:700;cursor:pointer;box-shadow:0 10px 24px var(--ring)}
+    @media(max-width:860px){.grid-2{grid-template-columns:1fr}}
+    .card{background:var(--card);border-radius:16px;padding:16px;box-shadow:0 10px 24px var(--ring);margin:14px 0}
+    select,input,textarea{width:100%;padding:14px;border-radius:12px;border:1px solid #e7eef8;box-shadow:0 6px 14px rgba(0,0,0,.04)}
+    .cta{background:var(--brand);color:#fff;border:0;padding:12px 20px;border-radius:999px;font-weight:700;cursor:pointer}
     .cta:hover{background:var(--brand-dark)}
+    .cta.small{padding:8px 14px;font-size:14px}
     .cta.ghost{background:transparent;color:var(--brand);border:2px solid var(--brand)}
-    .cta.small{padding:8px 14px;font-weight:600}
-    .muted{color:var(--muted)}
-    .inline{display:inline-flex;gap:10px;align-items:center}
-    .flex{display:flex;gap:10px;align-items:center}
-    .space-between{display:flex;justify-content:space-between;align-items:center;gap:10px}
-    .shop-grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
-    .item-title{font-weight:700}
-    .price{color:var(--muted);font-weight:600}
-    .link{color:var(--brand);text-decoration:underline;cursor:pointer;font-weight:600}
-    .swatches{display:flex;gap:6px;margin:6px 0}
-    .sw{width:16px;height:16px;border-radius:4px;border:1px solid #dfe6f5;box-shadow:0 1px 2px rgba(0,0,0,.06)}
-    .sticker-peek{font-size:20px;letter-spacing:4px;margin:6px 0}
-    .chat-box{height:380px;overflow:auto;border-radius:16px;background:var(--card);box-shadow:inset 0 0 0 1px #e9eef6,0 10px 24px var(--ring);padding:12px}
-    .msg{margin:8px 0}
+    .pfp-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(60px,1fr));
+      gap:10px;margin-top:8px;
+    }
+    .pfp-choice{
+      font-size:32px;
+      padding:10px;
+      cursor:pointer;
+      background:var(--card);
+      border:2px solid transparent;
+      border-radius:14px;
+      text-align:center;
+      transition:.2s;
+    }
+    .pfp-choice.active{
+      border-color:var(--brand);
+      transform:scale(1.12);
+    }
+    .badge-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+      gap:12px;
+    }
+    .badge{
+      text-align:center;
+      padding:10px;
+      border-radius:12px;
+      background:var(--card);
+      box-shadow:0 2px 8px var(--ring);
+      font-size:14px;
+    }
+    .chat-box{
+      height:380px;overflow:auto;border-radius:16px;
+      background:var(--card);padding:12px;
+      box-shadow:inset 0 0 0 1px #e9eef6,0 10px 24px var(--ring);
+    }
     .msg small{color:var(--muted);font-weight:600;margin-right:6px}
-    .overlay{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.35);z-index:50}
-    .overlay.show{display:flex}
-    .cele-card{background:#fff;border-radius:18px;padding:22px;max-width:520px;width:92%;text-align:center;box-shadow:0 30px 80px rgba(0,0,0,.25);position:relative;overflow:hidden}
-    .cele-title{font-size:22px;font-weight:800;margin:6px 0 8px}
-    .cele-sub{color:#4a5568;margin:0 0 12px}
-    .sparkles{position:absolute;inset:0;pointer-events:none}
-    .sparkles span{position:absolute;font-size:24px;opacity:0}
-    .badge-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px}
-    .pfp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(58px,1fr));gap:10px}
-    .pfp-choice{font-size:36px;line-height:1;background:#fff;border-radius:14px;padding:10px;cursor:pointer;border:2px solid transparent}
-    .pfp-choice.active{border-color:var(--brand);box-shadow:0 6px 20px var(--ring)}
-    .font-preview{display:flex;gap:8px;flex-wrap:wrap}
-    .font-chip{padding:8px 12px;border-radius:999px;border:1px solid #dfe6f5;cursor:pointer}
-    .font-chip.active{background:var(--brand);color:#fff;border-color:transparent}
-    .auth-bar{display:flex;gap:8px;align-items:center;margin-left:auto}
-    .auth-chip{padding:6px 10px;border-radius:999px;border:1px solid #dfe6f5;background:#fff;cursor:pointer;font-weight:600}
-    .stickies{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
-    .sticky{background:#fff8b8;border:1px solid #f1e28a;border-radius:10px;padding:14px;box-shadow:0 6px 16px rgba(0,0,0,.08);font-family:"Playfair Display",serif}
-    .sticky.firey{background:#ffd2d2;border-color:#ffb2b2}
-    .sticky.mix{background:#dff3ff;border-color:#bfe5ff}
+    .pixel-pet-wrap{image-rendering:pixelated;transform:translateZ(0)}
+    .pixel-pet{image-rendering:pixelated}
+    .pixel-pet.small{image-rendering:pixelated}
+    #onboardCard .cta{background:#ffd34e;color:#111}
+    #onboardCard .cta.ghost{background:transparent;color:#ffd34e;border:2px solid #ffd34e}
+    @keyframes petBob{0%{transform:translateY(0)}50%{transform:translateY(-2px)}100%{transform:translateY(0)}}
+    .pixel-pet.small{animation:petBob 2s infinite}
+    #petEmote{font-size:16px;line-height:1;padding:4px 8px;border-radius:8px;background:#222;color:#ffd34e;box-shadow:0 6px 14px rgba(0,0,0,.25);transform:translateY(4px);opacity:0;transition:opacity .18s,transform .18s}
+    .space-between{display:flex;justify-content:space-between;align-items:center}
+    .inline{display:flex;align-items:center;gap:8px}
+    label{font-weight:600;margin-bottom:6px;display:block}
+    textarea{min-height:100px;resize:vertical}
+    .muted{color:var(--muted);font-size:14px}
+    .center{text-align:center}
+    .motivation-grid, #stickyGrid {
+      display:grid;
+      gap:14px;
+      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+      margin-top:12px;
+    }
+    .sticky {
+      padding:14px;
+      border-radius:10px;
+      font-size:16px;
+      box-shadow:0 6px 14px rgba(0,0,0,.08);
+      font-family:"Playfair Display", serif;
+      transition:transform .2s;
+    }
+    .sticky:hover { transform:scale(1.03); }
+    .sticky.gentle {
+      background:#fff8b8;
+      border:1px solid #f4e48b;
+    }
+    .sticky.firey {
+      background:#ffd2d2;
+      border:1px solid #ffb2b2;
+    }
+    .sticky.mix {
+      background:#c7e6ff;
+      border:1px solid #9fdaff;
+    }
+    .profile-pic{
+      width:120px;height:120px;border-radius:50%;
+      object-fit:cover;box-shadow:0 4px 12px rgba(0,0,0,.15);
+      margin-bottom:10px;
+    }
+    .stat-row{
+      display:flex;justify-content:space-between;
+      padding:4px 0;font-size:15px;
+    }
+    .chat-box {
+      height: 380px;
+      overflow-y: auto;
+      padding: 12px;
+      background: var(--card);
+      border-radius: 14px;
+      box-shadow: inset 0 0 0 1px rgba(0,0,0,.06), 0 10px 24px rgba(0,0,0,.04);
+      margin-bottom: 14px;
+    }
+    .chat-msg {
+      margin-bottom: 10px;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+    .chat-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      object-fit: cover;
+      box-shadow: 0 2px 6px rgba(0,0,0,.2);
+    }
+    .chat-bubble {
+      padding: 10px 14px;
+      border-radius: 14px;
+      max-width: 80%;
+      line-height: 1.35;
+      font-size: 14px;
+      box-shadow: 0 2px 8px rgba(0,0,0,.08);
+    }
+    .chat-me { background: #c7e6ff; border:1px solid #9fd3ff; margin-left:auto; }
+    .chat-other { background: #fff9cc; border:1px solid #f5e6a5; }
+    textarea#chatInput {
+      height: 70px;
+      resize: none;
+    }
+    .pixel-pet.idle rect[fill="#ffd34e"]{fill:#ffd34e}
+    .pixel-pet.happy rect[fill="#ffd34e"]{fill:#ffee85}
+    .pixel-pet.hurt rect[fill="#ffd34e"]{fill:#ff8c8c}
+    .pixel-pet.sleep rect[fill="#ffd34e"]{fill:#e8d87c}
+    .pixel-pet.happy rect[x="5"][y="11"]{fill:#ff4081}
+    .pixel-pet.happy rect[x="9"][y="11"]{fill:#ff4081}
+    .pixel-pet.hurt rect[x="5"][y="11"]{fill:#000}
+    .pixel-pet.hurt rect[x="9"][y="11"]{fill:#000}
+    .pixel-pet.sleep rect[x="5"][y="11"]{fill:#000}
+    .pixel-pet.sleep rect[x="9"][y="11"]{fill:#000}
+    .pixel-pet.small.happy{animation:pet-bounce .5s ease-in-out 2}
+    @keyframes pet-bounce{0%{transform:translateY(0) scale(1)}50%{transform:translateY(-4px) scale(1.06)}100%{transform:translateY(0) scale(1)}}
+    #toast {
+      position:fixed;
+      bottom:20px;
+      left:50%;
+      transform:translateX(-50%);
+      background:#111;
+      color:#fff;
+      padding:10px 18px;
+      font-size:14px;
+      border-radius:20px;
+      opacity:0;
+      pointer-events:none;
+      transition:opacity .3s ease;
+      z-index:1500;
+      box-shadow:0 6px 16px rgba(0,0,0,.2);
+    }
+    #toast.show {
+      opacity:1;
+      transform:translateX(-50%) translateY(0);
+    }
+    .lds-dual-ring {
+      display:inline-block;
+      width:64px;
+      height:64px;
+    }
+    .lds-dual-ring:after {
+      content:" ";
+      display:block;
+      width:46px;
+      height:46px;
+      margin:1px;
+      border-radius:50%;
+      border:5px solid var(--accent);
+      border-color:var(--accent) transparent var(--accent) transparent;
+      animation:lds-dual-ring 1.2s linear infinite;
+    }
+    @keyframes lds-dual-ring {
+      0% { transform:rotate(0deg); }
+      100% { transform:rotate(360deg); }
+    }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/gsap.min.js"></script>
 </head>
 <body>
-  <header>Unhook: Breaking the Vape</header>
-  <div class="tabs wrap">
-    <div class="tab" data-go="checkin">Check-In</div>
-    <div class="tab" data-go="journal">Journal</div>
-    <div class="tab" data-go="motivation">Motivation</div>
-    <div class="tab" data-go="shop">Shop</div>
-    <div class="tab" data-go="profile">Profile</div>
-    <div class="tab" data-go="community">Community</div>
-    <div class="pill right" id="coinPill">Coins: <span id="coinCount">0</span></div>
-    <div class="auth-bar">
-      <span id="whoami" class="auth-user">Guest</span>
-      <button class="auth-chip" id="btnGoogle">Google</button>
-      <button class="auth-chip" id="btnEmail">Email</button>
-      <button class="auth-chip" id="btnGuest">Guest</button>
-      <button class="auth-chip" id="btnSignOut" style="display:none;">Sign out</button>
+<header>Unhook: Breaking the Vape</header>
+<div class="tabs wrap">
+  <div class="tab" data-go="checkin">Check-In</div>
+  <div class="tab" data-go="journal">Journal</div>
+  <div class="tab" data-go="motivation">Motivation</div>
+  <div class="tab" data-go="shop">Shop</div>
+  <div class="tab" data-go="profile">Profile</div>
+  <div class="tab" data-go="community">Community</div>
+  <div class="pill right" id="coinPill">
+    <svg class="pixel-pet small" viewBox="0 0 16 16" width="40" height="40">
+        <rect x="4" y="2" width="8" height="8" fill="#ffd34e"/>
+        <rect x="3" y="4" width="2" height="2" fill="#000"/>
+        <rect x="11" y="4" width="2" height="2" fill="#000"/>
+        <rect x="4" y="10" width="8" height="4" fill="#ffd34e"/>
+        <rect x="5" y="11" width="2" height="2" fill="#000"/>
+        <rect x="9" y="11" width="2" height="2" fill="#000"/>
+    </svg>
+    Coins: <span id="coinCount">0</span>
+  </div>
+</div>
+<main class="wrap">
+<div id="onboardOverlay" style="position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.45);z-index:1200;">
+  <div id="onboardCard" style="width:min(520px,92vw);background:#111;color:#fff;border-radius:18px;box-shadow:0 30px 80px rgba(0,0,0,.35);overflow:hidden;">
+    <div style="padding:20px 20px 0;display:flex;gap:12px;align-items:center;justify-content:center;">
+      <div class="pixel-pet-wrap">
+        <svg class="pixel-pet" viewBox="0 0 16 16" width="120" height="120">
+          <rect width="16" height="16" fill="#2b2b2b"/>
+          <rect x="5" y="2" width="6" height="6" fill="#ffd34e"/>
+          <rect x="4" y="4" width="2" height="2" fill="#000"/>
+          <rect x="10" y="4" width="2" height="2" fill="#000"/>
+          <rect x="7" y="6" width="2" height="1" fill="#000"/>
+          <rect x="3" y="8" width="10" height="5" fill="#ffd34e"/>
+          <rect x="2" y="10" width="12" height="3" fill="#ffb84e"/>
+          <rect x="6" y="13" width="4" height="2" fill="#654321"/>
+        </svg>
+      </div>
+    </div>
+    <div id="onboardStep1" style="padding:14px 20px 0;text-align:center;">
+      <h3 style="margin:0 0 6px;font-size:22px;">Welcome to Unhook 2.0</h3>
+      <p style="margin:0 0 14px;opacity:.9;">Meet your pixel buddy. Level it up by staying vape-free and earning coins.</p>
+      <button class="cta" id="obNext1" style="margin:10px auto 20px;display:inline-block;">Next</button>
+    </div>
+    <div id="onboardStep2" style="display:none;padding:0 20px 0 20px;">
+      <label style="font-weight:700;display:block;margin:0 0 8px;">Name your buddy</label>
+      <input id="petNameInput" type="text" placeholder="e.g., Pixel Puff" style="width:100%;padding:12px;border-radius:12px;border:1px solid #2a2f3e;background:#0d1120;color:#fff;">
+      <div style="display:flex;justify-content:space-between;gap:10px;margin:16px 0 20px;">
+        <button class="cta ghost" id="obBack2">Back</button>
+        <button class="cta" id="obNext2">Next</button>
+      </div>
+    </div>
+    <div id="onboardStep3" style="display:none;padding:0 20px 18px 20px;">
+      <label style="font-weight:700;display:block;margin:0 0 8px;">Pick your starter vibe</label>
+      <select id="starterStyle" style="width:100%;padding:12px;border-radius:12px;border:1px solid #2a2f3e;background:#0d1120;color:#fff;">
+        <option value="gentle">Gentle</option>
+        <option value="firey">Firey</option>
+        <option value="mix" selected>Mix</option>
+      </select>
+      <div style="display:flex;justify-content:space-between;gap:10px;margin:16px 0 20px;">
+        <button class="cta ghost" id="obBack3">Back</button>
+        <button class="cta" id="obFinish">Start</button>
+      </div>
     </div>
   </div>
-  <main class="wrap">
-    <section id="checkin" class="section active">
-      <h2 class="section-title">Daily Check-In</h2>
-      <div class="grid-2">
-        <div class="card equal">
-          <label>How are you feeling today?</label>
-          <select id="moodSel">
-            <option value="5">Excellent</option>
-            <option value="4" selected>Good</option>
-            <option value="3">Okay</option>
-            <option value="2">Not great</option>
-            <option value="1">Rough</option>
-          </select>
-        </div>
-        <div class="card equal">
-          <label>Did you experience cravings today?</label>
-          <select id="craveSel">
-            <option value="none" selected>No cravings</option>
-            <option value="mild">Mild</option>
-            <option value="strong">Strong</option>
-          </select>
-        </div>
+</div>
+<div id="petHud" style="position:fixed;right:14px;bottom:14px;z-index:1100;display:none;">
+  <div style="background:#111;color:#fff;border-radius:14px;padding:10px 12px;box-shadow:0 12px 28px rgba(0,0,0,.35);display:flex;align-items:center;gap:10px;">
+    <div style="position:relative;">
+        <div id="petEmote" style="position:absolute;top:-20px;left:50%;transform:translate(-50%, 4px);z-index:10;font-size:16px;line-height:1;padding:4px 8px;border-radius:8px;background:#222;color:#ffd34e;box-shadow:0 6px 14px rgba(0,0,0,.25);opacity:0;transition:opacity .18s,transform .18s">⭐</div>
+        <svg class="pixel-pet small" viewBox="0 0 16 16" width="40" height="40" style="margin-right:8px;vertical-align:middle;transform-origin:50% 100%;">
+          <rect width="16" height="16" fill="#2b2b2b"/>
+          <rect x="5" y="2" width="6" height="6" fill="#ffd34e"/>
+          <rect x="4" y="4" width="2" height="2" fill="#000"/>
+          <rect x="10" y="4" width="2" height="2" fill="#000"/>
+          <rect x="7" y="6" width="2" height="1" fill="#000"/>
+          <rect x="3" y="8" width="10" height="5" fill="#ffd34e"/>
+          <rect x="2" y="10" width="12" height="3" fill="#ffb84e"/>
+          <rect x="6" y="13" width="4" height="2" fill="#654321"/>
+        </svg>
+    </div>
+    <div>
+      <div id="petHudName" style="font-weight:800;letter-spacing:.2px;">Buddy</div>
+      <div style="width:140px;height:8px;background:#2a2f3e;border-radius:999px;overflow:hidden;">
+        <div id="petXpBar" style="height:100%;width:0;background:linear-gradient(90deg,#ffd34e,#ff9f43);"></div>
       </div>
-      <div class="grid-2">
-        <div class="card equal">
-          <label>What triggered your cravings (if any)?</label>
-          <input id="triggerTxt" type="text" placeholder="e.g., stress, boredom, social pressure"/>
-        </div>
-        <div class="card equal">
-          <label>Did you vape today?</label>
-          <select id="vapedSel">
-            <option value="no" selected>No</option>
-            <option value="yes">Yes</option>
-          </select>
-        </div>
-      </div>
-      <div class="card">
-        <label>Optional notes</label>
-        <textarea id="notesTxt" placeholder="Anything else you want to add?"></textarea>
-        <div class="space-between" style="margin-top:8px;">
-          <div class="inline">
-            <button class="cta small ghost" id="clearDraftBtn" type="button">Clear before submitting</button>
-          </div>
-          <div class="inline">
-            <button class="cta" id="saveCheckinBtn">Save Check-In</button>
-          </div>
-        </div>
-      </div>
-      <p class="muted" id="checkinMsg" style="text-align:center;"></p>
-    </section>
-    <section id="journal" class="section">
-      <h2 class="section-title">Journal</h2>
-      <div class="card">
-        <div class="space-between">
-          <strong>Prompt</strong>
-          <div class="inline">
-            <button id="prevPrompt" class="cta small ghost" type="button">• Prev</button>
-            <button id="nextPrompt" class="cta small" type="button">Next •</button>
-          </div>
-        </div>
-        <p id="promptText" style="margin:10px 0 0;"></p>
-      </div>
-      <div class="card">
-        <div class="space-between">
-          <label style="margin:0">Your entry</label>
-          <label class="inline" style="margin:0">
-            <input type="checkbox" id="freeWriteToggle"/>
-            <span class="muted">Free-write (ignore prompt)</span>
-          </label>
-        </div>
-        <textarea id="journalEntry" placeholder="Write what's on your mind…"></textarea>
-        <div class="space-between" style="margin-top:10px;">
-          <div class="inline">
-            <button class="cta small ghost" id="clearJournalDraft" type="button">Clear before saving</button>
-          </div>
-          <div class="inline">
-            <button class="cta" id="saveJournalBtn">Save Entry (+7 coins)</button>
-            <span class="muted" id="saveJournalMsg"></span>
-          </div>
-        </div>
-      </div>
-      <div class="card" id="journalHistoryCard" style="display:none;">
-        <strong>Previous prompts</strong>
-        <ul id="journalHistory" class="muted" style="margin:8px 0 0; padding-left:18px;"></ul>
-      </div>
-    </section>
-    <section id="motivation" class="section">
-      <h2 class="section-title">Motivation</h2>
-      <div class="card">
-        <div class="space-between">
-          <strong>Choose your style</strong>
-          <div class="inline">
-            <select id="motivationStyle">
-              <option value="gentle">Gentle</option>
-              <option value="firey">Firey</option>
-              <option value="mix" selected>Mix</option>
-            </select>
-            <button id="saveStyleBtn" class="cta small">Save</button>
-          </div>
-        </div>
-      </div>
-      <div class="stickies" id="stickyGrid"></div>
-    </section>
-    <section id="shop" class="section">
-      <h2 class="section-title">Shop</h2>
-      <p class="muted" style="text-align:center;">Your balance: <strong><span id="shopCoins">0</span> coins</strong></p>
-      <div class="shop-grid">
-        <div class="card">
-          <div class="item-title">Theme: Ocean</div>
-          <div class="swatches">
-            <div class="sw" style="background:#e8f7ff"></div>
-            <div class="sw" style="background:#cfefff"></div>
-            <div class="sw" style="background:#0066cc"></div>
-            <div class="sw" style="background:#004b99"></div>
-          </div>
-          <div class="muted">Cool blues for a calm vibe.</div>
-          <div class="price">Cost: 35 coins</div>
-          <button class="cta buyBtn" data-type="theme" data-key="ocean" data-cost="35">Buy & Apply</button>
-        </div>
-        <div class="card">
-          <div class="item-title">Theme: Sunset</div>
-          <div class="swatches">
-            <div class="sw" style="background:#fff2e8"></div>
-            <div class="sw" style="background:#ffe1cf"></div>
-            <div class="sw" style="background:#ff7a59"></div>
-            <div class="sw" style="background:#d55c3e"></div>
-          </div>
-          <div class="muted">Warm oranges/pinks for cozy energy.</div>
-          <div class="price">Cost: 35 coins</div>
-          <button class="cta buyBtn" data-type="theme" data-key="sunset" data-cost="35">Buy & Apply</button>
-        </div>
-        <div class="card">
-          <div class="item-title">Theme: Midnight</div>
-          <div class="swatches">
-            <div class="sw" style="background:#0e1220"></div>
-            <div class="sw" style="background:#0a0f1a"></div>
-            <div class="sw" style="background:#6d8bff"></div>
-            <div class="sw" style="background:#4f6af0"></div>
-          </div>
-          <div class="muted">Dark mode, neon accents.</div>
-          <div class="price">Cost: 35 coins</div>
-          <button class="cta buyBtn" data-type="theme" data-key="midnight" data-cost="35">Buy & Apply</button>
-        </div>
-        <div class="card">
-          <div class="item-title">Create Your Own Theme</div>
-          <div class="muted">Pick your colors. Requires 10 coins OR 2-day streak.</div>
-          <div class="row grid-2">
-            <div>
-              <label>Top gradient</label>
-              <input type="color" id="ctBg1" value="#f5faff"/>
-            </div>
-            <div>
-              <label>Bottom gradient</label>
-              <input type="color" id="ctBg2" value="#e3f3ff"/>
-            </div>
-          </div>
-          <div class="row grid-2">
-            <div>
-              <label>Primary</label>
-              <input type="color" id="ctBrand" value="#002293"/>
-            </div>
-            <div>
-              <label>Primary (dark)</label>
-              <input type="color" id="ctBrandDark" value="#001b75"/>
-            </div>
-          </div>
-          <button class="cta" id="applyCustomThemeBtn">Apply Custom Theme</button>
-          <div id="ctMsg" class="muted" style="margin-top:8px;"></div>
-        </div>
-        <div class="card">
-          <div class="item-title">Badge – First Week Smoke-Free</div>
-          <div class="muted link" data-jump="profile">Show on your profile</div>
-          <div class="price">Cost: 50 coins</div>
-          <button class="cta buyBtn" data-type="badge" data-key="week1" data-cost="50">Buy</button>
-        </div>
-        <div class="card">
-          <div class="item-title">Badge – 1 Month Smoke-Free</div>
-          <div class="muted link" data-jump="profile">Show on your profile</div>
-          <div class="price">Cost: 100 coins</div>
-          <button class="cta buyBtn" data-type="badge" data-key="month1" data-cost="100">Buy</button>
-        </div>
-        <div class="card">
-          <div class="item-title">Badge – 6 Months Smoke-Free</div>
-          <div class="muted link" data-jump="profile">Show on your profile</div>
-          <div class="price">Cost: 300 coins</div>
-          <button class="cta buyBtn" data-type="badge" data-key="month6" data-cost="300">Buy</button>
-        </div>
-        <div class="card">
-          <div class="item-title">Badge – 1 Year Smoke-Free</div>
-          <div class="muted link" data-jump="profile">Show on your profile</div>
-          <div class="price">Cost: 500 coins</div>
-          <button class="cta buyBtn" data-type="badge" data-key="year1" data-cost="500">Buy</button>
-        </div>
-        <div class="card">
-          <div class="item-title">Sticker Pack – “You got this!”</div>
-          <div class="sticker-peek">🎃 🕸️ 👻 🐈‍⬛</div>
-          <div class="muted">Attach to entries; cute and encouraging.</div>
-          <div class="price">Cost: 10 coins</div>
-          <button class="cta buyBtn" data-type="sticker" data-key="pack1" data-cost="10">Buy</button>
-        </div>
-        <div class="card">
-          <div class="item-title">Seasonal Pack – Cozy Winter</div>
-          <div class="sticker-peek">❄️ ☃️ 🧣 ☕</div>
-          <div class="muted">Limited: hats & accents for your avatar.</div>
-          <div class="price">Cost: 5 coins</div>
-          <button class="cta buyBtn" data-type="seasonal" data-key="winter24" data-cost="5">Buy</button>
-        </div>
-      </div>
-      <p id="shopMsg" class="muted" style="margin-top:10px;"></p>
-    </section>
-    <section id="profile" class="section">
-      <h2 class="section-title">Your Profile</h2>
-      <div class="card">
-        <div class="space-between">
-          <div class="inline">
-            <strong>Current streak:</strong>
-            <span><strong><span id="streakDays">0</span></strong> <span id="streakLabel">days</span></span>
-          </div>
-          <div class="inline">
-            <label class="muted" for="fontPicker" style="margin:0">Pick a font:</label>
-            <div id="fontPicker" class="font-preview">
-              <div class="font-chip" data-font='"Hanken Grotesk"'>Hanken Grotesk</div>
-              <div class="font-chip" data-font='"DM Sans"'>DM Sans</div>
-              <div class="font-chip" data-font='Poppins'>Poppins</div>
-              <div class="font-chip" data-font='"Playfair Display"'>Playfair</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="grid-2">
-        <div class="card">
-          <strong>Profile picture</strong>
-          <p class="muted">Pick an icon you like:</p>
-          <div id="pfpGrid" class="pfp-grid"></div>
-        </div>
-        <div class="card">
-          <strong>Badges</strong>
-          <div id="badgeGrid" class="badge-grid" style="margin-top:8px;"></div>
-        </div>
-      </div>
-    </section>
-
-    <section id="community" class="section">
-      <h2 class="section-title">Community (Anonymous)</h2>
-      <div class="card">
-        <div class="space-between">
-          <label style="margin:0;">Pick a nickname (saved only on this device)</label>
-          <div class="inline">
-            <input id="nickInput" type="text" placeholder="e.g., skywalker" style="max-width:260px;">
-            <button class="cta small" id="saveNickBtn">Save name</button>
-          </div>
-        </div>
-      </div>
-      <div class="card">
-        <div id="chatBox" class="chat-box"><div class="muted">Chat unavailable (Firebase not initialized).</div></div>
-        <div class="flex" style="margin-top:10px;">
-          <input id="chatMsg" type="text" placeholder="Type a message…"/>
-          <button class="cta" id="sendBtn">Send</button>
-        </div>
-        <p class="muted" style="margin-top:6px;">Be kind. Don’t share personal info. Messages are public within this room.</p>
-      </div>
-    </section>
-  </main>
-
-  <div id="celeOverlay" class="overlay" role="dialog" aria-modal="true">
-    <div class="cele-card">
-      <div class="sparkles" id="sparkles"></div>
-      <div class="cele-title" id="celeTitle">Great job!</div>
-      <div class="cele-sub" id="celeSub">You stayed vape-free today — we’re proud of you.</div>
-      <button id="celeClose" class="cta" style="margin-top:8px;">Close</button>
+      <div id="petLevelTxt" style="font-size:12px;opacity:.8;margin-top:2px;">Lv.1 • 0/100xp</div>
     </div>
   </div>
+</div>
+<section id="checkin" class="section active">
+  <h2 class="section-title">Daily Check-In</h2>
+  <div class="grid-2">
+    <div class="card">
+      <label>How are you feeling today?</label>
+      <select id="moodSel">
+        <option value="5">Excellent</option>
+        <option value="4" selected>Good</option>
+        <option value="3">Okay</option>
+        <option value="2">Not great</option>
+        <option value="1">Rough</option>
+      </select>
+    </div>
+    <div class="card">
+      <label>Did you experience cravings today?</label>
+      <select id="craveSel">
+        <option value="none" selected>No cravings</option>
+        <option value="mild">Mild</option>
+        <option value="strong">Strong</option>
+      </select>
+    </div>
+  </div>
+  <div class="grid-2">
+    <div class="card">
+      <label>What triggered your cravings?</label>
+      <input id="triggerTxt" type="text" placeholder="stress, boredom, etc"/>
+    </div>
+    <div class="card">
+      <label>Did you vape today?</label>
+      <select id="vapedSel">
+        <option value="no" selected>No</option>
+        <option value="yes">Yes</option>
+      </select>
+    </div>
+  </div>
+  <div class="card">
+    <label>Notes</label>
+    <textarea id="notesTxt" placeholder="Anything else?"></textarea>
+    <div style="display:flex;justify-content:space-between;margin-top:10px;">
+      <button class="cta small ghost" id="clearDraftBtn">Clear</button>
+      <button class="cta" id="saveCheckinBtn">Save Check-In</button>
+    </div>
+    <p id="checkinMsg" class="muted" style="text-align:center;margin-top:6px;"></p>
+  </div>
+</section>
+<section id="journal" class="section">
+  <h2 class="section-title">Journal</h2>
+  <div class="card">
+    <div class="space-between">
+      <strong>Prompt</strong>
+      <div class="inline">
+        <button id="prevPrompt" class="cta small ghost" type="button">• Prev</button>
+        <button id="nextPrompt" class="cta small" type="button">Next •</button>
+      </div>
+    </div>
+    <p id="promptText" style="margin:10px 0 0;"></p>
+  </div>
+  <div class="card">
+    <div class="space-between">
+      <label style="margin:0">Your entry</label>
+      <label class="inline" style="margin:0">
+        <input type="checkbox" id="freeWriteToggle"/>
+        <span class="muted">Free write (ignore prompt)</span>
+      </label>
+    </div>
+    <textarea id="journalEntry" placeholder="Write what's on your mind…"></textarea>
+    <div class="space-between" style="margin-top:10px;">
+      <button class="cta small ghost" id="clearJournalDraft">Clear</button>
+      <div class="inline">
+        <button class="cta" id="saveJournalBtn">Save Entry (+7 coins)</button>
+        <span class="muted" id="saveJournalMsg"></span>
+      </div>
+    </div>
+  </div>
+  <div class="card" id="journalHistoryCard" style="display:none;">
+    <strong>Previous prompts</strong>
+    <ul id="journalHistory" class="muted" style="margin:8px 0 0; padding-left:18px;"></ul>
+  </div>
+</section>
+<section id="motivation" class="section">
+  <h2 class="section-title">Motivation</h2>
+  <div class="card">
+    <div class="space-between">
+      <strong>Choose your vibe</strong>
+      <div class="inline">
+        <select id="motivationStyle">
+        <option value="gentle">Gentle</option>
+        <option value="firey">Firey</option>
+        <option value="mix" selected>Mix</option>
+</select>
+        <div style="width:12px;"></div>
+        <div id="motivationCount" class="muted">0 stickies found</div>
+        <div style="width:12px;"></div>
+        <button id="saveStyleBtn" class="cta small">Save</button>
+      </div>
+    </div>
+  </div>
+  <div id="motivationGrid" class="motivation-grid">
+    <div id="stickyGrid"></div> 
+  </div>
+</section>
+<section id="shop" class="section">
+  <h2 class="section-title">Rewards Shop</h2>
+  <div class="card">
+    <p class="muted">Earn coins by journaling, checking in, and staying vape-free. Use them to unlock themes and badges!</p>
+  </div>
+  <h3>Themes</h3>
+  <div class="badge-grid">
+    <div class="themeCard card" data-theme="sunny">
+      <strong>Sunny</strong><br>
+      <span class="muted">Cost: 25 coins</span><br>
+      <button class="cta small buy-theme" data-cost="25" data-theme="sunny">Unlock</button>
+    </div>
+    <div class="themeCard card" data-theme="calm">
+      <strong>Calm</strong><br>
+      <span class="muted">Cost: 30 coins</span><br>
+      <button class="cta small buy-theme" data-cost="30" data-theme="calm">Unlock</button>
+    </div>
+    <div class="themeCard card" data-theme="forest">
+      <strong>Forest</strong><br>
+      <span class="muted">Cost: 40 coins</span><br>
+      <button class="cta small buy-theme" data-cost="40" data-theme="forest">Unlock</button>
+    </div>
+  </div>
+  <h3 style="margin-top:20px;">Badges</h3>
+  <div class="badge-grid">
+    <div class="card">
+      <strong>Day 1 Badge 🎉</strong><br>
+      <span class="muted">Cost: 10 coins</span><br>
+      <button class="cta small buy-badge" data-cost="10" data-badge="day1">Unlock</button>
+    </div>
+    <div class="card">
+      <strong>1-Week Badge 🏅</strong><br>
+      <span class="muted">Cost: 40 coins</span><br>
+      <button class="cta small buy-badge" data-cost="40" data-badge="week">Unlock</button>
+    </div>
+    <div class="card">
+      <strong>1-Month Badge 🏆</strong><br>
+      <span class="muted">Cost: 100 coins</span><br>
+      <button class="cta small buy-badge" data-cost="100" data-badge="month">Unlock</button>
+    </div>
+  </div>
+  <p id="shopMsg" class="muted" style="margin-top:10px;text-align:center;"></p>
+</section>
+<section id="profile" class="section">
+  <h2 class="section-title">Your Profile</h2>
+  <div class="card center">
+    <img id="profilePic" class="profile-pic" src="https://i.imgur.com/8Km9tLL.png" alt="Profile Picture">
+    <input type="file" id="uploadPicInput" accept="image/*" style="display:none;">
+    <button class="cta small" id="uploadPicBtn">Change Photo</button>
+  </div>
+  <div class="card">
+    <div class="stat-row">
+      <span>Current Streak:</span> 
+      <strong><span id="streakCount">0</span> days 🔥</strong>
+    </div>
+    <div class="stat-row">
+      <span>Total Check-Ins:</span> 
+      <strong><span id="checkinCount">0</span></strong>
+    </div>
+    <div class="stat-row">
+      <span>Total Journal Entries:</span> 
+      <strong><span id="journalCount">0</span></strong>
+    </div>
+  </div>
+  <div class="card">
+    <strong>Theme</strong>
+    <select id="themeSelect" style="margin-top:6px;">
+      <option value="default">Default</option>
+      <option value="sunny">Sunny</option>
+      <option value="calm">Calm</option>
+      <option value="forest">Forest</option>
+    </select>
+    <button class="cta small" id="applyThemeBtn" style="margin-top:8px;">Apply Theme</button>
+    <p class="muted" id="themeMsg" style="margin-top:6px;"></p>
+  </div>
+  <button class="cta ghost" id="logoutBtn" style="width:100%;margin-top:16px;">Log Out</button>
+</section>
 
-  <script defer src="https://www.gstatic.com/firebasejs/10.14.0/firebase-app-compat.js"></script>
-  <script defer src="https://www.gstatic.com/firebasejs/10.14.0/firebase-auth-compat.js"></script>
-  <script defer src="https://www.gstatic.com/firebasejs/10.14.0/firebase-database-compat.js"></script>
-  <script>
-window.addEventListener('DOMContentLoaded',function(){
-  const firebaseConfig = {
+<section id="community" class="section">
+  <h2 class="section-title">Community Chat</h2>
+  <div class="card">
+    <p class="muted">You're not alone - support others and stay motivated together!</p>
+  </div>
+  <div id="chatBox" class="chat-box"></div>
+  <div class="card" style="margin-top:12px;">
+    <textarea id="chatInput" placeholder="Type a supportive message..."></textarea>
+    <div class="space-between" style="margin-top:8px;">
+      <button id="sendChatBtn" class="cta">Send</button>
+      <span class="muted" id="chatMsg"></span>
+    </div>
+  </div>
+</section>
+</main>
+<canvas id="confettiCanvas" style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:999;"></canvas>
+<div id="toast"></div>
+<div id="rewardPop" style="
+  position:fixed;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  font-size:40px;
+  font-weight:900;
+  opacity:0;
+  pointer-events:none;
+  z-index:1000;
+"></div>
+<div id="loadingOverlay" style="
+  display:none;
+  position:fixed;
+  top:0;left:0;width:100%;height:100%;
+  background:rgba(255,255,255,.7);
+  backdrop-filter:blur(4px);
+  z-index:1000;
+  align-items:center;
+  justify-content:center;">
+  <div class="lds-dual-ring"></div>
+</div>
+<input type="hidden" id="currentUserId">
+<input type="hidden" id="unlockedThemes">
+<input type="hidden" id="ownedBadges">
+<input type="hidden" id="dailyStreakCount">
+<input type="hidden" id="internalCoinStore">
+<input type="hidden" id="storedProfilePic">
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+import { 
+  getAuth, onAuthStateChanged, signInWithPopup, GoogleAuthProvider,
+  signInAnonymously, signOut
+} from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+import { 
+  getFirestore, doc, setDoc, getDoc, updateDoc, onSnapshot, collection, addDoc 
+} from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+import { 
+  getStorage, ref, uploadBytes, getDownloadURL 
+} from "https://www.gstatic.com/firebasejs/10.11.0/firebase-storage.js";
+const firebaseConfig = {
   apiKey: "AIzaSyAhsjCfr7B-9vxxcA9bnLr46VcxbRMftvA",
   authDomain: "unhook-38abb.firebaseapp.com",
-  databaseURL: "https://unhook-38abb-default-rtdb.firebaseio.com",
   projectId: "unhook-38abb",
-  storageBucket: "unhook-38abb.firebasestorage.app",
-  messagingSenderId: "182531035159",
-  appId: "1:182531035159:web:47163c38ee27c2ba3b8c52",
-  measurementId: "G-7GGK123MDT"
+  storageBucket: "unhook-38abb.appspot.com",
+  messagingSenderId: "463077981870",
+  appId: "1:463077981870:web:0a31c274187a8ad102e553"
 };
-
-  if(!window.firebase){console.error("Firebase SDK failed to load");return;}
-  firebase.initializeApp(firebaseConfig);
-  const auth=firebase.auth();
-  const db=firebase.database();
-
-  let uid=null;
-  let mode=localStorage.getItem("motStyle")||"mix";
-  let coins=0;
-  let streak=0;
-  let nickname=localStorage.getItem("nick")||"";
-  const today=new Date().toISOString().split("T")[0];
-
-  function guestId(){let g=localStorage.getItem("guest");if(!g){g="guest_"+Math.random().toString(36).slice(2);localStorage.setItem("guest",g)}return g}
-  function setUID(u){uid=u?u.uid:guestId();document.getElementById("nickInput").value=nickname}
-
-  auth.onAuthStateChanged(u=>{setUID(u);updateAuthUI(u);loadUserData();loadChat();});
-  function signInGoogle(){auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());}
-  function signInEmail(email,pwd){auth.signInWithEmailAndPassword(email,pwd).catch(()=>auth.createUserWithEmailAndPassword(email,pwd));}
-  function guest(){setUID(null);updateAuthUI(null);loadUserData();loadChat();}
-  function updateAuthUI(u){document.getElementById("whoami").textContent=u?(u.displayName||u.email||"Signed in"):"Guest";document.getElementById("btnSignOut").style.display=u?"inline-flex":"none"}
-
-  document.getElementById("btnGoogle").onclick=signInGoogle;
-  document.getElementById("btnEmail").onclick=()=>{const e=prompt("Email");if(!e)return;const p=prompt("Password");if(!p)return;signInEmail(e,p)};
-  document.getElementById("btnGuest").onclick=guest;
-  document.getElementById("btnSignOut").onclick=()=>auth.signOut();
-
-  function show(id){document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));const next=document.getElementById(id);if(next){next.classList.add('active');gsap.fromTo(next,{opacity:0,y:6},{opacity:1,y:0,duration:.28})}}
-  document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>show(t.dataset.go)));
-
-  function animateCoins(newTotal){
-    const el=document.getElementById("coinCount");
-    const before=parseInt((el.textContent+"").replace(/\D/g,""))||0;
-    gsap.fromTo({v:before},{v:newTotal,duration:.8,snap:{v:1},onUpdate(){el.textContent=this.targets()[0].v;},onComplete(){gsap.fromTo("#coinPill",{scale:1},{scale:1.12,duration:.18,yoyo:true,repeat:1})}});
-    document.getElementById("shopCoins").textContent=newTotal;
-  }
-
-  function loadUserData(){
-    db.ref("users/"+uid).once("value",snap=>{
-      const d=snap.val()||{};
-      coins=d.coins||0;
-      streak=d.streak||0;
-      document.getElementById("coinCount").textContent=coins;
-      document.getElementById("shopCoins").textContent=coins;
-      document.getElementById("streakDays").textContent=streak;
-      document.getElementById("streakLabel").textContent=streak==1?"day":"days";
-      if(d.badges)renderBadges(d.badges); else renderBadges({});
-      renderPfp(d.pfp||"🐰");
-      renderMot();
-    });
-  }
-
-  function awardCoins(x){coins+=x;db.ref("users/"+uid).update({coins});animateCoins(coins);}
-  function addStreak(){streak++;db.ref("users/"+uid).update({streak,lastCheck:today});document.getElementById("streakDays").textContent=streak;document.getElementById("streakLabel").textContent=streak==1?"day":"days";}
-  function saveNickname(){nickname=document.getElementById("nickInput").value.trim();localStorage.setItem("nick",nickname)}
-  document.getElementById("saveNickBtn").onclick=saveNickname;
-  const FULL_PROMPTS=[
-"Imagine your body's cells cheering you on. What are they saying about your choice to quit?",
-"Describe what true freedom from nicotine addiction feels like. Where are you and what are you doing?",
-"What's one sport, hobby, or creative pursuit that will get significantly better once your lungs are clear?",
-"Write a short letter to your past self who first considered vaping. What warning and encouragement do you give?",
-"List three specific ways quitting will improve your relationships with friends or family?",
-"If you save the money you would have spent on vapes for a year, what exciting thing could you buy or do?",
-"What is the main source of strength (internal or external) you will tap into when a craving is intense?",
-"How does quitting show the world that you are disciplined and in control of your own life?",
-"Describe the feeling of taking a full, deep, easy breath. Make it your motivation.",
-"What new, positive identity are you stepping into by becoming a non-vaper?",
-"Write down your core values (e.g., integrity, health, excellence). How does quitting align with them?",
-"What's one thing you are truly excited about doing once you no longer worry about vaping?",
-"Fill in the blank: I deserve to be nicotine-free because...",
-"Choose a personal quit anthem and write about why its message motivates you.",
-"If you could have a five-minute chat with your future self (vape-free), what advice would they give you?",
-"Name your top three triggers (People, Places, Situations). Plan one avoidance or substitution for each.",
-"What are the 3 P’s that trigger you most: People, Places, or Patterns?",
-"You get a strong craving at a usual time. Write out the 5-step distraction routine you will execute immediately.",
-"What specific feeling (boredom, social anxiety, stress) usually precedes the urge to vape? How can you address the feeling directly?",
-"Design a Craving Kit. What five physical objects will you keep with you to replace the hand-to-mouth habit?",
-"You’re offered a vape at a social event. Write down the exact line you will use to say, 'No, thanks' confidently.",
-"What's one thing you can physically remove from your room or environment to make quitting easier?",
-"How will you change your routine (e.g., taking a different route, switching lunch tables) to disrupt your habit loops?",
-"List three safe people you can text or call when a craving is unbearable. Write down what you'll say to them.",
-"Describe the feeling of a craving—is it a tightness, a restlessness, a hollow spot? Giving it a label makes it less scary.",
-"When you feel the urge, what can you hold in your hand to keep it busy and mimic the vape's action?",
-"If you usually vape after dinner, what is your new, non-negotiable after-dinner activity for the next week?",
-"What are three ways you can make the people, places, and things that trigger you less accessible?",
-"Plan a 'Fire Drill': If you unexpectedly run into a major trigger, what's your immediate 'Escape' strategy?",
-"How does your understanding of your triggers make you feel more powerful and prepared?",
-"What is your go-to breathing exercise when stress builds up? Write down the steps and practice it now.",
-"Write down three positive affirmations about your strength and commitment. Read them out loud.",
-"When you feel irritable or moody (nicotine withdrawal), what is a healthy, calming activity you can do for 15 minutes?",
-"Describe a time in your life when you overcame a difficult challenge. What skills did you use then that you can use now?",
-"If your craving felt like a stormy cloud, what's your mental 'sunshine' (a happy memory or thought) to cut through it?",
-"What's one thing you can do for self-care today that has absolutely nothing to do with quitting?",
-"When boredom hits, what is a productive task you can switch to that requires your full focus?",
-"What's the difference between the temporary relief of vaping and the lasting calm of a healthy coping skill?",
-"How can you talk to yourself with kindness and encouragement instead of self-criticism during a tough moment?",
-"What is one positive habit (e.g., drinking water, stretching, listening to music) you want to add to your routine to replace vaping?",
-"Write about an emotion you tend to avoid by vaping. How can you face that emotion directly for five minutes today?",
-"What does 'riding the wave' of a craving mean to you? How does knowing it will pass in minutes change how you respond?",
-"List five things that bring you genuine joy (not temporary distraction). Plan to do one today.",
-"How does movement (walking, dancing, jumping jacks) help you release the physical tension of a craving?",
-"What makes you laugh? Write about a funny memory or joke to shift your mood quickly?",
-"What is the longest time you've gone without vaping so far? How does that prove you have the ability to quit?",
-"List three small victories from the past 24 hours.",
-"Describe one positive physical change you’ve noticed (e.g., easier to breathe, better sense of smell, less coughing).",
-"If your quit journey was climbing a mountain, what milestone have you reached, and what’s your next flag to plant?",
-"How does successfully getting through a day without vaping make you feel proud of yourself?",
-"Calculate the money you've saved so far. How will you reward yourself when you hit a major savings goal?",
-"What's one new thing you've learned about your willpower or strength since you started this journey?",
-"Write a celebratory headline for a news story about your success at the end of this week.",
-"What have you accomplished today that a week ago you might have felt was impossible?",
-"Name a craving you successfully resisted. What was the key strategy you used that worked?",
-"How has your focus or sleep improved since you cut back or quit? Give a specific example?",
-"Write down your next big reward (e.g., a concert ticket, new video game) and what vape-free date you will earn it by?",
-"If your motivation was a battery, what charged it up today?",
-"Who is the first person you want to share your next vape-free milestone with, and why?",
-"What is the best piece of positive feedback you've received about your quitting journey?",
-"Who is your #1 support person? Write a brief thank-you to them for their help?",
-"How can you clearly communicate your needs to friends who still vape around you (e.g., 'Please don't do that when I'm here')?",
-"What will you say to a friend who is also trying to quit but is struggling? Write a motivational message.",
-"Imagine you are counseling another teen. What are the three most important pieces of advice you would give them?",
-"How does your choice to quit influence the people around you in a positive way?",
-"What's one thing you can do to find new, healthy social activities that don't involve vaping?",
-"List three ways you can connect with people without relying on a shared habit like vaping?",
-"How does being honest with a trusted adult about your quitting process make the challenge feel lighter?",
-"Think about your favorite teacher or mentor. How would their belief in you fuel your decision to stay quit?",
-"What are your healthy boundary words? (e.g., 'I'm committed to my health now' or 'Not today')",
-"If you had a slip-up, write about it without judgment. What was the trigger, and what is the lesson learned?",
-"What is one thing about quitting that has been easier than you expected? Why do you think that is?",
-"How can you use the saved money to invest in a new skill or hobby?",
-"If a moment of doubt hits, what is the most logical counter-argument to the desire to vape?",
-"Write about a negative thought you keep having (e.g., 'It's too hard'). Now, rewrite it as an empowering truth.",
-"What is the smallest, simplest thing you can do right now to make your quit journey a little easier?",
-"What is one good thing that came out of a moment of discomfort during your quitting process?",
-"If you could press a 'reset button' on a tough moment today, what would you change about your reaction?",
-"What's one unexpected thing that makes you want to vape that you need to be mindful of?",
-"Write a commitment to yourself about not letting one mistake erase all your progress.",
-"Today, I choose...",
-"My current superpower is my ability to...",
-"I am strong enough to handle this craving because...",
-"This craving is a sign that my body is healing.",
-"The best thing about today was that I...",
-"I will show myself compassion by...",
-"What is a personal mantra you can say when you feel doubt?",
-"I am worthy of a healthy life.",
-"I feel the most like myself when I am...",
-"What is one thing you can let go of today (a worry, a frustration)?",
-"I am more than my habit.",
-"My health is my priority.",
-"What is one thing you are curious about learning or doing this week?",
-"I forgive myself for any past mistakes and focus on today.",
-"My commitment is stronger than any craving.",
-"What are you looking forward to most this weekend, now that you're focused on being vape-free?",
-"I am in control of my choices.",
-"What simple action can you take in the next 5 minutes to feel better right now?",
-"My lungs are strong and getting stronger every day.",
-"I am a non-vaper. Write a final statement of power and belief."
-  ];
-
-  let PROMPTS=FULL_PROMPTS.slice();
-  let promptIndex=0;
-  const promptTextEl=document.getElementById("promptText");
-  function showPrompt(){promptTextEl.textContent=PROMPTS[promptIndex]}
-  document.getElementById("prevPrompt").onclick=()=>{promptIndex=(promptIndex-1+PROMPTS.length)%PROMPTS.length;showPrompt()};
-  document.getElementById("nextPrompt").onclick=()=>{promptIndex=(promptIndex+1)%PROMPTS.length;showPrompt()};
-  showPrompt();
-
-  document.getElementById("clearJournalDraft").onclick=()=>{document.getElementById("journalEntry").value=""};
-  document.getElementById("saveJournalBtn").onclick=()=>{
-    const entry=document.getElementById("journalEntry").value.trim();
-    if(!entry){document.getElementById("saveJournalMsg").textContent="Write something first";return;}
-    const free=document.getElementById("freeWriteToggle").checked;
-    const usePrompt=free?null:PROMPTS[promptIndex];
-    const key=Date.now();
-    db.ref("journal/"+uid+"/"+key).set({entry,prompt:usePrompt,ts:Date.now()});
-    awardCoins(7);
-    document.getElementById("journalEntry").value="";
-    document.getElementById("saveJournalMsg").textContent="Saved! +7 coins";
-    setTimeout(()=>document.getElementById("saveJournalMsg").textContent="",1600);
-    if(usePrompt){
-      const ul=document.getElementById("journalHistory");
-      const li=document.createElement("li");li.textContent=usePrompt;ul.prepend(li);
-      document.getElementById("journalHistoryCard").style.display="block";
+const app = initializeApp(firebaseConfig);
+const auth = getAuth();
+const db = getFirestore();
+const storage = getStorage();
+const coinCountEl = document.getElementById("coinCount");
+const streakCountEl = document.getElementById("streakCount");
+const userLevelEl = document.getElementById("userLevel");
+const userAvatarEl = document.getElementById("userAvatar");
+let currentUserId = "";
+let coins = 0;
+document.querySelectorAll(".tab").forEach(t=>{
+  t.addEventListener("click",()=>{
+    document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
+    document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
+    t.classList.add("active");
+    document.getElementById(t.dataset.go).classList.add("active");
+    if (t.dataset.go === 'motivation') {
+      renderStickies();
     }
-  };
-
-  const mot={
-    gentle:["You’ve already proven you can do hard things.","Slip-ups don’t erase progress. They teach you.","Breathe. This urge will pass.","Talk to yourself like you would to a best friend.","Tiny wins today become big wins later."],
-    firey:["Cravings don’t control you.","You’re choosing discipline over comfort.","Pain is temporary, power is permanent.","Show the world your backbone.","Wanting and doing are different. Do it."],
-    mix:["Reset is always one choice away.","Every check-in is proof you care.","One day at a time beats all-or-nothing.","Replace the habit: move, sip water, breathe.","You’re stronger than this moment."]
-  };
-
-  function renderMot(){
-    const grid=document.getElementById("stickyGrid");
-    grid.innerHTML="";
-    const picks=[...mot[mode]].slice(0,8);
-    picks.forEach(txt=>{
-      const d=document.createElement("div");
-      d.className="sticky "+(mode==="firey"?"firey":mode==="mix"?"mix":"");
-      d.textContent=txt;
-      grid.appendChild(d);
-      gsap.fromTo(d,{opacity:0,y:12},{opacity:1,y:0,duration:.25});
-    });
+  });
+});
+function showToast(message) {
+    const toast = document.getElementById('toast');
+    toast.textContent = message;
+    toast.classList.add('show');
+    clearTimeout(toast.timer);
+    toast.timer = setTimeout(() => {
+        toast.classList.remove('show');
+    }, 3000);
+}
+const storeNum={
+    get:(k,d=0)=>{const v=localStorage.getItem(k);const n=Number(v);return Number.isFinite(n)?n:d},
+    set:(k,n)=>localStorage.setItem(k,String(n))
+};
+const COIN_KEY="coins_v2";
+function getLocalCoins(){return storeNum.get(COIN_KEY,0)}
+function updateCoinDisplays(){
+  coinCountEl.textContent = coins;
+}
+window.addCoins=async function(delta){
+  bloop(920,0.06);
+  coins = Math.max(0, coins + (Number(delta) || 0));
+  updateCoinDisplays();
+  await updateDoc(doc(db,"users",currentUserId),{coins});
+  try{
+    const pet=document.querySelector(".pixel-pet.small");
+    if(pet){pet.classList.add("happy");setTimeout(()=>pet.classList.remove("happy"),600)}
+    gsap.fromTo("#coinPill",{scale:1},{scale:1.12,duration:.18,yoyo:true,repeat:1});
+  }catch(_){}
+  await grantXP(delta * 5);
+}
+async function grantXP(x){
+  if(!currentUserId)return;
+  const r=doc(db,"users",currentUserId);
+  const s=await getDoc(r);
+  let d=s.data()||{};
+  let lvl=d.petLevel||1;
+  let xp=d.petXP||0;
+  const beforeLvl = lvl;
+  xp+=Math.max(0,Math.floor(x));
+  while(xp>=100){xp-=100;lvl++}
+  await updateDoc(r,{petXP:xp,petLevel:lvl});
+  showHud({petName:d.petName||"Buddy",petStyle:d.petStyle||"mix",petLevel:lvl,petXP:xp})
+  const afterLvl = lvl;
+  if(afterLvl > beforeLvl) {
+    petCheer();
+  } else {
+    petHappy();
   }
-  document.getElementById("motivationStyle").value=mode;
-  document.getElementById("saveStyleBtn").onclick=()=>{mode=document.getElementById("motivationStyle").value;localStorage.setItem("motStyle",mode);renderMot()};
-  renderMot();
-  function grantBadge(key,label,note){
-    const ref=db.ref("users/"+uid+"/badges");
-    ref.once("value",s=>{
-      const cur=s.val()||{};
-      if(!cur[key]){cur[key]={label:label,ts:Date.now()};ref.set(cur);openCelebration("You unlocked: "+label,note||"");}
-      renderBadges(cur);
-    });
+}
+const STICKIES={
+  gentle:["You’ve already proven you can do hard things.","Slip-ups don’t erase progress. They teach you.","Breathe. This urge will pass.","Talk to yourself like you would to a best friend.","Tiny wins today become big wins later.","Every check-in is proof you care.","One day at a time beats all-or-nothing."],
+  firey:["Wanting and doing are different. Do it.","Cravings last minutes. Pride lasts longer.","You’re in charge, not the vape.","If it costs your health, it’s too expensive.","Future you is begging you to keep going.","Replace the habit: move, sip water, breathe.","You’re stronger than this moment."],
+  mix:["Reset is always one choice away.","Every check-in is proof you care.","One day at a time beats all-or-nothing.","Replace the habit: move, sip water, breathe.","You’re stronger than this moment.","Cravings last minutes. Pride lasts longer.","Talk to yourself like you would to a best friend."]
+};
+function renderStickies(){
+  const grid=document.getElementById('stickyGrid');
+  const style=(localStorage.getItem('motivation_style')||'"mix"').replace(/^"+|"+$/g,'');
+  const list=[...(STICKIES[style]||STICKIES.mix)];
+  grid.innerHTML='';
+  list.forEach(txt=>{
+    const d=document.createElement('div');
+    d.className='sticky '+(style==='firey'?'firey':style==='gentle'?'gentle':'mix');
+    d.textContent=txt;
+    grid.appendChild(d);
+    try{gsap.fromTo(d,{y:8,opacity:0},{y:0,opacity:1,duration:.22,ease:'power1.out'})}catch(_){}
+  });
+  document.getElementById("motivationCount").textContent = `${list.length} stickies found`;
+}
+document.getElementById('saveStyleBtn').addEventListener('click',()=>{
+  const style=document.getElementById('motivationStyle').value;
+  localStorage.setItem('motivation_style',JSON.stringify(style));
+  renderStickies();
+  showToast("Motivation style saved!");
+});
+document.getElementById("motivationStyle").onchange = renderStickies;
+(function initMotivationUI(){
+  const saved=(localStorage.getItem('motivation_style')||'"mix"').replace(/^"+|"+$/g,'');
+  document.getElementById('motivationStyle').value=saved;
+  renderStickies();
+})();
+async function deductCoins(cost){
+  if(coins < cost){
+    showToast("Not enough coins!");
+    return false;
   }
-  function renderBadges(owned){
-    const grid=document.getElementById("badgeGrid");grid.innerHTML="";
-    const keys=Object.keys(owned||{});
-    if(!keys.length){grid.innerHTML='<div class="muted">No badges yet. Your first one appears when you check in today.</div>';return;}
-    keys.forEach(k=>{const c=document.createElement("div");c.className="badge";c.innerHTML='<div style="font-size:22px;margin-bottom:6px;">🏅</div><div><strong>'+(owned[k].label||k)+'</strong></div>';grid.appendChild(c);});
-  }
-  const PFP=["🐶","🐰","🐱","🦊","🐻","🐼","🐨","🐵","🦄","🐯","🐹","🐸","🐥","🦋"];
-  function renderPfp(sel){
-    const holder=document.getElementById("pfpGrid");holder.innerHTML="";
-    const chosen=sel||"🐰";
-    PFP.forEach(ch=>{
-      const d=document.createElement("div");
-      d.className="pfp-choice"+(chosen===ch?" active":"");
-      d.textContent=ch;
-      d.onclick=()=>{db.ref("users/"+uid).update({pfp:ch});renderPfp(ch);};
-      holder.appendChild(d);
-    });
-  }
-  function badgeName(k){if(k==="day1")return"First Day Smoke-Free";if(k==="week1")return"First Week Smoke-Free";if(k==="month1")return"1 Month Smoke-Free";if(k==="month6")return"6 Months Smoke-Free";if(k==="year1")return"1 Year Smoke-Free";return k}
-
-  function buyItem(type,key,cost){
-    if(coins<cost){document.getElementById("shopMsg").textContent="Not enough coins.";return;}
-    coins-=cost;db.ref("users/"+uid).update({coins});animateCoins(coins);
-    if(type==="theme"){localStorage.setItem("theme",key);document.body.setAttribute("data-theme",key);}
-    if(type==="badge"){grantBadge(key,badgeName(key));}
-    document.getElementById("shopMsg").textContent="Purchased "+type+"!";
-  }
-  document.querySelectorAll('.buyBtn').forEach(b=>{b.addEventListener('click',()=>buyItem(b.dataset.type,b.dataset.key,Number(b.dataset.cost)))})
-
-  function applyCustomTheme(){
-    const canByStreak=streak>=2;
-    const hasCoins=coins>=10;
-    if(!canByStreak&&!hasCoins){document.getElementById("ctMsg").textContent="Need 10 coins or a 2-day streak to apply a custom theme.";return;}
-    if(!canByStreak){coins-=10;db.ref("users/"+uid).update({coins});animateCoins(coins);}
-    const bg1=document.getElementById("ctBg1").value;
-    const bg2=document.getElementById("ctBg2").value;
-    const brand=document.getElementById("ctBrand").value;
-    const brandDark=document.getElementById("ctBrandDark").value;
-    document.body.style.setProperty('--bg1',bg1);
-    document.body.style.setProperty('--bg2',bg2);
-    document.body.style.setProperty('--brand',brand);
-    document.body.style.setProperty('--brand-dark',brandDark);
-    localStorage.setItem("theme_custom",JSON.stringify({bg1,bg2,brand,brandDark}));
-    document.body.removeAttribute("data-theme");
-    document.getElementById("ctMsg").textContent="Custom theme applied!";
-  }
-  document.getElementById("applyCustomThemeBtn").onclick=applyCustomTheme;
-
-  function openCelebration(t,s){
-    document.getElementById("celeTitle").textContent=t;
-    document.getElementById("celeSub").textContent=s;
-    document.getElementById("celeOverlay").classList.add("show");
-    confetti({particleCount:140,spread:80,origin:{y:.7}});
-    gsap.fromTo(".cele-card",{scale:.95,opacity:0,y:12},{scale:1,opacity:1,y:0,duration:.25});
-  }
-  document.getElementById("celeClose").onclick=()=>{document.getElementById("celeOverlay").classList.remove("show")}
-  document.getElementById("celeOverlay").addEventListener("click",e=>{if(e.target.id==="celeOverlay"){document.getElementById("celeOverlay").classList.remove("show")}})
-
-  function saveCheckin(){
-    db.ref("users/"+uid).once("value",snap=>{
-      const d=snap.val()||{};
-      if(d.lastCheck===today){document.getElementById("checkinMsg").textContent="You already checked in today. Come back tomorrow!";return;}
-      const cravings=document.getElementById("craveSel").value;
-      const vaped=document.getElementById("vapedSel").value;
-      const y=d.lastCheck||null;
-      const yest=new Date();yest.setDate(yest.getDate()-1);
-      const yKey=yest.toISOString().slice(0,10);
-      let s=d.streak||0;
-      if(y===yKey)s=Math.max(1,s)+1; else s=1;
-      streak=s;
-      let earned=5;if(vaped==='no')earned+=10;if(cravings==='none')earned+=5;
-      coins=(d.coins||0)+earned;
-      db.ref("users/"+uid).update({streak:s,coins,lastCheck:today});
-      animateCoins(coins);
-      document.getElementById("streakDays").textContent=s;
-      document.getElementById("streakLabel").textContent=s===1?"day":"days";
-      if(s===1)grantBadge("day1","First Day Smoke-Free","Starting is the hardest step — you just did it.");
-      if(s===7)grantBadge("week1","First Week Smoke-Free","Seven days strong. Keep going!");
-      if(s===30)grantBadge("month1","1 Month Smoke-Free","This is a huge milestone. Proud of you!");
-      if(s===180)grantBadge("month6","6 Months Smoke-Free","Half a year! Incredible consistency.");
-      if(s===365)grantBadge("year1","1 Year Smoke-Free","An entire year. You did that.");
-      if(s>=2)openCelebration("You're on a roll!","Streak: "+s+" "+(s===1?"day":"days")+".");
-      if(vaped==='no')openCelebration("Great job!","Saved! You earned +"+earned+" coins.");
-      else openCelebration("It’s okay — reset starts now","Slip-ups happen. You’re still in this.");
-      document.getElementById("checkinMsg").textContent="Saved! You earned +"+earned+" coins.";
-      setTimeout(()=>document.getElementById("checkinMsg").textContent="",2200);
-    });
-  }
-  document.getElementById("saveCheckinBtn").onclick=saveCheckin;
-
-  function loadChat(){
-    const box=document.getElementById("chatBox");box.innerHTML="";
-    const ref=db.ref("chat/global");
-    ref.limitToLast(100).on("child_added",snap=>{
-      const m=snap.val()||{};
-      const div=document.createElement("div");
-      div.className="msg";
-      const when=new Date(m.ts||Date.now()).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
-      div.innerHTML="<small>["+when+"] "+escapeHtml(m.nick||"anon")+":</small> "+escapeHtml(m.text||"");
-      box.appendChild(div);box.scrollTop=box.scrollHeight;
-    });
-  }
-  function sendMsg(){
-    const text=document.getElementById("chatMsg").value.trim();if(!text)return;
-    const ref=db.ref("chat/global");
-    const nick=(nickname||document.getElementById("nickInput").value.trim()||"anon").slice(0,24);
-    ref.push({nick,text,ts:Date.now()}).then(()=>{
-      document.getElementById("chatMsg").value="";
-      const key="msg_count_"+today;
-      const sent=Number(localStorage.getItem(key)||0);
-      if(sent<3&&text.length>=12){awardCoins(2);localStorage.setItem(key,sent+1);}
-    }).catch(err=>alert("Send failed: "+err.message));
-  }
-  document.getElementById("sendBtn").onclick=sendMsg;
-  document.getElementById("chatMsg").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();sendMsg();}});
-
-  function escapeHtml(s){return s.replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
-
-  Array.from(document.querySelectorAll("button")).forEach(btn=>{btn.addEventListener("click",()=>{gsap.fromTo(btn,{scale:1},{scale:.92,duration:.12,yoyo:true,repeat:1})})});
-
-  document.querySelectorAll('.link[data-jump]').forEach(el=>el.addEventListener('click',()=>show(el.dataset.jump)));
-
-  function applyFontChoice(fontName){document.documentElement.style.setProperty('--app-font',fontName);localStorage.setItem('font_choice',fontName)}
-  function renderFontPicker(){
-    const chips=document.querySelectorAll('.font-chip');
-    const chosen=localStorage.getItem('font_choice')||'"Hanken Grotesk"';
-    applyFontChoice(chosen);
-    chips.forEach(c=>{
-      c.classList.toggle('active',c.dataset.font===chosen);
-      c.addEventListener('click',()=>{chips.forEach(x=>x.classList.remove('active'));c.classList.add('active');applyFontChoice(c.dataset.font)});
-    });
-  }
-  renderFontPicker();
-  (function applySavedTheme(){
-    const t=localStorage.getItem('theme');
-    const custom=localStorage.getItem('theme_custom');
-    if(custom){
-      const obj=JSON.parse(custom);
-      document.body.style.setProperty('--bg1',obj.bg1);
-      document.body.style.setProperty('--bg2',obj.bg2);
-      document.body.style.setProperty('--brand',obj.brand);
-      document.body.style.setProperty('--brand-dark',obj.brandDark);
-      document.body.removeAttribute('data-theme');
-    }else if(t){
-      document.body.setAttribute('data-theme',t);
+  coins -= cost;
+  coinCountEl.textContent = coins;
+  await updateDoc(doc(db,"users",currentUserId),{coins});
+  return true;
+}
+document.querySelectorAll(".buy-theme").forEach(btn=>{
+  btn.onclick = async()=>{
+    let cost = +btn.dataset.cost;
+    let theme = btn.dataset.theme;
+    if(localStorage.getItem(`theme_${theme}`)) { showToast(`You already own the ${theme} theme!`); return; }
+    if(await deductCoins(cost)){
+      localStorage.setItem(`theme_${theme}`,true);
+      showToast(`Unlocked ${theme} theme!`);
     }
-  })();
-
-  document.getElementById("coinCount").textContent=coins;
-  document.getElementById("shopCoins").textContent=coins;
-  document.querySelectorAll('.section')[0].classList.add('active');
+  }
+});
+document.querySelectorAll(".buy-badge").forEach(btn=>{
+  btn.onclick = async()=>{
+    let cost = +btn.dataset.cost;
+    let badge = btn.dataset.badge;
+    if(localStorage.getItem(`badge_${badge}`)) { showToast(`You already own the ${badge} badge!`); return; }
+    if(await deductCoins(cost)){
+      localStorage.setItem(`badge_${badge}`,true);
+      showToast("Badge unlocked 🏆");
+    }
+  }
+});
+const themeSelect = document.getElementById("themeSelect");
+document.getElementById("applyThemeBtn").onclick = ()=>{
+  let val = themeSelect.value;
+  if(val!=="default" && !localStorage.getItem(`theme_${val}`)){
+    showToast("Unlock this theme first");
+    return;
+  }
+  document.body.setAttribute("data-theme",val);
+  localStorage.setItem("activeTheme",val);
+  showToast("Theme applied!");
+};
+let savedTheme = localStorage.getItem("activeTheme");
+if(savedTheme) document.body.setAttribute("data-theme",savedTheme);
+document.querySelectorAll("button").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    btn.style.transform="scale(.94)";
+    setTimeout(()=>btn.style.transform="scale(1)",140);
+  });
+});
+function coinPop(amount){
+  let el=document.getElementById("rewardPop");
+  el.style.opacity=1;
+  el.textContent = `+${amount} 🪙`;
+  el.style.transform="translate(-50%,-50%) scale(1.5)";
+  setTimeout(()=>{
+    el.style.opacity=0;
+    el.style.transform="translate(-50%,-50%) scale(1)";
+  },700);
+}
+const ob=document.getElementById("onboardOverlay"),s1=document.getElementById("onboardStep1"),s2=document.getElementById("onboardStep2"),s3=document.getElementById("onboardStep3"),ob1=document.getElementById("obNext1"),obb2=document.getElementById("obBack2"),ob2=document.getElementById("obNext2"),obb3=document.getElementById("obBack3"),obf=document.getElementById("obFinish"),petNameInput=document.getElementById("petNameInput"),starterStyle=document.getElementById("starterStyle"),petHud=document.getElementById("petHud"),petHudName=document.getElementById("petHudName"),petXpBar=document.getElementById("petXpBar"),petLevelTxt=document.getElementById("petLevelTxt");
+function bloop(f=700,t=0.08){
+  try{
+    const a=new (window.AudioContext||window.webkitAudioContext)();
+    const o=a.createOscillator();const g=a.createGain();
+    o.type="square";o.frequency.value=f;g.gain.value=.06;
+    o.connect(g);g.connect(a.destination);
+    o.start();
+    setTimeout(()=>{o.stop();a.close()},t*1000)
+  }catch(e){}
+}
+function step(show){
+  s1.style.display=show===1?"block":"none";
+  s2.style.display=show===2?"block":"none";
+  s3.style.display=show===3?"block":"none"
+}
+ob1.onclick=()=>{bloop(820);step(2)};
+obb2.onclick=()=>{bloop(620);step(1)};
+ob2.onclick=()=>{
+  if(!petNameInput.value.trim()){bloop(320);petNameInput.focus();return}
+  bloop(880);step(3)
+};
+obb3.onclick=()=>{bloop(620);step(2)};
+obf.onclick=async()=>{
+  bloop(980);
+  const name=petNameInput.value.trim()||"Buddy";
+  const style=starterStyle.value;
+  await ensureUserDoc();
+  await updateDoc(doc(db,"users",currentUserId),{onboardingDone:true,petName:name,petStyle:style,petLevel:1,petXP:0});
+  localStorage.setItem("pet.onboard","1");
+  ob.style.display="none";
+  showHud({petName:name,petStyle:style,petLevel:1,petXP:0});
+  showToast("Onboarding complete! Welcome!");
+};
+function showHud(d){
+  petHudName.textContent=d.petName||"Buddy";
+  const lvl=d.petLevel||1;const xp=d.petXP||0;
+  const pct=Math.max(0,Math.min(100,(xp%100)));
+  petXpBar.style.width=pct+"%";
+  petLevelTxt.textContent="Lv."+lvl+" • "+pct+"/100xp";
+  petHud.style.display="block";
+}
+async function ensureUserDoc(){
+  const r=doc(db,"users",currentUserId);
+  const s=await getDoc(r);
+  if(!s.exists()){
+    await setDoc(r,{
+      coins:0,
+      streak:0,
+      lastCheckin:"",
+      pfp:"",
+      journalCount:0,
+      checkinCount:0,
+      petXP:0,
+      petLevel:1
+    });
+  }
+}
+async function loadPet(){
+  if(!currentUserId)return;
+  await ensureUserDoc();
+  const r=doc(db,"users",currentUserId);
+  const s=await getDoc(r);
+  const d=s.data()||{};
+  coins = d.coins || 0;
+  updateCoinDisplays();
+  if(d.onboardingDone){showHud(d)}
+  else{
+    if(!localStorage.getItem("pet.onboard")){
+      step(1);
+      ob.style.display="flex"
+    }
+  }
+}
+const petEmote=document.getElementById("petEmote");
+let petMoodTimer=null;
+function emoteShow(txt,dur=900){
+  petEmote.textContent=txt;
+  petEmote.style.opacity="1";
+  petEmote.style.transform="translateY(0)";
+  clearTimeout(petMoodTimer);
+  petMoodTimer=setTimeout(()=>{
+    petEmote.style.opacity="0";
+    petEmote.style.transform="translateY(4px)"
+  },dur);
+}
+function petHappy(){bloop(980,0.06);emoteShow("✨",1000)}
+function petCoin(){bloop(920,0.05);emoteShow("🪙",900)}
+function petCheer(){bloop(1040,0.08);emoteShow("🎉",1100)}
+function petCalm(){bloop(680,0.05);emoteShow("💛",900)}
+function idleTicker(){
+  const r=Math.random();
+  if(r<.25)emoteShow("⭐",600);
+  else if(r<.5)emoteShow("💫",600);
+  else if(r<.75)emoteShow("🌟",600);
+  else emoteShow("✨",600);
+}
+setInterval(idleTicker,4200);
+const petEl=document.querySelector(".pixel-pet.small");
+function petMoodIdle(){if(!petEl)return;petEl.classList.remove("happy","hurt","sleep");petEl.classList.add("idle")}
+function petMoodSleep(){if(!petEl)return;petEl.classList.remove("happy","hurt","idle");petEl.classList.add("sleep")}
+setInterval(()=>{if(document.hidden)petMoodSleep();else petMoodIdle()},4000);
+onAuthStateChanged(auth, (user) => {
+  const loadingOverlay = document.getElementById("loadingOverlay");
+  if (user) {
+    currentUserId = user.uid;
+    document.getElementById("currentUserId").value = user.uid;
+    loadingOverlay.style.display = "none";
+    loadPet();
+  } else {
+    currentUserId = "";
+    document.getElementById("currentUserId").value = "";
+    signInAnonymously(auth).catch((error) => {
+      console.error("Anonymous sign-in failed:", error);
+    });
+    loadingOverlay.style.display = "flex";
+  }
 });
 </script>
 </body>
