@@ -177,10 +177,11 @@ textarea#chatInput{height:70px;resize:none}
 </div>
 <div id="authScreen" style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:70vh;text-align:center;">
   <h2 style="margin-bottom:20px;">Start Your Journey</h2>
-  <button id="loginGoogle" class="cta" style="margin-bottom:12px;">Sign in with Google</button>
-  <button id="loginEmailBtn" class="cta" style="margin-bottom:12px;">Sign in with Email</button>
-  <button id="registerEmailBtn" class="cta ghost" style="margin-bottom:18px;">Create Account</button>
-  <button id="continueGuest" class="cta ghost">Continue as Guest</button>
+  <button class="cta" id="btnGoogle">Sign in with Google</button>
+  <button class="cta" id="btnEmail">Sign in with Email</button>
+  <button class="cta ghost" id="btnCreate">Create Account</button>
+  <button class="cta" id="btnGuest">Continue as Guest</button>
+
 </div>
 <div id="emailAuthCard" style="display:none;max-width:380px;margin:40px auto;background:#0f121c;border-radius:16px;padding:20px;box-shadow:0 8px 30px rgba(0,0,0,.4);">
   <h3 id="emailAuthTitle" style="margin-bottom:10px;">Sign In</h3>
@@ -193,8 +194,7 @@ textarea#chatInput{height:70px;resize:none}
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
 import {
   getAuth, onAuthStateChanged, signInWithPopup, GoogleAuthProvider,
-  signInAnonymously, signOut, signInWithEmailAndPassword,
-  createUserWithEmailAndPassword
+  signInAnonymously, signOut, signInWithEmailAndPassword, createUserWithEmailAndPassword
 } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
 import { 
   getFirestore, doc, setDoc, getDoc, updateDoc, increment
@@ -284,6 +284,15 @@ if(emailAuthSubmit){
     }
   };
 }
+const gBtn=document.getElementById("btnGoogle");
+const eBtn=document.getElementById("btnEmail");
+const cBtn=document.getElementById("btnCreate");
+const uBtn=document.getElementById("btnGuest");
+function toast(msg){const t=document.getElementById("toast");if(!t)return; t.textContent=msg;t.classList.add("show");clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove("show"),2400)}
+if(gBtn){gBtn.onclick=async()=>{try{await signInWithPopup(auth,new GoogleAuthProvider());toast("Signed in with Google")}catch(e){toast("Google sign-in failed")}}}
+if(eBtn){eBtn.onclick=async()=>{const email=prompt("Email");if(!email)return;const pass=prompt("Password");if(!pass)return;try{await signInWithEmailAndPassword(auth,email,pass);toast("Signed in")}catch(e){toast("Email sign-in failed")}}}
+if(cBtn){cBtn.onclick=async()=>{const email=prompt("Email");if(!email)return;const pass=prompt("Create password (min 6 chars)");if(!pass)return;try{await createUserWithEmailAndPassword(auth,email,pass);toast("Account created")}catch(e){toast("Create account failed")}}}
+if(uBtn){uBtn.onclick=async()=>{try{await signInAnonymously(auth);toast("Continuing as guest")}catch(e){toast("Guest sign-in failed")}}}
 if(continueGuest){
   continueGuest.onclick=async()=>{ await signInAnonymously(auth); };
 }
@@ -440,10 +449,10 @@ btnCreate?.addEventListener("click",async()=>{
     showToast("Account created")
   }catch(e){showToast("Sign up failed")}
 })
-
 btnGuest?.addEventListener("click",async()=>{
   try{
     await signInAnonymously(auth)
     showToast("Continuing as guest")
   }catch(e){showToast("Guest sign-in failed")}
 })
+</script>
