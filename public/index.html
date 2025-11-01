@@ -191,9 +191,10 @@ textarea#chatInput{height:70px;resize:none}
 </div>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
-import { 
+import {
   getAuth, onAuthStateChanged, signInWithPopup, GoogleAuthProvider,
-  signInAnonymously, signOut, signInWithEmailAndPassword, createUserWithEmailAndPassword
+  signInAnonymously, signOut, signInWithEmailAndPassword,
+  createUserWithEmailAndPassword
 } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
 import { 
   getFirestore, doc, setDoc, getDoc, updateDoc, increment
@@ -387,3 +388,62 @@ async function saveJournal(){
   showToast("Entry saved! +7 🪙")
 }
 document.getElementById("saveJournalBtn")?.addEventListener("click",saveJournal)
+onAuthStateChanged(auth, (user) => {
+  const loadingOverlay = document.getElementById("loadingOverlay");
+  if (user) {
+    currentUserId = user.uid;
+    document.getElementById("currentUserId").value = user.uid;
+    loadingOverlay.style.display = "none";
+    loadPet();
+  } else {
+    currentUserId = "";
+    document.getElementById("currentUserId").value = "";
+    signInAnonymously(auth).catch((error) => {
+      console.error("Anonymous sign-in failed:", error);
+    });
+    loadingOverlay.style.display = "flex";
+  }
+});
+function findBtn(regex){
+  return [...document.querySelectorAll("button")].find(b=>regex.test((b.textContent||"").trim()))
+}
+const btnGoogle=findBtn(/sign in with google/i)
+const btnEmail=findBtn(/sign in with email/i)
+const btnCreate=findBtn(/create account/i)
+const btnGuest=findBtn(/continue as guest/i)
+const provider=new GoogleAuthProvider()
+
+btnGoogle?.addEventListener("click",async()=>{
+  try{
+    await signInWithPopup(auth,provider)
+    showToast("Signed in with Google")
+  }catch(e){showToast("Google sign-in failed")}
+})
+
+btnEmail?.addEventListener("click",async()=>{
+  const email=prompt("Email")
+  if(!email)return
+  const pass=prompt("Password")
+  if(!pass)return
+  try{
+    await signInWithEmailAndPassword(auth,email,pass)
+    showToast("Signed in")
+  }catch(e){showToast("Email sign-in failed")}
+})
+btnCreate?.addEventListener("click",async()=>{
+  const email=prompt("New account email")
+  if(!email)return
+  const pass=prompt("New account password (6+ chars)")
+  if(!pass)return
+  try{
+    await createUserWithEmailAndPassword(auth,email,pass)
+    showToast("Account created")
+  }catch(e){showToast("Sign up failed")}
+})
+
+btnGuest?.addEventListener("click",async()=>{
+  try{
+    await signInAnonymously(auth)
+    showToast("Continuing as guest")
+  }catch(e){showToast("Guest sign-in failed")}
+})
