@@ -14,72 +14,76 @@ body[data-theme="midnight"]{--bg1:#0e1220;--bg2:#0a0f1a;--card:#11162a;--ink:#df
 body[data-theme="sunny"]{--bg1:#fffddb;--bg2:#fff8c2;--brand:#ff9f43;--brand-dark:#d68233;--accent:#ff9f43}
 body[data-theme="calm"]{--bg1:#f0fbf8;--bg2:#e3f6f1;--brand:#00a388;--brand-dark:#007f6c;--accent:#00a388}
 body[data-theme="forest"]{--bg1:#f0fff0;--bg2:#e3ffe3;--brand:#4c8a4c;--brand-dark:#3a6e3a;--accent:#4c8a4c}
-html,body{height:100%;margin:0;padding:0}
+html,body{height:100%;margin:0}
 body{background:linear-gradient(180deg,var(--bg1),var(--bg2));color:var(--ink)}
 header{background:var(--brand);color:#fff;padding:24px;font-size:28px;font-weight:700;text-align:center}
 .wrap{max-width:1100px;margin:0 auto;padding:16px}
 .tabs{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:14px auto 8px;align-items:center}
-.tab{background:var(--brand);color:#fff;padding:12px 22px;border-radius:999px;cursor:pointer;font-weight:600;transition:.12s}
-.tab:hover{background:var(--brand-dark)}
-.pill{margin-left:auto;background:#eef3ff;color:#2746ff;padding:8px 14px;border-radius:999px;font-weight:700;box-shadow:0 2px 8px var(--ring);display:flex;align-items:center;gap:8px}
+.tab{background:var(--brand);color:#fff;padding:12px 22px;border-radius:999px;cursor:pointer;font-weight:700;box-shadow:0 10px 24px var(--ring);transition:.12s transform,.12s background}
+.tab:hover{background:var(--brand-dark);transform:translateY(-1px)}
+.pill{margin-left:auto;background:#eef3ff;color:#2746ff;padding:8px 14px;border-radius:999px;font-weight:800;box-shadow:0 2px 8px var(--ring);display:inline-flex;gap:10px;align-items:center}
 .section{display:none}
-.section.active{display:block;animation:fade .3s ease}
-@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+.section.active{display:block;animation:fade .25s ease}
+@keyframes fade{from{opacity:.6;transform:translateY(2px)}to{opacity:1;transform:translateY(0)}}
 .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 @media(max-width:860px){.grid-2{grid-template-columns:1fr}}
 .card{background:var(--card);border-radius:16px;padding:16px;box-shadow:0 10px 24px var(--ring);margin:14px 0}
-select,input,textarea{width:100%;padding:14px;border-radius:12px;border:1px solid #e7eef8;box-shadow:0 6px 14px rgba(0,0,0,.04);color:var(--ink);background:#fff}
-.cta{background:var(--brand);color:#fff;border:0;padding:12px 20px;border-radius:999px;font-weight:700;cursor:pointer;box-shadow:0 10px 24px var(--ring)}
+select,input,textarea{width:100%;padding:14px;border-radius:12px;border:1px solid #e7eef8;box-shadow:0 6px 14px rgba(0,0,0,.04);background:#fff;color:var(--ink)}
+label{font-weight:700;display:block;margin:0 0 8px}
+textarea{min-height:110px;resize:vertical}
+.cta{background:var(--brand);color:#fff;border:0;padding:12px 20px;border-radius:999px;font-weight:800;cursor:pointer;box-shadow:0 10px 24px var(--ring)}
 .cta:hover{background:var(--brand-dark)}
 .cta.small{padding:8px 14px;font-size:14px}
 .cta.ghost{background:transparent;color:var(--brand);border:2px solid var(--brand)}
-.inline{display:flex;align-items:center;gap:8px}
-.space-between{display:flex;justify-content:space-between;align-items:center;gap:8px}
-.muted{color:var(--muted);font-size:14px}
-.pfp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(60px,1fr));gap:10px;margin-top:8px}
-.pfp-choice{font-size:32px;padding:10px;cursor:pointer;background:var(--card);border:2px solid transparent;border-radius:14px;text-align:center;transition:.2s}
-.pfp-choice.active{border-color:var(--brand);transform:scale(1.12)}
-.badge-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
-.badge{text-align:left;padding:14px;border-radius:12px;background:var(--card);box-shadow:0 2px 8px var(--ring);font-size:14px}
-.chat-box{height:380px;overflow:auto;border-radius:16px;background:var(--card);padding:12px;box-shadow:inset 0 0 0 1px #e9eef6,0 10px 24px var(--ring)}
-.chat-msg{margin-bottom:10px;display:flex;align-items:flex-start;gap:8px}
-.chat-bubble{padding:10px 14px;border-radius:14px;max-width:80%;line-height:1.35;font-size:14px;box-shadow:0 2px 8px rgba(0,0,0,.08)}
-.chat-me{background:#c7e6ff;border:1px solid #9fd3ff;margin-left:auto}
-.chat-other{background:#fff9cc;border:1px solid #f5e6a5}
-textarea#chatInput{height:70px;resize:none}
-.profile-pic{width:120px;height:120px;border-radius:50%;object-fit:cover;box-shadow:0 4px 12px rgba(0,0,0,.15);margin-bottom:10px;background:#fff}
-.stat-row{display:flex;justify-content:space-between;padding:4px 0;font-size:15px}
-.motivation-grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));margin-top:12px}
-.sticky{padding:14px;border-radius:12px;font-size:16px;box-shadow:0 6px 14px rgba(0,0,0,.08);font-family:"Playfair Display",serif;transition:transform .2s}
-.sticky:hover{transform:scale(1.03)}
-.sticky.gentle.blue{background:#e8f1ff;border:1px solid #c8dcff}
-.sticky.gentle.green{background:#e8fff6;border:1px solid #c6f5e3}
-.sticky.gentle.teal{background:#e7fbff;border:1px solid #c6eef7}
-.sticky.firey.yellow{background:#fff6cc;border:1px solid #ffec99}
-.sticky.firey.red{background:#ffe1e1;border:1px solid #ffbfbf}
-.sticky.firey.orange{background:#ffe8d6;border:1px solid #ffd0ad}
-.sticky.mix.purple{background:#efe5ff;border:1px solid #d6c7ff}
-.sticky.mix.pink{background:#ffe6f1;border:1px solid #ffcde3}
-.sticky.mix.indigo{background:#e6ebff;border:1px solid #cfd7ff}
+.space-between{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.inline{display:inline-flex;gap:10px;align-items:center}
+.muted{color:var(--muted)}
+.center{text-align:center}
+.chat-box{height:380px;overflow:auto;border-radius:16px;background:var(--card);box-shadow:inset 0 0 0 1px #e9eef6,0 10px 24px var(--ring);padding:12px}
+.msg{margin:8px 0}
+.msg small{color:var(--muted);font-weight:600;margin-right:6px}
+.badge-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px}
+.pfp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(56px,1fr));gap:10px}
+.pfp-choice{font-size:28px;padding:10px;border-radius:12px;border:2px solid transparent;background:var(--card);box-shadow:0 2px 8px var(--ring);cursor:pointer;text-align:center}
+.pfp-choice.active{border-color:var(--brand);transform:scale(1.06)}
+.profile-pic{width:120px;height:120px;border-radius:60px;object-fit:cover;box-shadow:0 4px 12px rgba(0,0,0,.15)}
+.sticky{padding:14px;border-radius:12px;box-shadow:0 6px 14px rgba(0,0,0,.08);font-family:"Playfair Display",serif;font-size:16px}
+.sticky:hover{transform:scale(1.02)}
+.sticky.gentle.blue{background:#e7f1ff;border:1px solid #cfe3ff}
+.sticky.gentle.green{background:#e7fff6;border:1px solid #c8f7e6}
+.sticky.gentle.teal{background:#e7fbff;border:1px solid #c9f0fb}
+.sticky.firey.yellow{background:#fff8d6;border:1px solid #f5e6a5}
+.sticky.firey.red{background:#ffe2e2;border:1px solid #ffc8c8}
+.sticky.firey.orange{background:#ffe9d6;border:1px solid #ffd3ad}
+.sticky.mix.purple{background:#efe7ff;border:1px solid #dccbff}
+.sticky.mix.pink{background:#ffe7f4;border:1px solid #ffcde7}
+.sticky.mix.indigo{background:#e7ecff;border:1px solid #cfdbff}
 .pixel-pet-wrap{image-rendering:pixelated;transform:translateZ(0)}
 .pixel-pet{image-rendering:pixelated}
-.pixel-pet.small{image-rendering:pixelated;animation:petBob 2s infinite}
 @keyframes petBob{0%{transform:translateY(0)}50%{transform:translateY(-2px)}100%{transform:translateY(0)}}
+.pixel-pet.small{animation:petBob 2s infinite}
 .pixel-pet.idle rect[fill="#ffd34e"]{fill:#ffd34e}
 .pixel-pet.happy rect[fill="#ffd34e"]{fill:#ffee85}
 .pixel-pet.hurt rect[fill="#ffd34e"]{fill:#ff8c8c}
 .pixel-pet.sleep rect[fill="#ffd34e"]{fill:#e8d87c}
-.pixel-pet.happy rect[x="5"][y="11"]{fill:#ff4081}
-.pixel-pet.happy rect[x="9"][y="11"]{fill:#ff4081}
-.pixel-pet.hurt rect[x="5"][y="11"]{fill:#000}
-.pixel-pet.hurt rect[x="9"][y="11"]{fill:#000}
-.pixel-pet.sleep rect[x="5"][y="11"]{fill:#000}
-.pixel-pet.sleep rect[x="9"][y="11"]{fill:#000}
-#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#111;color:#fff;padding:10px 18px;font-size:14px;border-radius:20px;opacity:0;pointer-events:none;transition:opacity .3s ease;z-index:1500;box-shadow:0 6px 16px rgba(0,0,0,.2)}
-#toast.show{opacity:1}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#111;color:#fff;padding:10px 18px;font-size:14px;border-radius:20px;opacity:0;pointer-events:none;transition:opacity .25s ease;z-index:1500;box-shadow:0 6px 16px rgba(0,0,0,.2)}
+.toast.show{opacity:1}
 .lds-dual-ring{display:inline-block;width:64px;height:64px}
 .lds-dual-ring:after{content:" ";display:block;width:46px;height:46px;margin:1px;border-radius:50%;border:5px solid var(--accent);border-color:var(--accent) transparent var(--accent) transparent;animation:lds-dual-ring 1.2s linear infinite}
-@keyframes lds-dual-ring{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}
+@keyframes lds-dual-ring{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+.authbar{display:flex;gap:8px;justify-content:center;align-items:center;flex-wrap:wrap}
+.authbar .cta.small{font-weight:700}
+.journey{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin:10px 0}
+@media(max-width:680px){.journey{grid-template-columns:repeat(4,1fr)}}
+.step{background:var(--card);border:2px solid #e7eef8;border-radius:14px;height:64px;display:flex;align-items:center;justify-content:center;position:relative;box-shadow:0 6px 14px rgba(0,0,0,.06);font-weight:800}
+.step.locked{opacity:.5}
+.step .ring{position:absolute;inset:6px;border-radius:12px;border:3px solid #dfe7ff}
+.step.done .ring{border-color:#7bd66c}
+.step.current .ring{border-color:#ffd34e}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:center;justify-content:center;z-index:1200}
+.modal.show{display:flex}
+.modal-card{width:min(520px,92vw);background:#111;color:#fff;border-radius:18px;box-shadow:0 30px 80px rgba(0,0,0,.35);padding:18px}
+.font-lg{font-size:18px}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/gsap.min.js"></script>
@@ -90,11 +94,12 @@ textarea#chatInput{height:70px;resize:none}
   <div class="tab" data-go="checkin">Check-In</div>
   <div class="tab" data-go="journal">Journal</div>
   <div class="tab" data-go="motivation">Motivation</div>
+  <div class="tab" data-go="journey">Journey</div>
   <div class="tab" data-go="shop">Shop</div>
   <div class="tab" data-go="profile">Profile</div>
   <div class="tab" data-go="community">Community</div>
   <div class="pill right" id="coinPill">
-    <svg class="pixel-pet small" viewBox="0 0 16 16" width="40" height="40">
+    <svg class="pixel-pet small" viewBox="0 0 16 16" width="32" height="32">
       <rect width="16" height="16" fill="#2b2b2b"/>
       <rect x="5" y="2" width="6" height="6" fill="#ffd34e"/>
       <rect x="4" y="4" width="2" height="2" fill="#000"/>
@@ -108,54 +113,246 @@ textarea#chatInput{height:70px;resize:none}
   </div>
 </div>
 <main class="wrap">
-<div id="onboardOverlay" style="position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.45);z-index:1200;">
-  <div id="onboardCard" style="width:min(520px,92vw);background:#111;color:#fff;border-radius:18px;box-shadow:0 30px 80px rgba(0,0,0,.35);overflow:hidden;">
-    <div style="padding:20px 20px 0;display:flex;gap:12px;align-items:center;justify-content:center;">
-      <div class="pixel-pet-wrap">
-        <svg class="pixel-pet" viewBox="0 0 16 16" width="120" height="120">
-          <rect width="16" height="16" fill="#2b2b2b"/>
-          <rect x="5" y="2" width="6" height="6" fill="#ffd34e"/>
-          <rect x="4" y="4" width="2" height="2" fill="#000"/>
-          <rect x="10" y="4" width="2" height="2" fill="#000"/>
-          <rect x="7" y="6" width="2" height="1" fill="#000"/>
-          <rect x="3" y="8" width="10" height="5" fill="#ffd34e"/>
-          <rect x="2" y="10" width="12" height="3" fill="#ffb84e"/>
-          <rect x="6" y="13" width="4" height="2" fill="#654321"/>
-        </svg>
+<section id="auth" class="section active">
+  <h2 class="section-title">Welcome</h2>
+  <div class="card">
+    <div class="authbar">
+      <button id="googleBtn" class="cta small">Continue with Google</button>
+      <button id="emailBtn" class="cta small ghost">Email</button>
+      <button id="guestBtn" class="cta small">Continue as Guest</button>
+    </div>
+    <p class="muted center" style="margin-top:8px">If sign-in is blocked, you’ll continue as guest automatically.</p>
+  </div>
+  <div class="card">
+    <h3 class="section-title" style="margin:0 0 10px">Your Journey</h3>
+    <div class="journey" id="journeyGrid"></div>
+    <p class="muted center">Complete steps to unlock more.</p>
+  </div>
+</section>
+<section id="checkin" class="section">
+  <h2 class="section-title">Daily Check-In</h2>
+  <div class="grid-2">
+    <div class="card">
+      <label>How are you feeling today?</label>
+      <select id="moodSel">
+        <option value="5">Excellent</option>
+        <option value="4" selected>Good</option>
+        <option value="3">Okay</option>
+        <option value="2">Not great</option>
+        <option value="1">Rough</option>
+      </select>
+    </div>
+    <div class="card">
+      <label>Did you experience cravings today?</label>
+      <select id="craveSel">
+        <option value="none" selected>No cravings</option>
+        <option value="mild">Mild</option>
+        <option value="strong">Strong</option>
+      </select>
+    </div>
+  </div>
+  <div class="grid-2">
+    <div class="card">
+      <label>What triggered your cravings?</label>
+      <input id="triggerTxt" type="text" placeholder="stress, boredom, social pressure"/>
+    </div>
+    <div class="card">
+      <label>Did you vape today?</label>
+      <select id="vapedSel">
+        <option value="no" selected>No</option>
+        <option value="yes">Yes</option>
+      </select>
+    </div>
+  </div>
+  <div class="card">
+    <label>Notes</label>
+    <textarea id="notesTxt" placeholder="Anything else?"></textarea>
+    <div class="space-between" style="margin-top:8px">
+      <button class="cta small ghost" id="clearDraftBtn" type="button">Clear</button>
+      <button class="cta" id="saveCheckinBtn">Save Check-In</button>
+    </div>
+    <p class="muted center" id="checkinMsg" style="margin-top:6px"></p>
+  </div>
+  <div class="card" id="checkinHistoryCard" style="display:none">
+    <strong>Recent Check-Ins</strong>
+    <ul id="checkinHistory" class="muted" style="margin:8px 0 0; padding-left:18px"></ul>
+  </div>
+</section>
+<section id="journal" class="section">
+  <h2 class="section-title">Journal</h2>
+  <div class="card">
+    <div class="space-between">
+      <strong>Prompt</strong>
+      <div class="inline">
+        <button id="prevPrompt" class="cta small ghost" type="button">• Prev</button>
+        <button id="nextPrompt" class="cta small" type="button">Next •</button>
       </div>
     </div>
-    <div id="onboardStep1" style="padding:14px 20px 0;text-align:center;">
-      <h3 style="margin:0 0 6px;font-size:22px;">Welcome to Unhook 2.0</h3>
-      <p style="margin:0 0 14px;opacity:.9;">Meet your pixel buddy. Level it up by staying vape-free and earning coins.</p>
-      <button class="cta" id="obNext1" style="margin:10px auto 20px;display:inline-block;">Next</button>
+    <p id="promptText" style="margin:10px 0 0"></p>
+  </div>
+  <div class="card">
+    <div class="space-between">
+      <label style="margin:0">Your entry</label>
+      <label class="inline" style="margin:0">
+        <input type="checkbox" id="freeWriteToggle"/>
+        <span class="muted">Free write (ignore prompt)</span>
+      </label>
     </div>
-    <div id="onboardStep2" style="display:none;padding:0 20px 0 20px;">
-      <label style="font-weight:700;display:block;margin:0 0 8px;">Name your buddy</label>
-      <input id="petNameInput" type="text" placeholder="e.g., Pixel Puff" style="width:100%;padding:12px;border-radius:12px;border:1px solid #2a2f3e;background:#0d1120;color:#fff;">
-      <div style="display:flex;justify-content:space-between;gap:10px;margin:16px 0 20px;">
+    <textarea id="journalEntry" placeholder="Write what's on your mind…"></textarea>
+    <div class="space-between" style="margin-top:10px">
+      <button class="cta small ghost" id="clearJournalDraft" type="button">Clear</button>
+      <div class="inline">
+        <button class="cta" id="saveJournalBtn">Save Entry (+7)</button>
+        <span class="muted" id="saveJournalMsg"></span>
+      </div>
+    </div>
+  </div>
+  <div class="card" id="journalHistoryCard" style="display:none">
+    <strong>Recent Entries</strong>
+    <ul id="journalHistory" class="muted" style="margin:8px 0 0; padding-left:18px"></ul>
+  </div>
+</section>
+<section id="motivation" class="section">
+  <h2 class="section-title">Motivation</h2>
+  <div class="card">
+    <div class="space-between">
+      <strong>Choose your vibe</strong>
+      <div class="inline">
+        <select id="motivationStyle">
+          <option value="gentle">Gentle</option>
+          <option value="firey">Firey</option>
+          <option value="mix" selected>Mix</option>
+        </select>
+        <button id="saveStyleBtn" class="cta small">Save</button>
+        <span class="muted" id="motivationCount">0</span>
+        <button id="shuffleStickies" class="cta small ghost" type="button">Shuffle</button>
+      </div>
+    </div>
+  </div>
+  <div class="badge-grid" id="motivationGrid"></div>
+</section>
+<section id="journey" class="section">
+  <h2 class="section-title">Journey</h2>
+  <div class="card">
+    <div id="journeyPath" class="journey"></div>
+    <p class="muted center">Earn XP by checking in, journaling, and sending positive messages to unlock the next step.</p>
+  </div>
+</section>
+<section id="shop" class="section">
+  <h2 class="section-title">Rewards Shop</h2>
+  <div class="card">
+    <p class="muted center">Earn coins by journaling, checking in, and staying vape-free. Use them to unlock themes and badges.</p>
+  </div>
+  <h3>Themes</h3>
+  <div class="badge-grid">
+    <div class="card"><strong>Sunny</strong><div class="muted">Cost: 25</div><button class="cta small buy-theme" data-cost="25" data-theme="sunny">Unlock</button></div>
+    <div class="card"><strong>Calm</strong><div class="muted">Cost: 30</div><button class="cta small buy-theme" data-cost="30" data-theme="calm">Unlock</button></div>
+    <div class="card"><strong>Forest</strong><div class="muted">Cost: 40</div><button class="cta small buy-theme" data-cost="40" data-theme="forest">Unlock</button></div>
+    <div class="card"><strong>Ocean</strong><div class="muted">Cost: 35</div><button class="cta small buy-theme" data-cost="35" data-theme="ocean">Unlock</button></div>
+    <div class="card"><strong>Sunset</strong><div class="muted">Cost: 35</div><button class="cta small buy-theme" data-cost="35" data-theme="sunset">Unlock</button></div>
+    <div class="card"><strong>Midnight</strong><div class="muted">Cost: 35</div><button class="cta small buy-theme" data-cost="35" data-theme="midnight">Unlock</button></div>
+  </div>
+  <h3 style="margin-top:20px">Badges</h3>
+  <div class="badge-grid">
+    <div class="card"><strong>Day 1 Badge 🎉</strong><div class="muted">Cost: 10</div><button class="cta small buy-badge" data-cost="10" data-badge="day1">Unlock</button></div>
+    <div class="card"><strong>1-Week Badge 🏅</strong><div class="muted">Cost: 40</div><button class="cta small buy-badge" data-cost="40" data-badge="week">Unlock</button></div>
+    <div class="card"><strong>1-Month Badge 🏆</strong><div class="muted">Cost: 100</div><button class="cta small buy-badge" data-cost="100" data-badge="month">Unlock</button></div>
+  </div>
+  <p id="shopMsg" class="muted center" style="margin-top:10px"></p>
+</section>
+<section id="profile" class="section">
+  <h2 class="section-title">Your Profile</h2>
+  <div class="card center">
+    <img id="profilePic" class="profile-pic" src="data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Crect width='120' height='120' rx='60' fill='white'/%3E%3Ctext x='50%25' y='56%25' dominant-baseline='middle' text-anchor='middle' font-size='72'%3E%F0%9F%90%B0%3C/text%3E%3C/svg%3E" alt="Avatar">
+    <div id="pfpGrid" class="pfp-grid" style="margin-top:12px"></div>
+  </div>
+  <div class="card">
+    <div class="space-between"><span>Current Streak</span><strong><span id="streakCount">0</span> days</strong></div>
+    <div class="space-between"><span>Total Check-Ins</span><strong><span id="checkinCount">0</span></strong></div>
+    <div class="space-between"><span>Total Journal Entries</span><strong><span id="journalCount">0</span></strong></div>
+  </div>
+  <div class="card">
+    <strong>Theme</strong>
+    <select id="themeSelect" style="margin-top:6px">
+      <option value="default">Default</option>
+      <option value="sunny">Sunny</option>
+      <option value="calm">Calm</option>
+      <option value="forest">Forest</option>
+      <option value="ocean">Ocean</option>
+      <option value="sunset">Sunset</option>
+      <option value="midnight">Midnight</option>
+    </select>
+    <button class="cta small" id="applyThemeBtn" style="margin-top:8px">Apply Theme</button>
+    <p class="muted" id="themeMsg" style="margin-top:6px"></p>
+  </div>
+</section>
+<section id="community" class="section">
+  <h2 class="section-title">Community (Anonymous)</h2>
+  <div class="card">
+    <div class="space-between">
+      <label style="margin:0">Pick a nickname</label>
+      <div class="inline">
+        <input id="nickInput" type="text" placeholder="e.g., skywalker" style="max-width:260px">
+        <button class="cta small" id="saveNickBtn">Save name</button>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div id="chatBox" class="chat-box"><div class="muted">Chat will appear here.</div></div>
+    <div class="space-between" style="margin-top:10px">
+      <input id="chatMsg" type="text" placeholder="Type a message…" style="flex:1;margin-right:10px">
+      <button class="cta" id="sendBtn">Send</button>
+    </div>
+    <p class="muted" style="margin-top:6px">Be kind. Don’t share personal info. Messages are public within this room.</p>
+  </div>
+</section>
+</main>
+<div id="onboardOverlay" class="modal" role="dialog" aria-modal="true">
+  <div class="modal-card">
+    <div class="pixel-pet-wrap" style="display:flex;justify-content:center;margin:6px 0 10px">
+      <svg class="pixel-pet" viewBox="0 0 16 16" width="120" height="120">
+        <rect width="16" height="16" fill="#2b2b2b"/>
+        <rect x="5" y="2" width="6" height="6" fill="#ffd34e"/>
+        <rect x="4" y="4" width="2" height="2" fill="#000"/>
+        <rect x="10" y="4" width="2" height="2" fill="#000"/>
+        <rect x="7" y="6" width="2" height="1" fill="#000"/>
+        <rect x="3" y="8" width="10" height="5" fill="#ffd34e"/>
+        <rect x="2" y="10" width="12" height="3" fill="#ffb84e"/>
+        <rect x="6" y="13" width="4" height="2" fill="#654321"/>
+      </svg>
+    </div>
+    <div id="obStep1">
+      <div class="font-lg" style="font-weight:800;margin-bottom:6px">Welcome to Unhook 2.0</div>
+      <p class="muted">Meet your pixel buddy. Level it up by staying vape-free and earning coins.</p>
+      <button class="cta" id="obNext1" style="margin-top:8px">Next</button>
+    </div>
+    <div id="obStep2" style="display:none">
+      <label>Name your buddy</label>
+      <input id="petNameInput" type="text" placeholder="e.g., Pixel Puff" style="width:100%;padding:12px;border-radius:12px;border:1px solid #2a2f3e;background:#0d1120;color:#fff">
+      <div class="space-between" style="margin-top:12px">
         <button class="cta ghost" id="obBack2">Back</button>
         <button class="cta" id="obNext2">Next</button>
       </div>
     </div>
-    <div id="onboardStep3" style="display:none;padding:0 20px 18px 20px;">
-      <label style="font-weight:700;display:block;margin:0 0 8px;">Pick your starter vibe</label>
-      <select id="starterStyle" style="width:100%;padding:12px;border-radius:12px;border:1px solid #2a2f3e;background:#0d1120;color:#fff;">
+    <div id="obStep3" style="display:none">
+      <label>Pick your starter vibe</label>
+      <select id="starterStyle" style="width:100%;padding:12px;border-radius:12px;border:1px solid #2a2f3e;background:#0d1120;color:#fff">
         <option value="gentle">Gentle</option>
         <option value="firey">Firey</option>
         <option value="mix" selected>Mix</option>
       </select>
-      <div style="display:flex;justify-content:space-between;gap:10px;margin:16px 0 20px;">
+      <div class="space-between" style="margin-top:12px">
         <button class="cta ghost" id="obBack3">Back</button>
         <button class="cta" id="obFinish">Start</button>
       </div>
     </div>
   </div>
 </div>
-<div id="petHud" style="position:fixed;right:14px;bottom:14px;z-index:1100;display:none;">
-  <div style="background:#111;color:#fff;border-radius:14px;padding:10px 12px;box-shadow:0 12px 28px rgba(0,0,0,.35);display:flex;align-items:center;gap:10px;">
-    <div style="position:relative;">
+<div id="petHud" style="position:fixed;right:14px;bottom:14px;z-index:1100;display:none">
+  <div style="background:#111;color:#fff;border-radius:14px;padding:10px 12px;box-shadow:0 12px 28px rgba(0,0,0,.35);display:flex;align-items:center;gap:10px">
+    <div style="position:relative">
       <div id="petEmote" style="position:absolute;top:-20px;left:50%;transform:translate(-50%,4px);z-index:10;font-size:16px;line-height:1;padding:4px 8px;border-radius:8px;background:#222;color:#ffd34e;box-shadow:0 6px 14px rgba(0,0,0,.25);opacity:0;transition:opacity .18s,transform .18s">⭐</div>
-      <svg class="pixel-pet small" viewBox="0 0 16 16" width="40" height="40" style="margin-right:8px;vertical-align:middle;transform-origin:50% 100%;">
+      <svg class="pixel-pet small" viewBox="0 0 16 16" width="40" height="40" style="margin-right:8px;vertical-align:middle;transform-origin:50% 100%">
         <rect width="16" height="16" fill="#2b2b2b"/>
         <rect x="5" y="2" width="6" height="6" fill="#ffd34e"/>
         <rect x="4" y="4" width="2" height="2" fill="#000"/>
@@ -167,292 +364,407 @@ textarea#chatInput{height:70px;resize:none}
       </svg>
     </div>
     <div>
-      <div id="petHudName" style="font-weight:800;letter-spacing:.2px;">Buddy</div>
-      <div style="width:140px;height:8px;background:#2a2f3e;border-radius:999px;overflow:hidden;">
+      <div id="petHudName" style="font-weight:800;letter-spacing:.2px">Buddy</div>
+      <div style="width:140px;height:8px;background:#2a2f3e;border-radius:999px;overflow:hidden">
         <div id="petXpBar" style="height:100%;width:0;background:linear-gradient(90deg,#ffd34e,#ff9f43)"></div>
       </div>
-      <div id="petLevelTxt" style="font-size:12px;opacity:.8;margin-top:2px;">Lv.1 • 0/100xp</div>
+      <div id="petLevelTxt" style="font-size:12px;opacity:.8;margin-top:2px">Lv.1 • 0/100xp</div>
     </div>
   </div>
 </div>
-<div id="authScreen" style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:70vh;text-align:center;">
-  <h2 style="margin-bottom:20px;">Start Your Journey</h2>
-  <button class="cta" id="btnGoogle">Sign in with Google</button>
-  <button class="cta" id="btnEmail">Sign in with Email</button>
-  <button class="cta ghost" id="btnCreate">Create Account</button>
-  <button class="cta" id="btnGuest">Continue as Guest</button>
-
-</div>
-<div id="emailAuthCard" style="display:none;max-width:380px;margin:40px auto;background:#0f121c;border-radius:16px;padding:20px;box-shadow:0 8px 30px rgba(0,0,0,.4);">
-  <h3 id="emailAuthTitle" style="margin-bottom:10px;">Sign In</h3>
-  <input id="emailInput" type="email" placeholder="Email" style="width:100%;padding:12px;margin-bottom:12px;border-radius:10px;border:1px solid #2a2f3e;background:#0d1120;color:#fff;">
-  <input id="passInput" type="password" placeholder="Password" style="width:100%;padding:12px;margin-bottom:18px;border-radius:10px;border:1px solid #2a2f3e;background:#0d1120;color:#fff;">
-  <button id="emailAuthSubmit" class="cta" style="width:100%;margin-bottom:10px;">Continue</button>
-  <button id="emailAuthBack" class="cta ghost" style="width:100%;">Cancel</button>
-</div>
+<div id="toast" class="toast"></div>
+<div id="rewardPop" style="position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);font-size:40px;font-weight:900;opacity:0;pointer-events:none;z-index:1000"></div>
+<div id="loadingOverlay" style="display:none;position:fixed;inset:0;background:rgba(255,255,255,.7);backdrop-filter:blur(4px);z-index:1400;align-items:center;justify-content:center"><div class="lds-dual-ring"></div></div>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
-import {
-  getAuth, onAuthStateChanged, signInWithPopup, GoogleAuthProvider,
-  signInAnonymously, signOut, signInWithEmailAndPassword, createUserWithEmailAndPassword
-} from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
-import { 
-  getFirestore, doc, setDoc, getDoc, updateDoc, increment
-} from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
-import {
-  getDatabase, ref, onChildAdded, push, set
-} from "https://www.gstatic.com/firebasejs/10.11.0/firebase-database.js";
-const firebaseConfig = {
-  apiKey: "AIzaSyAhsjCfr7B-9vxxcA9bnLr46VcxbRMftvA",
-  authDomain: "unhook-38abb.firebaseapp.com",
-  databaseURL: "https://unhook-38abb-default-rtdb.firebaseio.com",
-  projectId: "unhook-38abb",
-  storageBucket: "unhook-38abb.firebasestorage.app",
-  messagingSenderId: "182531035159",
-  appId: "1:182531035159:web:47163c38ee27c2ba3b8c52",
-  measurementId: "G-7GGK123MDT"
-};
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-const auth = getAuth(app);
-const db = getFirestore(app);
-const rtdb = getDatabase(app);
-let currentUserId="";
-let coins=0;
-const tabsWrap=document.querySelector(".tabs.wrap");
-const mainEl=document.querySelector("main.wrap");
-const petHudEl=document.getElementById("petHud");
-const authScreen=document.getElementById("authScreen");
-const emailAuthCard=document.getElementById("emailAuthCard");
-const loginGoogle=document.getElementById("loginGoogle");
-const loginEmailBtn=document.getElementById("loginEmailBtn");
-const registerEmailBtn=document.getElementById("registerEmailBtn");
-const continueGuest=document.getElementById("continueGuest");
-const emailAuthTitle=document.getElementById("emailAuthTitle");
-const emailInput=document.getElementById("emailInput");
-const passInput=document.getElementById("passInput");
-const emailAuthSubmit=document.getElementById("emailAuthSubmit");
-const emailAuthBack=document.getElementById("emailAuthBack");
-let isRegisterMode=false;
-function setAppVisible(on){
-  if(tabsWrap)tabsWrap.style.display=on?"flex":"none";
-  if(mainEl)mainEl.style.display=on?"block":"none";
-  if(petHudEl)petHudEl.style.display=on?"block":"none";
-  if(authScreen)authScreen.style.display=on?"none":"flex";
-  if(emailAuthCard)emailAuthCard.style.display="none";
-}
-setAppVisible(false);
-if(loginGoogle){
-  loginGoogle.onclick=async()=>{
-    const provider=new GoogleAuthProvider();
-    await signInWithPopup(auth,provider);
-  };
-}
-if(loginEmailBtn){
-  loginEmailBtn.onclick=()=>{
-    isRegisterMode=false;
-    emailAuthTitle.textContent="Sign In";
-    emailAuthSubmit.textContent="Sign In";
-    emailAuthCard.style.display="block";
-    authScreen.style.display="none";
-  };
-}
-if(registerEmailBtn){
-  registerEmailBtn.onclick=()=>{
-    isRegisterMode=true;
-    emailAuthTitle.textContent="Create Account";
-    emailAuthSubmit.textContent="Create Account";
-    emailAuthCard.style.display="block";
-    authScreen.style.display="none";
-  };
-}
-if(emailAuthBack){
-  emailAuthBack.onclick=()=>{
-    emailAuthCard.style.display="none";
-    authScreen.style.display="flex";
-  };
-}
-if(emailAuthSubmit){
-  emailAuthSubmit.onclick=async()=>{
-    const email=(emailInput.value||"").trim();
-    const pass=(passInput.value||"").trim();
-    if(!email||!pass)return;
-    if(isRegisterMode){
-      await createUserWithEmailAndPassword(auth,email,pass);
-    }else{
-      await signInWithEmailAndPassword(auth,email,pass);
-    }
-  };
-}
-const gBtn=document.getElementById("btnGoogle");
-const eBtn=document.getElementById("btnEmail");
-const cBtn=document.getElementById("btnCreate");
-const uBtn=document.getElementById("btnGuest");
-function toast(msg){const t=document.getElementById("toast");if(!t)return; t.textContent=msg;t.classList.add("show");clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove("show"),2400)}
-if(gBtn){gBtn.onclick=async()=>{try{await signInWithPopup(auth,new GoogleAuthProvider());toast("Signed in with Google")}catch(e){toast("Google sign-in failed")}}}
-if(eBtn){eBtn.onclick=async()=>{const email=prompt("Email");if(!email)return;const pass=prompt("Password");if(!pass)return;try{await signInWithEmailAndPassword(auth,email,pass);toast("Signed in")}catch(e){toast("Email sign-in failed")}}}
-if(cBtn){cBtn.onclick=async()=>{const email=prompt("Email");if(!email)return;const pass=prompt("Create password (min 6 chars)");if(!pass)return;try{await createUserWithEmailAndPassword(auth,email,pass);toast("Account created")}catch(e){toast("Create account failed")}}}
-if(uBtn){uBtn.onclick=async()=>{try{await signInAnonymously(auth);toast("Continuing as guest")}catch(e){toast("Guest sign-in failed")}}}
-if(continueGuest){
-  continueGuest.onclick=async()=>{ await signInAnonymously(auth); };
-}
-const LS={get:(k,d)=>{try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}},set:(k,v)=>localStorage.setItem(k,JSON.stringify(v))};
+import { getAuth, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, signInAnonymously, signOut, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+import { getFirestore, doc, getDoc, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+import { getDatabase, ref as rtdbRef, push as rtdbPush, onChildAdded, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-database.js";
+const firebaseConfig={apiKey:"AIzaSyAhsjCfr7B-9vxxcA9bnLr46VcxbRMftvA",authDomain:"unhook-38abb.firebaseapp.com",projectId:"unhook-38abb",storageBucket:"unhook-38abb.appspot.com",messagingSenderId:"463077981870",appId:"1:463077981870:web:0a31c274187a8ad102e553",databaseURL:"https://unhook-38abb-default-rtdb.firebaseio.com"};
+const app=initializeApp(firebaseConfig);
+const auth=getAuth(app);
+const db=getFirestore(app);
+const rtdb=getDatabase(app);
+const $=(q)=>document.querySelector(q);
+const $$=(q)=>document.querySelectorAll(q);
+function toast(msg){const t=$("#toast");if(!t)return;t.textContent=msg;t.classList.add("show");clearTimeout(t._timer);t._timer=setTimeout(()=>t.classList.remove("show"),1800)}
+function boom(){try{confetti({particleCount:60,spread:60,origin:{y:.6}})}catch{}}
+const LocalStore={get(k,d){try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}},set(k,v){localStorage.setItem(k,JSON.stringify(v))}};
 const COIN_KEY="coins_v2";
-function updateCoinDisplays(){const a=document.getElementById("coinCount");const b=document.getElementById("shopCoins");if(a)a.textContent=String(coins);if(b)b.textContent=String(coins)}
-async function ensureUserDoc(uid){const r=doc(db,"users",uid);const s=await getDoc(r);if(!s.exists())await setDoc(r,{coins:0,streak:0,lastCheckin:"",journalCount:0,checkinCount:0,petXP:0,petLevel:1,onboardingDone:false,petName:"Buddy",petStyle:"mix"})}
-async function loadUserData(uid){const r=doc(db,"users",uid);const s=await getDoc(r);const data=s.data()||{};const localCoins=Number(LS.get(COIN_KEY,0))||0;const remoteCoins=Number(data.coins||0);coins=Math.max(localCoins,remoteCoins);LS.set(COIN_KEY,coins);if(remoteCoins!==coins){await updateDoc(r,{coins})}updateCoinDisplays();renderStickies();renderPfpGrid();renderStatsFromLocal()}
-async function addCoins(amount){const n=Number(amount)||0;if(n===0)return;coins=Math.max(0,coins+n);LS.set(COIN_KEY,coins);updateCoinDisplays();try{await updateDoc(doc(db,"users",currentUserId),{coins})}catch{}}
-function renderStatsFromLocal(){const days=LS.get("days",{});const entries=LS.get("journal_entries",[]);const cc=document.getElementById("checkinCount");const jc=document.getElementById("journalCount");if(cc)cc.textContent=Object.keys(days).length;if(jc)jc.textContent=entries.length}
-onAuthStateChanged(auth,async user=>{if(user){currentUserId=user.uid;await ensureUserDoc(currentUserId);await loadUserData(currentUserId);setAppVisible(true)}else{currentUserId="";setAppVisible(false)}});
+const XP_KEY="xp_v1";
+const STREAK_KEY="streak_v1";
+const D_DAYS_KEY="days";
+const STYLE_KEY="motivation_style";
+const PFP_KEY="pfp_emoji";
+const NICK_KEY="chat_nick";
+let uid="";
+let userDocRef=null;
+function getCoins(){return Number(LS.get(COIN_KEY,0))||0}
+function setCoins(n){LS.set(COIN_KEY,Math.max(0,Number(n)||0));updateCoinUI();syncUser({coins:getCoins()})}
+function addCoins(n){const a=Math.max(0,getCoins()+(Number(n)||0));LS.set(COIN_KEY,a);updateCoinUI();try{gsap.fromTo("#coinPill",{scale:1},{scale:1.12,duration:.18,yoyo:true,repeat:1})}catch{} syncUser({coins:a});gainXP(Math.floor((Number(n)||0)/5))}
+function getXP(){return Number(LS.get(XP_KEY,0))||0}
+function setXP(n){LS.set(XP_KEY,Math.max(0,Number(n)||0));updatePetHUD()}
+function gainXP(n){if(!n)return;setXP(getXP()+Math.max(0,Number(n)||0))}
+function getStreak(){return Number(LS.get(STREAK_KEY,0))||0}
+function setStreak(n){LS.set(STREAK_KEY,Math.max(0,Number(n)||0));updateStreakUI();syncUser({streak:getStreak()})}
 function todayKey(){return new Date().toISOString().slice(0,10)}
-function setText(id,txt){const el=document.getElementById(id);if(el)el.textContent=txt}
-function showToast(msg){const t=document.getElementById("toast");if(!t)return;t.textContent=msg;t.classList.add("show");clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove("show"),2000)}
-function confettiBurst(){try{confetti({particleCount:120,spread:80,origin:{y:0.7}})}catch{}}
-function updateStreakUI(){const s=Number(LS.get("streak",0))||0;setText("streakCount",String(s));const d=document.getElementById("streakDays");if(d)d.textContent=String(s);const lbl=document.getElementById("streakLabel");if(lbl)lbl.textContent=s===1?"day":"days"}
-function incrementCounterLS(key){const v=Number(LS.get(key,0))||0;LS.set(key,v+1)}
-function renderHistoryLists(){const days=LS.get("days",{});const j=LS.get("journal_entries",[]);const ul=document.getElementById("journalHistory");const card=document.getElementById("journalHistoryCard");if(ul){ul.innerHTML="";j.slice(-10).reverse().forEach(e=>{const li=document.createElement("li");li.textContent=e.prompt||"(free write)";ul.appendChild(li)});if(card)card.style.display=j.length?"block":"none"}}
-function bindTabs(){document.querySelectorAll(".tab").forEach(t=>{t.addEventListener("click",()=>{document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));t.classList.add("active");document.getElementById(t.dataset.go).classList.add("active");if(t.dataset.go==="motivation"){renderStickies()}if(t.dataset.go==="profile"){renderPfpGrid();updateStreakUI();renderStatsFromLocal()}if(t.dataset.go==="journal"){renderHistoryLists()}}))}
-bindTabs()
-function bindCheckin(){const btn=document.getElementById("saveCheckinBtn");if(!btn)return;btn.addEventListener("click",async()=>{const day=todayKey();const days=LS.get("days",{});if(days[day]){setText("checkinMsg","You already checked in today.");showToast("Already saved today");return}const data={mood:Number((document.getElementById("moodSel")||{}).value||0),cravings:(document.getElementById("craveSel")||{}).value||"none",trigger:(document.getElementById("triggerTxt")||{}).value?.trim()||"",vaped:(document.getElementById("vapedSel")||{}).value||"no",notes:(document.getElementById("notesTxt")||{}).value?.trim()||"",ts:Date.now()};days[day]=data;LS.set("days",days);const y=new Date();y.setDate(y.getDate()-1);const hadYesterday=Boolean(days[y.toISOString().slice(0,10)]);let streak=Number(LS.get("streak",0))||0;streak=hadYesterday?Math.max(1,streak)+1:1;LS.set("streak",streak);updateStreakUI();let earned=5;if(data.vaped==="no")earned+=10;if(data.cravings==="none")earned+=5;await addCoins(earned);incrementCounterLS("checkinCount");renderStatsFromLocal();setText("checkinMsg",`Saved! You earned +${earned} coins.`);showToast(`+${earned} coins`);confettiBurst();setTimeout(()=>setText("checkinMsg",""),2200)})}
-bindCheckin()
-let promptIndex=0
-function bindJournal(){const prev=document.getElementById("prevPrompt");const next=document.getElementById("nextPrompt");const save=document.getElementById("saveJournalBtn");const text=document.getElementById("promptText");const FREE=()=>document.getElementById("freeWriteToggle")?.checked||false;const PROMPTS=(window.PROMPTS&&Array.isArray(window.PROMPTS)&&window.PROMPTS.length)?window.PROMPTS:[];function show(){if(text)text.textContent=PROMPTS.length?PROMPTS[promptIndex]:""}if(prev)prev.addEventListener("click",()=>{if(!PROMPTS.length)return;promptIndex=(promptIndex-1+PROMPTS.length)%PROMPTS.length;show()});if(next)next.addEventListener("click",()=>{if(!PROMPTS.length)return;promptIndex=(promptIndex+1)%PROMPTS.length;show()});if(save)save.addEventListener("click",async()=>{const box=document.getElementById("journalEntry");const val=(box?.value||"").trim();if(!val){const m=document.getElementById("saveJournalMsg");if(m)m.textContent="Write something first";showToast("Write something first");return}const entries=LS.get("journal_entries",[]);entries.push({prompt:FREE()?null:(PROMPTS[promptIndex]||null),entry:val,ts:Date.now()});LS.set("journal_entries",entries);if(box)box.value="";const m=document.getElementById("saveJournalMsg");if(m)m.textContent="Saved! +7 coins";await addCoins(7);renderHistoryLists();renderStatsFromLocal();showToast("+7 coins");setTimeout(()=>{if(m)m.textContent=""},1600)}) ;show()}
-bindJournal()
-document.addEventListener("DOMContentLoaded",()=>{updateCoinDisplays();updateStreakUI();renderStatsFromLocal();renderHistoryLists();renderStickies();renderPfpGrid()})
-const G_BASE=["You are safe right now.","Breathe in and out slowly.","Let the urge float by.","Your body is healing.","Tiny steps add up.","Choose gentleness today.","You can pause and reset.","Your calm is growing.","One kind thought at a time.","You’re doing enough."];
-const F_BASE=["Own this moment.","Choose the hard right.","You’re stronger than the urge.","Control the minute.","Say no and stand tall.","Push through the dip.","Prove it to yourself.","Attack the habit loop.","Dominate the next 5 mins.","Refuse the shortcut."];
-const M_BASE=["Reset with one choice.","Progress over perfection.","Stack small wins.","Future you is cheering.","Keep the streak alive.","Every check-in counts.","Breath, water, move.","This is who you are now.","Celebrate tiny victories.","You’re getting sharper."];
-function buildHundred(base){const out=[];for(let i=0;i<100;i++){out.push(base[i%base.length])}return out}
-const STK100={
-  gentle:buildHundred(G_BASE),
-  firey:buildHundred(F_BASE),
-  mix:buildHundred(M_BASE)
-}
-const PALETTES={
-  gentle:[{bg:"#e6f3ff",bd:"#bfe1ff"},{bg:"#e7fff4",bd:"#bff7e2"},{bg:"#e6fbff",bd:"#bdefff"}],
-  firey:[{bg:"#fff3c4",bd:"#ffe49a"},{bg:"#ffd7d7",bd:"#ffbebe"},{bg:"#ffe1c7",bd:"#ffcfac"}],
-  mix:[{bg:"#f2e6ff",bd:"#e1c8ff"},{bg:"#ffe1f3",bd:"#ffc7e7"},{bg:"#e6ebff",bd:"#c9d3ff"}]
-}
-function renderStickiesV2(){
-  const gridA=document.getElementById("motivationGrid")
-  const gridB=document.getElementById("stickyGrid")
-  const grid=gridA||gridB
-  if(!grid)return
-  const saved=(localStorage.getItem("motivation_style")||'"mix"').replace(/^"+|"+$/g,"")
-  const style=document.getElementById("motivationStyle")?document.getElementById("motivationStyle").value:saved
-  const list=STK100[style]||STK100.mix
-  const pal=PALETTES[style]||PALETTES.mix
-  grid.innerHTML=""
-  for(let i=0;i<list.length;i++){
-    const p=pal[i%pal.length]
-    const d=document.createElement("div")
-    d.className="sticky"
-    d.textContent=list[i]
-    d.style.background=p.bg
-    d.style.border="1px solid "+p.bd
-    grid.appendChild(d)
-  }
-  const c=document.getElementById("motivationCount")
-  if(c)c.textContent=list.length+" stickies found"
-}
-window.renderStickies=renderStickiesV2
-document.getElementById("motivationStyle")?.addEventListener("change",()=>{renderStickiesV2()})
-document.getElementById("saveStyleBtn")?.addEventListener("click",()=>{
-  const style=document.getElementById("motivationStyle").value
-  localStorage.setItem("motivation_style",JSON.stringify(style))
-  renderStickiesV2()
-  showToast("Style saved!")
-})
-async function saveCheckin(){
-  const mood=document.getElementById("moodSel").value
-  const crave=document.getElementById("craveSel").value
-  const trig=document.getElementById("triggerTxt").value
-  const vaped=document.getElementById("vapedSel").value
-  const notes=document.getElementById("notesTxt").value
-  const t=Date.now()
-  const entry={mood,crave,trigger:trig,vaped,notes,time:t}
-  const uid=currentUserId||"anon"
-  await addDoc(collection(db,"users",uid,"checkins"),entry)
-  let i=JSON.parse(localStorage.getItem("history_check")||"[]")
-  i.unshift(entry)
-  localStorage.setItem("history_check",JSON.stringify(i.slice(0,30)))
-  addCoins(5)
-  updateStreak(1)
-  showToast("Check-in saved! +5 🪙")
-}
-document.getElementById("saveCheckinBtn")?.addEventListener("click",saveCheckin)
-async function saveJournal(){
-  const txt=document.getElementById("journalEntry").value.trim()
-  if(!txt)return showToast("Write something first")
-  const t=Date.now()
-  const uid=currentUserId||"anon"
-  const obj={text:txt,time:t}
-  await addDoc(collection(db,"users",uid,"journal"),obj)
-  let j=JSON.parse(localStorage.getItem("history_journal")||"[]")
-  j.unshift(obj)
-  localStorage.setItem("history_journal",JSON.stringify(j.slice(0,30)))
-  document.getElementById("journalEntry").value=""
-  addCoins(7)
-  updateStreak(1)
-  showToast("Entry saved! +7 🪙")
-}
-document.getElementById("saveJournalBtn")?.addEventListener("click",saveJournal)
-onAuthStateChanged(auth, (user) => {
-  const loadingOverlay = document.getElementById("loadingOverlay");
-  if (user) {
-    currentUserId = user.uid;
-    document.getElementById("currentUserId").value = user.uid;
-    loadingOverlay.style.display = "none";
-    loadPet();
-  } else {
-    currentUserId = "";
-    document.getElementById("currentUserId").value = "";
-    signInAnonymously(auth).catch((error) => {
-      console.error("Anonymous sign-in failed:", error);
-    });
-    loadingOverlay.style.display = "flex";
-  }
-});
-function findBtn(regex){
-  return [...document.querySelectorAll("button")].find(b=>regex.test((b.textContent||"").trim()))
-}
-const btnGoogle=findBtn(/sign in with google/i)
-const btnEmail=findBtn(/sign in with email/i)
-const btnCreate=findBtn(/create account/i)
-const btnGuest=findBtn(/continue as guest/i)
-const provider=new GoogleAuthProvider()
-
-btnGoogle?.addEventListener("click",async()=>{
-  try{
-    await signInWithPopup(auth,provider)
-    showToast("Signed in with Google")
-  }catch(e){showToast("Google sign-in failed")}
-})
-
-btnEmail?.addEventListener("click",async()=>{
-  const email=prompt("Email")
-  if(!email)return
-  const pass=prompt("Password")
-  if(!pass)return
-  try{
-    await signInWithEmailAndPassword(auth,email,pass)
-    showToast("Signed in")
-  }catch(e){showToast("Email sign-in failed")}
-})
-btnCreate?.addEventListener("click",async()=>{
-  const email=prompt("New account email")
-  if(!email)return
-  const pass=prompt("New account password (6+ chars)")
-  if(!pass)return
-  try{
-    await createUserWithEmailAndPassword(auth,email,pass)
-    showToast("Account created")
-  }catch(e){showToast("Sign up failed")}
-})
-btnGuest?.addEventListener("click",async()=>{
-  try{
-    await signInAnonymously(auth)
-    showToast("Continuing as guest")
-  }catch(e){showToast("Guest sign-in failed")}
-})
+function updateCoinUI(){const el=$("#coinCount");if(el)el.textContent=String(getCoins())}
+function updateStreakUI(){const el=$("#streakCount");if(el)el.textContent=String(getStreak())}
+function updateCounts(){const cc=$("#checkinCount");if(cc){const days=LS.get(D_DAYS_KEY,{});cc.textContent=Object.keys(days).length}const jc=$("#journalCount");if(jc){const entries=LS.get(J_ENTRIES_KEY,[]);jc.textContent=entries.length}}
+function showHud(d){const name=d?.petName||"Buddy";$("#petHudName").textContent=name;const xp=getXP();const lvl=1+Math.floor(xp/100);const rem=xp%100;$("#petXpBar").style.width=rem+"%";$("#petLevelTxt").textContent=`Lv.${lvl} • ${rem}/100xp`;$("#petHud").style.display="block"}
+function updatePetHUD(){const xp=getXP();const lvl=1+Math.floor(xp/100);const rem=xp%100;const bar=$("#petXpBar");const lbl=$("#petLevelTxt");if(bar)bar.style.width=rem+"%";if(lbl)lbl.textContent=`Lv.${lvl} • ${rem}/100xp`}
+async function ensureUser(){if(!uid)return;userDocRef=doc(db,"users",uid);const snap=await getDoc(userDocRef);if(!snap.exists()){await setDoc(userDocRef,{coins:getCoins(),streak:getStreak(),xp:getXP(),onboardingDone:false,petName:"Buddy",petStyle:LS.get(STYLE_KEY,"mix")});}else{const d=snap.data()||{};if(typeof d.coins==="number")LS.set(COIN_KEY,d.coins);if(typeof d.streak==="number")LS.set(STREAK_KEY,d.streak);if(typeof d.xp==="number")LS.set(XP_KEY,d.xp);}updateCoinUI();updateStreakUI();updatePetHUD()}
+async function syncUser(p){try{if(uid&&userDocRef)await updateDoc(userDocRef,p)}catch{}}
+function bindTabs(){$$(".tab").forEach(t=>t.addEventListener("click",()=>{const go=t.dataset.go;$$(".section").forEach(s=>s.classList.remove("active"));$$(".tab").forEach(x=>x.classList.remove("active"));t.classList.add("active");document.getElementById(go).classList.add("active")}))}
+function onboardStep(toShow){$("#obStep1").style.display=toShow===1?"block":"none";$("#obStep2").style.display=toShow===2?"block":"none";$("#obStep3").style.display=toShow===3?"block":"none"}
+function bloop(f=760,t=.07){try{const a=new (window.AudioContext||window.webkitAudioContext)();const o=a.createOscillator();const g=a.createGain();o.type="square";o.frequency.value=f;g.gain.value=.05;o.connect(g);g.connect(a.destination);o.start();setTimeout(()=>{o.stop();a.close()},t*1000)}catch{}}
+function emote(txt){const e=$("#petEmote");if(!e)return;e.textContent=txt;e.style.opacity="1";e.style.transform="translate(-50%,0)";clearTimeout(e._t);e._t=setTimeout(()=>{e.style.opacity="0";e.style.transform="translate(-50%,4px)"},900)}
+$("#obNext1").addEventListener("click",()=>{bloop(820);onboardStep(2)});
+$("#obBack2").addEventListener("click",()=>{bloop(620);onboardStep(1)});
+$("#obNext2").addEventListener("click",()=>{if(!$("#petNameInput").value.trim()){bloop(320);$("#petNameInput").focus();return}bloop(880);onboardStep(3)});
+$("#obBack3").addEventListener("click",()=>{bloop(620);onboardStep(2)});
+$("#obFinish").addEventListener("click",async()=>{bloop(980);const name=$("#petNameInput").value.trim()||"Buddy";const style=$("#starterStyle").value;LS.set(STYLE_KEY,style);$("#onboardOverlay").classList.remove("show");showHud({petName:name});await ensureUser();await syncUser({onboardingDone:true,petName:name,petStyle:style});toast("Welcome!");boom();emote("🎉")});
+function maybeOnboard(){const done=LS.get("onboard_done",false);if(!done){$("#onboardOverlay").classList.add("show");onboardStep(1);LS.set("onboard_done",true)}else{$("#petHud").style.display="block"}}
+$("#applyThemeBtn").addEventListener("click",()=>{const val=$("#themeSelect").value;document.body.setAttribute("data-theme",val);localStorage.setItem("activeTheme",val);toast("Theme applied")});
+(function(){const saved=localStorage.getItem("activeTheme");if(saved)document.body.setAttribute("data-theme",saved)})();
+$("#googleBtn").addEventListener("click",async()=>{try{const prov=new GoogleAuthProvider();await signInWithPopup(auth,prov)}catch{try{await signInAnonymously(auth)}catch{}toast("Continuing as guest")}});
+$("#emailBtn").addEventListener("click",async()=>{let email=prompt("Email");if(!email)return;let pass=prompt("Password (min 6 chars)");if(!pass)return;try{await signInWithEmailAndPassword(auth,email,pass)}catch(e){try{await createUserWithEmailAndPassword(auth,email,pass)}catch{try{await signInAnonymously(auth)}catch{} toast("Continuing as guest")}}});
+$("#guestBtn").addEventListener("click",async()=>{try{await signInAnonymously(auth)}catch{toast("Guest sign-in failed")}});
+onAuthStateChanged(auth, async(user)=>{if(user){uid=user.uid;await ensureUser();$("#auth").classList.remove("active");$("#checkin").classList.add("active");bindTabs();maybeOnboard();updateCounts()}else{$("#auth").classList.add("active");$$(".section").forEach(s=>s.classList.remove("active"));$("#auth").classList.add("active")}});
+document.addEventListener("visibilitychange",()=>{const p=document.querySelector(".pixel-pet.small");if(!p)return;if(document.hidden){p.classList.remove("happy","hurt","idle");p.classList.add("sleep")}else{p.classList.remove("sleep");p.classList.add("idle")}});
+function rewardPop(n){const el=$("#rewardPop");el.style.opacity=1;el.textContent="+"+n+" 🪙";el.style.transform="translate(-50%,-50%) scale(1.4)";setTimeout(()=>{el.style.opacity=0;el.style.transform="translate(-50%,-50%) scale(1)"},700)}
+window.__u={getCoins,setCoins,addCoins,getXP,setXP,gainXP,getStreak,setStreak,toast,boom,emote}
 </script>
+<script type="module">
+const qs=(q)=>document.querySelector(q);
+const LS={get(k,d){try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}},set(k,v){localStorage.setItem(k,JSON.stringify(v))}};
+const J_ENTRIES_KEY="journal_entries";
+function todayKey(){return new Date().toISOString().slice(0,10)}
+const PROMPTS=[
+"Why do you want to quit right now?",
+"What was your strongest moment today?",
+"When did a craving show up and how did you respond?",
+"What would future-you thank you for today?",
+"List three sensations in your body right now.",
+"Who can you text if a craving hits?",
+"What tiny win can you stack tomorrow?",
+"How did you show kindness to yourself today?",
+"What triggered the last urge and what helped?",
+"Write a 2-sentence pep talk to yourself."
+];
+let promptIndex=0;
+function showPrompt(){const p=$("#promptText");if(!p)return;p.textContent=PROMPTS[promptIndex]}
+function renderJournalHistory(){const list=$("#journalHistory");const card=$("#journalHistoryCard");if(!list||!card)return;const entries=LS.get(J_ENTRIES_KEY,[]).slice(-30).reverse();list.innerHTML="";entries.forEach(e=>{const li=document.createElement("li");const dt=new Date(e.ts||Date.now()).toLocaleString();li.textContent=(e.prompt?`[${dt}] ${e.prompt} — `:`[${dt}] `)+e.entry;list.appendChild(li)});card.style.display=entries.length?"block":"none"}
+$("#prevPrompt")?.addEventListener("click",()=>{promptIndex=(promptIndex-1+PROMPTS.length)%PROMPTS.length;showPrompt()});
+$("#nextPrompt")?.addEventListener("click",()=>{promptIndex=(promptIndex+1)%PROMPTS.length;showPrompt()});
+$("#saveJournalBtn")?.addEventListener("click",()=>{
+  const entryEl=$("#journalEntry");
+  const entry=(entryEl?.value||"").trim();
+  if(!entry){__u.toast("Write something first");return}
+  const free=$("#freeWriteToggle")?.checked||false;
+  const entries=LS.get(J_ENTRIES_KEY,[]);
+  entries.push({prompt:free?null:PROMPTS[promptIndex],entry,ts:Date.now()});
+  LS.set(J_ENTRIES_KEY,entries);
+  if(entryEl)entryEl.value="";
+  __u.addCoins(7);
+  __u.toast("Saved! +7 coins");
+  try{confetti({particleCount:40,spread:50,origin:{y:.7}})}catch{}
+  const jc=document.getElementById("journalCount");if(jc)jc.textContent=entries.length;
+  renderJournalHistory()
+});
+function renderCheckinHistoryCounters(){const cc=document.getElementById("checkinCount");if(cc){const days=LS.get(D_DAYS_KEY,{});cc.textContent=Object.keys(days).length}}
+$("#saveCheckinBtn")?.addEventListener("click",()=>{
+  const day=todayKey();
+  const days=LS.get(D_DAYS_KEY,{});
+  if(days[day]){const m=$("#checkinMsg");if(m){m.textContent="Already saved for today";setTimeout(()=>m.textContent="",1200)}return}
+  const data={
+    mood:Number($("#moodSel")?.value||0),
+    cravings:$("#craveSel")?.value||"none",
+    trigger:$("#triggerTxt")?.value?.trim()||"",
+    vaped:$("#vapedSel")?.value||"no",
+    notes:$("#notesTxt")?.value?.trim()||"",
+    ts:Date.now()
+  };
+  days[day]=data;
+  LS.set(D_DAYS_KEY,days);
+  const y=new Date();y.setDate(y.getDate()-1);
+  const hadYesterday=Boolean(days[y.toISOString().slice(0,10)]);
+  let streak=__u.getStreak();
+  streak = hadYesterday ? Math.max(1,streak)+1 : 1;
+  __u.setStreak(streak);
+  let earned=5;if(data.vaped==="no")earned+=10;if(data.cravings==="none")earned+=5;
+  __u.addCoins(earned);
+  try{confetti({particleCount:70,spread:70,origin:{y:.6}})}catch{}
+  const m=$("#checkinMsg");if(m){m.textContent=`Saved • +${earned} coins`;setTimeout(()=>m.textContent="",1500)}
+  renderCheckinHistoryCounters()
+});
+(function initJournal(){
+  showPrompt();
+  renderJournalHistory();
+  renderCheckinHistoryCounters()
+})();
+</script>
+<script>
+const MOTIVATION={
+ gentle:[
+  "Take a gentle breath. You are safe, and this craving will pass in a moment.",
+  "Your body is healing itself right now. Be patient and kind to your amazing self.",
+  "Release the tension. You don't have to control everything, just this one moment.",
+  "You are allowed to feel uncomfortable. It’s a sign that **change is happening**.",
+  "Today, focus only on the small, manageable step right in front of you. That's enough.",
+  "Your lungs are getting softer and cleaner. They are silently **thanking you**.",
+  "Find a cozy distraction. Let your hands and mind relax and find peace.",
+  "This journey is yours, and **grace is your superpower**. Be easy on yourself.",
+  "Acknowledge the urge without judgment. Watch it drift away like a cloud.",
+  "**Quiet power** wins. Trust the calm strength that is rising within you.",
+  "Every time you choose not to vape, you plant a seed of **inner peace**.",
+  "Remember your intention. It’s a soft, guiding light leading you to freedom.",
+  "Slow down. There is no rush to feel perfect. **Healing takes gentle time.**",
+  "You are building a beautiful new habit: **self-care and self-trust**.",
+  "Let go of any guilt or pressure. Just be here, in this moment, clean.",
+  "This is a gentle evolution, not a fierce fight. **Ease into your new life.**",
+  "Think of something you love. Redirect your energy toward that source of joy.",
+  "You are so much more than this one habit. **Your worth is absolute.**",
+  "You are supported. Reach out to a kind presence if you need a soft ear.",
+  "The craving is temporary. Your health and happiness are **permanent gifts**.",
+  "Even small acts of self-control create waves of strength. **Be proud of them.**",
+  "Release the need to be perfect. If you stumble, pick yourself up with **tenderness**.",
+  "Your spirit is resilient. You bend gently, but you **do not break**.",
+  "Visualize a calm space. Close your eyes and breathe into that quiet moment.",
+  "You are deeply loved and capable. Lean into that assurance when it's hard.",
+  "Your mind is clearing, finding its natural state of **calm focus**.",
+  "Just for now, be gentle. Treat yourself as you would treat a dear friend.",
+  "This feeling of discomfort is just a passing signal. It holds **no real power**.",
+  "**You are doing hard work.** Give yourself credit for showing up clean today.",
+  "Let go of comparison. Your journey is uniquely yours, and you're pacing it perfectly.",
+  "When doubt creeps in, wrap yourself in the knowledge of your **inner strength**.",
+  "Breathe in strength, breathe out tension. Let your breath be your anchor.",
+  "Be an observer of your feelings, not a victim of them. They will subside.",
+  "The best thing you can do right now is offer yourself **kindness and grace**.",
+  "You are moving toward freedom with every soft, intentional choice you make."
+],
+ fiery:[
+  "**Ignite your freedom!** You own the choice. The vape has zero control over you.",
+  "You are built with unshakeable resolve. **Burn the cravings down** with sheer will.",
+  "Quit waiting for 'easy.' **Attack the challenge** today and win the battle now.",
+  "Your lungs are demanding respect. **Fight for every clean breath** you take.",
+  "**I am not a vaper.** Say it. Own it. Let that identity fuel your fire.",
+  "This isn't just quitting—it's **reclaiming your dominance**. Be the boss of your health.",
+  "**Warrior mentality:** Slip-ups are just minor setbacks. Reset. **Go harder.**",
+  "The urge is a lie. See through the smoke and **stand your ground like a rock**.",
+  "**Focus the fire!** Channel that restless energy into exercise or a new goal.",
+  "**Your energy is surging!** Don't waste it on a distraction. Invest it in yourself.",
+  "Every second clean is a **direct hit** against addiction. Keep punching.",
+  "**Unleash the competitor** within you. Win the day. Win the fight.",
+  "Let your determination be so loud that **cravings can't even whisper**.",
+  "**Stop wishing, start doing.** Action is the fuel for your new, clean life.",
+  "**Break the chain.** Today, you sever the link to nicotine dependence forever.",
+  "You have the power to say NO and **shut the door completely**. Do it now.",
+  "**Your future is too brilliant** to be clouded by vape smoke. Clear the path.",
+  "Remember the cost, the frustration. **Use that anger to win.**",
+  "Be fiercely protective of your progress. **Guard your quit day** like it's gold.",
+  "**Zero tolerance for retreat.** The only way out of this is through it.",
+  "This struggle defines your strength. **Rise up and let them hear you roar.**",
+  "**Level up!** Quitting is the ultimate life hack for energy and clarity.",
+  "You have a purpose bigger than nicotine. **Get back to the mission.**",
+  "**Own the withdrawal.** It's just weakness leaving your body. Embrace the discomfort.",
+  "Your body is a machine, not a chimney. **Treat it like a temple of steel.**",
+  "Feel the edge of the craving, then **drive right past it**. You're faster.",
+  "Don't be passive. **Be aggressive about your health and freedom.**",
+  "**The fire in you is stronger** than the addiction trying to cool you down.",
+  "You're building mental toughness. **Every victory is a permanent upgrade.**",
+  "**No exceptions. No negotiations.** The vape is done. Period.",
+  "Stand tall. This battle is proving your worth. **You are unbreakable.**",
+  "Your lungs are regenerating right now. **Maximize that power, push your limits.**",
+  "Stop looking back. **The only way to move is forward with speed and conviction.**",
+  "**Challenge accepted!** You’re tougher than this habit will ever be.",
+  "**Unstoppable force meets immovable object.** You are the force. Keep pushing."
+],
+mix:[
+  "You have a gentle strength that is seeing you through this. You've got this!",
+  "Every craving you beat is a step toward freedom. Stay calm and be powerful.",
+  "Remember: You may be soft but you're unstoppable when you set your mind to it.",
+  "A quiet shift is happening inside you. Warm strength is rising!",
+  "Your focus is getting clearer, and your mind is getting sharper every day.",
+  "Keep breathing deep; your lungs love you for this incredible choice.",
+  "7. You don't need to shout about it. Let your quiet power win today.",
+  "You're flexible and resilient. You might bend, but you'll never break.",
+  "Your compassion meets grit right now. Be kind to yourself while staying firm.",
+  "You are proving that you can be kind AND fierce at the same time!",
+  "Today, you are choosing a lighter, brighter path. Good job!",
+  "Take a deep, fresh breath. That's the feeling of winning over the urge.",
+  "This process takes time, and you are handling it with grace and power.",
+  "Focus on the next hour, not the next week. You are strong enough for the next hour.",
+  "Your body is thanking you for this incredible gift of health and freedom.",
+  "Think of all the awesome things you’re doing instead of vaping. You rock!",
+  "You are building inner resilience that will help you for years to come.",
+  "It’s okay if a moment feels tough. Let your gentle strength push it away.",
+  "Your future self is cheering you on! Keep up that quiet power.",
+  "Every day without vaping is a day your brain gets clearer and calmer.",
+  "You have the superpower of choice, and today you chose health and control.",
+  "Keep your chin up and trust the process. Warm strength is rising within you!",
+  "You're not just quitting a habit; you’re reclaiming your unstoppable self.",
+  "Remember your 'why.' It's bigger than any craving. Stay powerful.",
+  "You are fierce in your dedication and kind to your body. Great balance!",
+  "Slip-ups don't erase progress. Get right back up! You bend, never break.",
+  "Be proud of the courage it takes to do this. Your grit is showing!",
+  "Feel that calm? That's your mind getting sharper and more settled.",
+  "When it gets hard, just breathe. That clean air is a win for your lungs.",
+  "This journey shows how much you value yourself. That's true strength.",
+  "Keep going! You're making a bold, powerful decision for your well-being.",
+  "Don't fight the urge—just let it pass like a cloud. Use your gentle strength.",
+  "You are flexible and adaptable. You got this, no matter the challenge.",
+  "Look at you, making healthy choices! That's the definition of unstoppable.",
+  "Embrace the quiet confidence you're building. Let your quiet power handle the rest."
+]
+}
+let currentStyle="gentle";
+function renderSticky(){
+ const a=Math.floor(Math.random()*MOTIVATION[currentStyle].length);
+ const el=document.getElementById("motivationText");
+ if(el)el.textContent=MOTIVATION[currentStyle][a]
+}
+document.querySelectorAll(".motivationBtn")?.forEach(btn=>{
+ btn.onclick=()=>{currentStyle=btn.dataset.style;renderSticky()}
+});
+renderSticky();
+</script>
+<script>
+const __u={
+ toast(msg){const t=document.getElementById("toast");if(!t)return;t.textContent=msg;t.style.opacity=1;setTimeout(()=>t.style.opacity=0,1300)},
+ getCoins(){return Number(localStorage.getItem("coins")||0)},
+ setCoins(v){localStorage.setItem("coins",v);const el=document.getElementById("coinCount");if(el)el.textContent=v},
+ addCoins(v){
+  const c=this.getCoins()+v;
+  this.setCoins(c);
+  try{gsap.fromTo("#coinCount",{scale:1},{scale:1.35,duration:.25,yoyo:true,repeat:1})}catch{}
+ },
+ getXP(){return Number(localStorage.getItem("xp")||0)},
+ setXP(v){localStorage.setItem("xp",v);const e=document.getElementById("xpVal");if(e)e.textContent=v},
+ addXP(v){this.setXP(this.getXP()+v)},
+ getStreak(){return Number(localStorage.getItem("streak")||0)},
+ setStreak(v){localStorage.setItem("streak",v);const e=document.getElementById("streakCount");if(e)e.textContent=v}
+};
+__u.setCoins(__u.getCoins());
+__u.setStreak(__u.getStreak());
+__u.setXP(__u.getXP());
+</script>
+<script>
+const PET={hunger:0,happy:0};
+function loadPet(){
+ const d=JSON.parse(localStorage.getItem("pet")||"{}");
+ PET.hunger=d.hunger||0;PET.happy=d.happy||0;
+ updatePetHUD()
+}
+function savePet(){localStorage.setItem("pet",JSON.stringify(PET))}
+function petFeed(){PET.hunger=Math.max(0,PET.hunger-1);PET.happy++;savePet();updatePetHUD();__u.toast("Pet is happy!")}
+function updatePetHUD(){
+ const e=document.getElementById("petMood");
+ if(!e)return;
+ if(PET.hunger>3)e.textContent="😴";
+ else if(PET.happy>5)e.textContent="😸";
+ else e.textContent="🐾"
+}
+loadPet();
+</script>
+<script>
+function updateMapProgress(){
+ const steps=document.querySelectorAll(".mapStep");
+ const xp=__u.getXP();
+ const lvl=Math.floor(xp/10);
+ steps.forEach((s,i)=>{if(i<=lvl)s.classList.add("unlocked")})
+}
+updateMapProgress();
+</script>
+<script>
+function burst(){try{confetti({particleCount:120,spread:70,origin:{y:.7}})}catch{}}
+function yesterdayKey(){const d=new Date();d.setDate(d.getDate()-1);return d.toISOString().slice(0,10)}
+function checkinSavedToday(k){const days=JSON.parse(localStorage.getItem("days")||"{}");return Boolean(days[k])}
+function setText(id,txt){const el=document.getElementById(id);if(el)el.textContent=txt}
+function addRow(box,txt,me){const row=document.createElement("div");row.className="chat-msg";const b=document.createElement("div");b.className="chat-bubble "+(me?"chat-me":"chat-other");b.textContent=txt;row.appendChild(b);box.appendChild(row);box.scrollTop=box.scrollHeight}
+document.addEventListener("click",e=>{if(e.target.matches("button,.cta")){try{gsap.fromTo(e.target,{scale:1},{scale:.94,duration:.12,yoyo:true,repeat:1})}catch{}}})
+document.querySelectorAll(".tab").forEach(t=>{t.onclick=()=>{document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));t.classList.add("active");document.getElementById(t.dataset.go).classList.add("active")}})
+const saveCheckinBtn=document.getElementById("saveCheckinBtn");
+if(saveCheckinBtn){
+ saveCheckinBtn.onclick=()=>{
+  const day=new Date().toISOString().slice(0,10);
+  if(checkinSavedToday(day)){setText("checkinMsg","You already checked in today.");return}
+  const data={
+   mood:Number((document.getElementById("moodSel")||{}).value||0),
+   cravings:(document.getElementById("craveSel")||{}).value||"none",
+   trigger:(document.getElementById("triggerTxt")||{}).value?.trim()||"",
+   vaped:(document.getElementById("vapedSel")||{}).value||"no",
+   notes:(document.getElementById("notesTxt")||{}).value?.trim()||"",
+   ts:Date.now()
+  };
+  const days=JSON.parse(localStorage.getItem("days")||"{}");days[day]=data;localStorage.setItem("days",JSON.stringify(days));
+  const hadYesterday=Boolean(days[yesterdayKey()]);
+  let s=Number(localStorage.getItem("streak")||0);s=hadYesterday?Math.max(1,s)+1:1;localStorage.setItem("streak",String(s));setText("streakCount",s);
+  const earned=5+(data.vaped==="no"?10:0)+(data.cravings==="none"?5:0);
+  __u.addCoins(earned);__u.addXP(earned);
+  setText("checkinMsg","+ "+earned+" coins added");burst();const cc=document.getElementById("checkinCount");if(cc)cc.textContent=Object.keys(days).length
+ }
+}
+const clearDraftBtn=document.getElementById("clearDraftBtn");
+if(clearDraftBtn){clearDraftBtn.onclick=()=>{const a=["triggerTxt","notesTxt"];a.forEach(id=>{const el=document.getElementById(id);if(el)el.value=""});const ms=document.getElementById("moodSel");if(ms)ms.value="4";const cs=document.getElementById("craveSel");if(cs)cs.value="none";const vs=document.getElementById("vapedSel");if(vs)vs.value="no"}}
+window.PROMPTS=(window.PROMPTS&&window.PROMPTS.length)?window.PROMPTS:[
+ "What made you decide to quit vaping?",
+ "Describe a time you resisted a craving.",
+ "Top three reasons to be vape-free?",
+ "How do you feel since quitting?",
+ "Strategies that help you cope?",
+ "Write about someone who supports you.",
+ "New hobbies since quitting?",
+ "Describe your ideal vape-free day.",
+ "Challenges you faced and how you won.",
+ "How has quitting improved relationships?"
+];
+window.promptIndex=0;
+function showPrompt(){const p=document.getElementById("promptText");if(p)p.textContent=window.PROMPTS[window.promptIndex]}
+const prevPrompt=document.getElementById("prevPrompt");
+const nextPrompt=document.getElementById("nextPrompt");
+if(prevPrompt){prevPrompt.onclick=()=>{window.promptIndex=(window.promptIndex-1+window.PROMPTS.length)%window.PROMPTS.length;showPrompt()}}
+if(nextPrompt){nextPrompt.onclick=()=>{window.promptIndex=(window.promptIndex+1)%window.PROMPTS.length;showPrompt()}}
+showPrompt();
+const saveJournalBtn=document.getElementById("saveJournalBtn");
+if(saveJournalBtn){
+ saveJournalBtn.onclick=()=>{
+  const entryEl=document.getElementById("journalEntry");const entry=(entryEl?.value||"").trim();if(!entry){const m=document.getElementById("saveJournalMsg");if(m)m.textContent="Write something first";return}
+  const free=document.getElementById("freeWriteToggle")?.checked||false;
+  const arr=JSON.parse(localStorage.getItem("journal_entries")||"[]");
+  arr.push({prompt:free?null:window.PROMPTS[window.promptIndex],entry,ts:Date.now()});
+  localStorage.setItem("journal_entries",JSON.stringify(arr));
+  if(entryEl)entryEl.value="";
+  const m=document.getElementById("saveJournalMsg");if(m)m.textContent="Saved! +7";
+  __u.addCoins(7);__u.addXP(7);burst();
+  const jc=document.getElementById("journalCount");if(jc)jc.textContent=arr.length;
+  const ul=document.getElementById("journalHistory");const card=document.getElementById("journalHistoryCard");if(ul&&card){ul.innerHTML="";arr.slice(-30).reverse().forEach(it=>{const li=document.createElement("li");li.textContent=it.prompt?it.prompt:"Free-write";ul.appendChild(li)});card.style.display="block"}
+ }
+}
+const chatBtn=document.getElementById("sendChatBtn");
+if(chatBtn){
+ chatBtn.onclick=()=>{
+  const ta=document.getElementById("chatInput");const txt=(ta?.value||"").trim();if(!txt)return;
+  const box=document.getElementById("chatBox");if(box){addRow(box,txt,true)}
+  try{const k="chat_local";const arr=JSON.parse(localStorage.getItem(k)||"[]");arr.push({t:txt,ts:Date.now()});localStorage.setItem(k,JSON.stringify(arr))}catch{}
+  if(ta)ta.value="";
+ }
+}
+document.querySelectorAll(".mapStep").forEach(s=>{
+ s.onclick=()=>{
+  const need=Number(s.dataset.need||"0");if(__u.getXP()>=need){s.classList.add("done");__u.addCoins(2);__u.addXP(2);updateMapProgress();__u.toast("+2 XP +2 coins");burst()}else{__u.toast("Locked")}
+ }
+})
+const feedBtn=document.getElementById("feedPetBtn");
+if(feedBtn){feedBtn.onclick=()=>{petFeed();__u.addCoins(1);__u.addXP(1);updateMapProgress();burst()}}
+function initCounts(){
+ setText("coinCount",__u.getCoins());
+ setText("streakCount",localStorage.getItem("streak")||"0");
+ const days=JSON.parse(localStorage.getItem("days")||"{}");const entries=JSON.parse(localStorage.getItem("journal_entries")||"[]");
+ const cc=document.getElementById("checkinCount");if(cc)cc.textContent=Object.keys(days).length;
+ const jc=document.getElementById("journalCount");if(jc)jc.textContent=entries.length
+}
+initCounts();
+</script>
+</body>
+</html>
